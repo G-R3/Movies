@@ -30,6 +30,7 @@
     "rules": {
         "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
         "no-shadow": "off",
-        "import/extensions": ["off", "never"]
+        "import/extensions": ["off", "never"],
+        "no-undef": "off"
     }
 }
