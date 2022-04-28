@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Heading, Text, SimpleGrid, Box, Image } from "@chakra-ui/react";
 import { getMovies } from "../api/index";
 
 const Browse = (): JSX.Element => {
@@ -15,30 +16,49 @@ const Browse = (): JSX.Element => {
     }, []);
     if (!movies) return <p>Loading...</p>;
     return (
-        <div className="max-w-fullxl">
-            <h1 className="text-5xl my-5">Browse</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <>
+            <Heading fontSize="5xl" mt={10} mb={8}>
+                Browse
+            </Heading>
+            <SimpleGrid columns={{ md: 3 }} spacing={10}>
                 {movies.map((movie) => (
-                    <Link
-                        to={`/browse/${movie.id}`}
+                    <Box
                         key={movie.id}
-                        className="hover:shadow-md transition-shadow"
+                        role="group"
+                        _focus={{ outline: "none", transform: "scale(1.01)" }}
+                        _hover={{ transform: "scale(1.01)" }}
+                        transition="transform 200ms ease"
                     >
-                        <img
-                            src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-                            alt={movie.title}
-                            className="rounded-t-md"
-                        />
-                        <div className="rounded-b-md p-4 bg-neutral-100 text-neutral-800">
-                            <h2 className="text-xl">{movie.title}</h2>
-                            <p className="two-line-ellipsis my-2">
-                                {movie.overview}
-                            </p>
-                        </div>
-                    </Link>
+                        <Link to={`/browse/${movie.id}`}>
+                            <Image
+                                borderTopRadius="md"
+                                src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+                                alt={movie.title}
+                            />
+                            <Box
+                                p="5"
+                                backgroundColor="blackAlpha.600"
+                                shadow="2xl"
+                                borderBottomRadius="md"
+                                _groupHover={{
+                                    backgroundColor: "blackAlpha.900",
+                                }}
+                            >
+                                <Heading
+                                    as="h2"
+                                    fontSize={{ sm: "xs", md: "sm", lg: "lg" }}
+                                >
+                                    {movie.title}
+                                </Heading>
+                                <Text noOfLines={2} mt="2" color="gray.400">
+                                    {movie.overview}
+                                </Text>
+                            </Box>
+                        </Link>
+                    </Box>
                 ))}
-            </div>
-        </div>
+            </SimpleGrid>
+        </>
     );
 };
 
