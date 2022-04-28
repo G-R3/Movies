@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 
 const Layout = (): JSX.Element => {
     return (
-        <div className="px-10 bg-slate-200">
+        <div className="h-full px-5 md:px-10">
             <header>
                 <Navbar />
             </header>
