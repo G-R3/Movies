@@ -8,3 +8,6 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+body {
+    @apply bg-slate-200;
+}
