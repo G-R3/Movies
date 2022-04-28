@@ -28,9 +28,16 @@
     },
     "plugins": ["react", "@typescript-eslint"],
     "rules": {
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
+        ],
         "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
         "no-shadow": "off",
         "import/extensions": ["off", "never"],
-        "no-undef": "off"
+        "no-undef": "off",
+        "react/function-component-definition": "off"
     }
 }
