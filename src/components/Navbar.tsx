@@ -1,17 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link as RouteLink } from "react-router-dom";
+import { Link, Flex, Spacer, Stack, Text } from "@chakra-ui/react";
 
 const Navbar = (): JSX.Element => {
     return (
-        <nav className="flex justify-between items-center h-10">
-            <h2 className="text-2xl">Movie</h2>
-            <ul className="flex gap-5">
-                <li>
-                    <Link to="/browse">Browse</Link>
-                </li>
-                <li>Login</li>
-                <li>Sign up</li>
-            </ul>
-        </nav>
+        <Flex as="nav" direction="row" align="center" justify="center" py="3.5">
+            <Text as="h2" fontSize="2xl">
+                Movie
+            </Text>
+            <Spacer />
+            <Stack direction="row">
+                <Link as={RouteLink} to="/browse">
+                    Browse
+                </Link>
+            </Stack>
+        </Flex>
     );
 };
 
