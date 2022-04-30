@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import {
+    chakra,
+    Box,
+    Image,
+    SimpleGrid,
+    Flex,
+    Heading,
+    Text,
+} from "@chakra-ui/react";
 import { getMovie } from "../api";
+import GenreTag from "../components/Tag";
 
 interface Genres {
     id: number;
@@ -12,6 +22,7 @@ interface Movie {
     genres: Genres[];
     tagline: string;
     overview: string;
+    vote_average: number;
 }
 
 const MoviePage = () => {
@@ -29,25 +40,56 @@ const MoviePage = () => {
 
     if (!movie) return <p>Loading..</p>;
     return (
-        <div className="mt-5">
-            <img
-                src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-                alt={movie.title}
-                className="rounded-md"
-            />
-            <div className="mt-3">
-                <div className="flex gap-2">
-                    {movie.genres.map((genre) => (
-                        <span key={genre.id}>{genre.name}</span>
-                    ))}
-                </div>
-                <div className="flex flex-col gap-1">
-                    <h1 className="text-3xl">{movie.title}</h1>
-                    <p className="text-slate-500">{movie.tagline}</p>
-                    <p>{movie.overview}</p>
-                </div>
-            </div>
-        </div>
+        <Flex direction="column" justifyContent="space-between">
+            <SimpleGrid columns={{ sm: 1, md: 2 }} spacingX="40px" mt={10}>
+                <Box>
+                    <Image
+                        borderRadius="md"
+                        src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+                        alt={movie.title}
+                        shadow="2xl"
+                    />
+                </Box>
+                <Box>
+                    <Flex direction="row" gap={3} mt={3}>
+                        {movie.genres.map((genre) => (
+                            <GenreTag key={genre.id} name={genre.name} />
+                        ))}
+                    </Flex>
+                    <Flex direction="column" gap={1}>
+                        <Heading
+                            as="h1"
+                            fontSize={{
+                                base: "2xl",
+                                md: "3xl",
+                                lg: "6xl",
+                            }}
+                            mt={2}
+                        >
+                            {movie.title}
+                        </Heading>
+                        <Text color="gray.400" fontWeight="semibold">
+                            {movie.tagline}
+                        </Text>
+                        <Text mt={2}>{movie.overview}</Text>
+                    </Flex>
+                </Box>
+            </SimpleGrid>
+            <Flex justify="center" gap="10">
+                <Box>
+                    <Heading fontSize="lg" textAlign="center" color="gray.500">
+                        Rating
+                    </Heading>
+                    <Text fontSize="6xl" fontWeight="bold" textAlign="center">
+                        {movie.vote_average}
+                        <chakra.span fontSize="2xl" color="gray.500">
+                            {" "}
+                            / 10
+                        </chakra.span>
+                    </Text>
+                </Box>
+            </Flex>
+        </Flex>
     );
 };
 
