@@ -8,6 +8,9 @@ import {
     Flex,
     Heading,
     Text,
+    Stat,
+    StatLabel,
+    StatNumber,
 } from "@chakra-ui/react";
 import { getMovie } from "../api";
 import GenreTag from "../components/Tag";
@@ -23,6 +26,8 @@ interface Movie {
     tagline: string;
     overview: string;
     vote_average: number;
+    vote_count: number;
+    budget: number;
 }
 
 const MoviePage = () => {
@@ -40,7 +45,7 @@ const MoviePage = () => {
 
     if (!movie) return <p>Loading..</p>;
     return (
-        <Flex direction="column" justifyContent="space-between">
+        <Flex direction="column" justifyContent="space-between" h="full">
             <SimpleGrid columns={{ sm: 1, md: 2 }} spacingX="40px" mt={10}>
                 <Box>
                     <Image
@@ -75,19 +80,71 @@ const MoviePage = () => {
                     </Flex>
                 </Box>
             </SimpleGrid>
-            <Flex justify="center" gap="10">
-                <Box>
-                    <Heading fontSize="lg" textAlign="center" color="gray.500">
+            <Flex
+                direction={{ base: "column", md: "row" }}
+                mt={{ base: 14, md: 24, lg: 28 }}
+                gap={{ base: 9, md: "0" }}
+            >
+                <Stat>
+                    <StatLabel
+                        fontSize="md"
+                        textAlign="center"
+                        color="gray.500"
+                    >
                         Rating
-                    </Heading>
-                    <Text fontSize="6xl" fontWeight="bold" textAlign="center">
+                    </StatLabel>
+                    <StatNumber
+                        fontSize="4xl"
+                        fontWeight="bold"
+                        textAlign="center"
+                    >
                         {movie.vote_average}
                         <chakra.span fontSize="2xl" color="gray.500">
                             {" "}
                             / 10
                         </chakra.span>
-                    </Text>
-                </Box>
+                    </StatNumber>
+                </Stat>
+                <Stat>
+                    <StatLabel
+                        fontSize="md"
+                        textAlign="center"
+                        color="gray.500"
+                    >
+                        Vote Count
+                    </StatLabel>
+                    <StatNumber
+                        fontSize="4xl"
+                        fontWeight="bold"
+                        textAlign="center"
+                    >
+                        {movie.vote_count}{" "}
+                        <chakra.span fontSize="2xl" color="gray.500">
+                            {" "}
+                            votes
+                        </chakra.span>
+                    </StatNumber>
+                </Stat>
+                <Stat>
+                    <StatLabel
+                        fontSize="md"
+                        textAlign="center"
+                        color="gray.500"
+                    >
+                        Budget
+                    </StatLabel>
+                    <StatNumber
+                        fontSize="4xl"
+                        fontWeight="bold"
+                        textAlign="center"
+                    >
+                        ${movie.budget}{" "}
+                        <chakra.span fontSize="2xl" color="gray.500">
+                            {" "}
+                            usd
+                        </chakra.span>
+                    </StatNumber>
+                </Stat>
             </Flex>
         </Flex>
     );
