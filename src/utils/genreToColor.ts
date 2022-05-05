@@ -64,7 +64,7 @@ const colorMap: Record<string, Theme> = {
     },
     // gray
     Horror: {
-        background: "#EDF2F7",
+        background: "#E2E8F0",
         color: "#1A202C",
     },
     // blue
