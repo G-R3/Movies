@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Box, Skeleton, Image, Heading, Text } from "@chakra-ui/react";
+import {
+    Box,
+    Skeleton,
+    Image,
+    Heading,
+    Text,
+    useColorMode,
+    useColorModeValue,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 type MovieProps = {
@@ -14,6 +22,8 @@ type MovieProps = {
 
 const Card = ({ movie }: MovieProps): JSX.Element => {
     const [imageLoaded, setImageLoaded] = useState(false);
+    const { colorMode } = useColorMode();
+    const bg = useColorModeValue("whiteAlpha.500", "blackAlpha.500");
 
     return (
         <Box
@@ -38,12 +48,15 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
                 </Skeleton>
                 <Box
                     p="5"
-                    backgroundColor="blackAlpha.600"
+                    backgroundColor={bg}
                     shadow="2xl"
                     borderBottomRadius="md"
                     transition="background-color 200ms ease"
                     _groupHover={{
-                        backgroundColor: "blackAlpha.900",
+                        backgroundColor:
+                            colorMode === "light"
+                                ? "whiteAlpha.900"
+                                : "blachAlpha.900",
                     }}
                 >
                     <Heading
@@ -52,7 +65,11 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
                     >
                         {movie.title}
                     </Heading>
-                    <Text noOfLines={2} mt="2" color="gray.400">
+                    <Text
+                        noOfLines={2}
+                        mt="2"
+                        color={colorMode === "light" ? "gray.500" : "gray.400"}
+                    >
                         {movie.overview}
                     </Text>
                 </Box>

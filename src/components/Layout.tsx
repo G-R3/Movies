@@ -1,10 +1,12 @@
 import { Outlet } from "react-router-dom";
-import { Box, Container } from "@chakra-ui/react";
+import { Box, Container, useColorModeValue } from "@chakra-ui/react";
 import Navbar from "./Navbar";
 
 const Layout = (): JSX.Element => {
+    const bg = useColorModeValue("gray.100", "gray.900");
+    const color = useColorModeValue("gray.800", "gray.300");
     return (
-        <Box backgroundColor="blackAlpha.900" color="gray.300" h="full">
+        <Box backgroundColor={bg} color={color} h="full">
             <Container maxW="container.xl">
                 <header>
                     <Navbar />
