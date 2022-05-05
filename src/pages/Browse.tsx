@@ -17,7 +17,7 @@ const Browse = (): JSX.Element => {
     if (!movies) return <p>Loading...</p>;
     return (
         <>
-            <Heading fontSize="5xl" mt={10} mb={8}>
+            <Heading as="h1" fontSize="5xl" mt={10} mb={8}>
                 Browse
             </Heading>
             <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={10}>

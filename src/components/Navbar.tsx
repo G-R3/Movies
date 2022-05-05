@@ -1,10 +1,9 @@
-import { Link as RouteLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import {
     Link,
     Flex,
     Spacer,
     Stack,
-    Text,
     IconButton,
     useColorMode,
 } from "@chakra-ui/react";
@@ -22,12 +21,23 @@ const Navbar = (): JSX.Element => {
             py="3.5"
             gap={5}
         >
-            <Text as="h2" fontSize="2xl" fontWeight="bold">
+            <Link
+                to="/"
+                as={RouterLink}
+                fontSize="3xl"
+                fontWeight="bold"
+                textDecoration="none"
+                _hover={{ textDecoration: "none" }}
+            >
                 Movie
-            </Text>
+            </Link>
             <Spacer />
             <Stack direction="row">
-                <Link as={RouteLink} to="/browse">
+                <Link
+                    as={RouterLink}
+                    to="/browse"
+                    _hover={{ textDecoration: "none" }}
+                >
                     Browse
                 </Link>
             </Stack>

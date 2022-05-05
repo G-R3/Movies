@@ -67,7 +67,7 @@ const MoviePage = () => {
                         borderRadius="lg"
                         src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
                         alt={movie.title}
-                        shadow="2xl"
+                        shadow="dark-lg"
                     />
                 </Box>
                 <Flex direction="column">
