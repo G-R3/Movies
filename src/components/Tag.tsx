@@ -1,5 +1,5 @@
 import { Tag, TagLabel } from "@chakra-ui/react";
-import colorMap from "../utils/genreToColor";
+import { colorMap } from "../utils";
 
 type Props = {
     name: string;
