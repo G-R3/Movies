@@ -6,7 +6,7 @@ import {
     Heading,
     Text,
     useColorMode,
-    useColorModeValue,
+    HStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
@@ -17,13 +17,16 @@ type MovieProps = {
         image?: string;
         overview: string;
         backdrop_path: string;
+        vote_average: string;
+        release_date: string;
+        adult: boolean;
     };
 };
 
 const Card = ({ movie }: MovieProps): JSX.Element => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const { colorMode } = useColorMode();
-    const bg = useColorModeValue("whiteAlpha.500", "blackAlpha.500");
+    const releaseYear = new Date(movie.release_date).getFullYear();
 
     return (
         <Box
@@ -46,32 +49,46 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
                         onLoad={() => setImageLoaded(true)}
                     />
                 </Skeleton>
-                <Box
-                    p="5"
-                    backgroundColor={bg}
-                    shadow="2xl"
-                    borderBottomRadius="md"
-                    transition="background-color 200ms ease"
-                    _groupHover={{
-                        backgroundColor:
-                            colorMode === "light"
-                                ? "whiteAlpha.900"
-                                : "blachAlpha.900",
-                    }}
-                >
+                <Box paddingTop={2} paddingBottom={2} borderBottomRadius="md">
+                    <HStack>
+                        <Text
+                            color={
+                                colorMode === "light" ? "gray.500" : "gray.400"
+                            }
+                            _after={{
+                                content: "'\\2022'",
+                                display: "inline-block",
+                                ml: "5px",
+                            }}
+                        >
+                            {releaseYear}
+                        </Text>
+                        <Text
+                            color={
+                                colorMode === "light" ? "gray.500" : "gray.400"
+                            }
+                            _after={{
+                                content: "'\\2022'",
+                                display: "inline-block",
+                                ml: "5px",
+                            }}
+                        >
+                            {movie.vote_average}
+                        </Text>
+                        <Text
+                            color={
+                                colorMode === "light" ? "gray.500" : "gray.400"
+                            }
+                        >
+                            {movie.adult ? "18+" : "PG"}
+                        </Text>
+                    </HStack>
                     <Heading
                         as="h2"
                         fontSize={{ sm: "xs", md: "sm", lg: "lg" }}
                     >
                         {movie.title}
                     </Heading>
-                    <Text
-                        noOfLines={2}
-                        mt="2"
-                        color={colorMode === "light" ? "gray.500" : "gray.400"}
-                    >
-                        {movie.overview}
-                    </Text>
                 </Box>
             </Link>
         </Box>
