@@ -82,7 +82,12 @@ const MoviePage = (): JSX.Element => {
     }
     const { movie, cast } = data;
     return (
-        <Flex direction="column" justifyContent="space-between" h="full">
+        <Flex
+            direction="column"
+            justifyContent="space-between"
+            h="full"
+            gap={20}
+        >
             <SimpleGrid
                 columns={{ sm: 1, md: 2 }}
                 spacingX="40px"
@@ -221,34 +226,14 @@ const MoviePage = (): JSX.Element => {
                 </Stat>
             </Flex>
 
-            <Box mt={{ base: 14, md: 24, lg: 28 }}>
-                <Heading
-                    as="h2"
-                    mb={4}
-                    fontSize={{
-                        base: "xl",
-                        md: "2xl",
-                        lg: "3xl",
-                    }}
-                >
-                    Cast
-                </Heading>
+            <Flex
+                flexDirection="column"
+                gap={20}
+                mt={{ base: 14, md: 24, lg: 28 }}
+            >
+                <Carousel data={recommended} heading="Recommended" />
                 <Cast cast={cast.slice(0, 20)} />
-            </Box>
-            <Box mt={{ base: 14, md: 24, lg: 28 }}>
-                <Heading
-                    as="h2"
-                    mb={4}
-                    fontSize={{
-                        base: "xl",
-                        md: "2xl",
-                        lg: "3xl",
-                    }}
-                >
-                    Recommended
-                </Heading>
-                <Carousel data={recommended} />
-            </Box>
+            </Flex>
         </Flex>
     );
 };
