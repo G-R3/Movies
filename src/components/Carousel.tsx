@@ -1,13 +1,13 @@
 /* eslint-disable import/no-unresolved */
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
-import { Image, Text } from "@chakra-ui/react";
+import Card from "./Card";
 
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 
-export default function Carousel({ cast }: any) {
+export default function Carousel({ data }: any): JSX.Element {
     return (
         <Swiper
             slidesPerView={3}
@@ -17,31 +17,21 @@ export default function Carousel({ cast }: any) {
             modules={[Navigation]}
             wrapperTag="ul"
             breakpoints={{
-                640: {
-                    slidesPerView: 5,
+                320: {
+                    slidesPerView: 1,
                 },
-                768: {
-                    slidesPerView: 6,
-                },
-                1024: {
-                    slidesPerView: 10,
+                480: {
+                    slidesPerView: 3,
                 },
             }}
         >
-            {cast.map((member: any) => (
+            {data.map((movie: any) => (
                 <SwiperSlide
-                    key={member.id}
+                    key={movie.id}
                     tag="li"
                     style={{ listStyle: "none" }}
                 >
-                    <Image
-                        borderRadius="md"
-                        // width="80px"
-                        src={`https://image.tmdb.org/t/p/original${member.profile_path}`}
-                    />
-                    <Text textAlign="center" fontSize="xs">
-                        {member.name}
-                    </Text>
+                    <Card movie={movie} />
                 </SwiperSlide>
             ))}
         </Swiper>
