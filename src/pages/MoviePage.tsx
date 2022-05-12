@@ -13,7 +13,10 @@ import {
     StatNumber,
     HStack,
 } from "@chakra-ui/react";
-import { getMovie } from "../api";
+// import Cast from "../components/Cast";
+import Carousel from "../components/Carousel";
+
+import { getMovie, getMovieCredits } from "../api";
 import GenreTag from "../components/Tag";
 import { numberFormat, minutesToHrsMins } from "../utils/index";
 
@@ -21,8 +24,8 @@ interface Genres {
     id: number;
     name: string;
 }
-interface Movie {
-    adult: false;
+
+interface MovieDetails {
     backdrop_path: string;
     budget: number;
     genres: Genres[];
@@ -39,21 +42,40 @@ interface Movie {
     vote_count: number;
 }
 
+interface MovieCast {
+    cast_id: number;
+    name: string;
+    character: string;
+    id: number;
+    profile_path: string;
+}
+
+interface Movie {
+    movie: MovieDetails;
+    cast: MovieCast[];
+}
+
 const MoviePage = () => {
     const { movieId } = useParams<string>();
-    const [movie, setMovie] = useState<Movie | null>(null);
+    const [data, setdata] = useState<Movie>({} as Movie);
+
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getMovie(movieId!);
-            console.log(data);
-            setMovie(data);
+            const movie = await getMovie(Number(movieId!));
+            const movieCredits = await getMovieCredits(Number(movieId!));
+
+            setdata({ movie, cast: movieCredits.cast });
+            setIsLoading(false);
         };
 
         fetchData();
     }, []);
 
-    if (!movie) return <p>Loading..</p>;
+    if (isLoading) return <p>Loading..</p>;
+
+    const { movie, cast } = data;
     return (
         <Flex direction="column" justifyContent="space-between" h="full">
             <SimpleGrid
@@ -70,8 +92,13 @@ const MoviePage = () => {
                         shadow="dark-lg"
                     />
                 </Box>
-                <Flex direction="column">
-                    <Flex direction="row" gap={3} mt={3}>
+                <Flex direction="column" height="full">
+                    <Flex
+                        direction="row"
+                        flexWrap="wrap"
+                        gap={3}
+                        mt={{ base: 10, md: 0 }}
+                    >
                         {movie.genres.map((genre) => (
                             <GenreTag key={genre.id} name={genre.name} />
                         ))}
@@ -82,7 +109,7 @@ const MoviePage = () => {
                             fontSize={{
                                 base: "2xl",
                                 md: "3xl",
-                                lg: "6xl",
+                                lg: "5xl",
                             }}
                             mt={2}
                         >
@@ -188,6 +215,21 @@ const MoviePage = () => {
                     </StatNumber>
                 </Stat>
             </Flex>
+
+            <Box mt={{ base: 14, md: 24, lg: 28 }}>
+                <Heading
+                    as="h2"
+                    mb={4}
+                    fontSize={{
+                        base: "xl",
+                        md: "2xl",
+                        lg: "3xl",
+                    }}
+                >
+                    Cast
+                </Heading>
+                <Carousel cast={cast.slice(0, 20)} />
+            </Box>
         </Flex>
     );
 };
