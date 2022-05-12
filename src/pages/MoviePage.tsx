@@ -13,10 +13,10 @@ import {
     StatNumber,
     HStack,
 } from "@chakra-ui/react";
-// import Cast from "../components/Cast";
+import Cast from "../components/Cast";
 import Carousel from "../components/Carousel";
 
-import { getMovie, getMovieCredits } from "../api";
+import { getMovie, getMovieCredits, getMovieRecommendations } from "../api";
 import GenreTag from "../components/Tag";
 import { numberFormat, minutesToHrsMins } from "../utils/index";
 
@@ -55,26 +55,31 @@ interface Movie {
     cast: MovieCast[];
 }
 
-const MoviePage = () => {
+const MoviePage = (): JSX.Element => {
     const { movieId } = useParams<string>();
     const [data, setdata] = useState<Movie>({} as Movie);
-
-    const [isLoading, setIsLoading] = useState(true);
+    const [recommended, setRecommended] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
             const movie = await getMovie(Number(movieId!));
             const movieCredits = await getMovieCredits(Number(movieId!));
-
+            const recommendedMovies = await getMovieRecommendations(
+                Number(movieId)
+            );
             setdata({ movie, cast: movieCredits.cast });
+            setRecommended(recommendedMovies.results);
             setIsLoading(false);
         };
 
         fetchData();
-    }, []);
+    }, [movieId]);
 
-    if (isLoading) return <p>Loading..</p>;
-
+    if (isLoading || !data || !recommended) {
+        return <p>Loading...</p>;
+    }
     const { movie, cast } = data;
     return (
         <Flex direction="column" justifyContent="space-between" h="full">
@@ -228,7 +233,21 @@ const MoviePage = () => {
                 >
                     Cast
                 </Heading>
-                <Carousel cast={cast.slice(0, 20)} />
+                <Cast cast={cast.slice(0, 20)} />
+            </Box>
+            <Box mt={{ base: 14, md: 24, lg: 28 }}>
+                <Heading
+                    as="h2"
+                    mb={4}
+                    fontSize={{
+                        base: "xl",
+                        md: "2xl",
+                        lg: "3xl",
+                    }}
+                >
+                    Recommended
+                </Heading>
+                <Carousel data={recommended} />
             </Box>
         </Flex>
     );
