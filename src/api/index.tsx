@@ -30,5 +30,15 @@ const getMovieCredits = async (movieId: number) => {
     return data;
 };
 
+const getMovieRecommendations = async (movieId: number) => {
+    const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${API_KEY}&language=en-US&page=1`
+    );
+
+    const data = response.json();
+
+    return data;
+};
+
 // eslint-disable-next-line import/prefer-default-export
-export { getMovies, getMovie, getMovieCredits };
+export { getMovies, getMovie, getMovieCredits, getMovieRecommendations };
