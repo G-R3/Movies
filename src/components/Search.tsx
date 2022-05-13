@@ -5,6 +5,7 @@ import {
     Box,
     Text,
     useDisclosure,
+    useColorMode,
     useColorModeValue,
     useOutsideClick,
     ScaleFade,
@@ -40,7 +41,12 @@ export default function Search() {
     const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
     const ref = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+
     const bg = useColorModeValue("gray.100", "gray.900");
+    const bgAlt = useColorModeValue(
+        "RGBA(0, 0, 0, 0.16)",
+        "RGBA(255, 255, 255, 0.16)"
+    );
 
     useEffect(() => {
         if (!value.trim()) {
@@ -116,7 +122,7 @@ export default function Search() {
                                 width: "6px",
                             },
                             "&::-webkit-scrollbar-thumb": {
-                                background: "RGBA(255, 255, 255, 0.16)",
+                                background: bgAlt,
                                 borderRadius: "24px",
                             },
                         }}
@@ -131,8 +137,7 @@ export default function Search() {
                                         borderRadius="sm"
                                         fontSize="sm"
                                         _hover={{
-                                            backgroundColor:
-                                                "RGBA(255, 255, 255, 0.16)",
+                                            backgroundColor: bgAlt,
                                         }}
                                     >
                                         {movie.title}
