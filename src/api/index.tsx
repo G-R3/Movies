@@ -40,5 +40,21 @@ const getMovieRecommendations = async (movieId: number) => {
     return data;
 };
 
+const getTrending = async () => {
+    const response = await fetch(
+        `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}`
+    );
+
+    const data = response.json();
+
+    return data;
+};
+
 // eslint-disable-next-line import/prefer-default-export
-export { getMovies, getMovie, getMovieCredits, getMovieRecommendations };
+export {
+    getMovies,
+    getMovie,
+    getMovieCredits,
+    getMovieRecommendations,
+    getTrending,
+};
