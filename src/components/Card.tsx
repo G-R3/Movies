@@ -12,12 +12,12 @@ import { Link } from "react-router-dom";
 
 type MovieProps = {
     movie: {
-        id: string;
+        id: number;
         title: string;
         image?: string;
         overview: string;
         backdrop_path: string;
-        vote_average: string;
+        vote_average: number;
         release_date: string;
         adult: boolean;
     };

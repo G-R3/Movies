@@ -1,23 +1,66 @@
 import { useEffect, useState } from "react";
-import { Heading, SimpleGrid } from "@chakra-ui/react";
+import { Heading, SimpleGrid, Box } from "@chakra-ui/react";
 import Card from "../components/Card";
 
-import { getMovies } from "../api/index";
+import { getMovies, getTrending } from "../api/index";
+import Carousel from "../components/Carousel";
+
+interface Genres {
+    id: number;
+    name: string;
+}
+
+interface Movie {
+    backdrop_path: string;
+    budget: number;
+    genres: Genres[];
+    id: number;
+    original_title: string;
+    overview: string;
+    popularity: number;
+    poster_path: string;
+    release_date: string;
+    runtime: number;
+    title: string;
+    tagline: string;
+    vote_average: number;
+    vote_count: number;
+    adult: boolean;
+}
 
 const Browse = (): JSX.Element => {
-    const [movies, setMovies] = useState<any[] | null>(null);
+    const [movies, setMovies] = useState<Movie[] | null>(null);
+    const [trending, setTrending] = useState<Movie[] | null>(null);
+
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getMovies();
-            setMovies(data.results);
+            const movies = await getMovies();
+            const trending = await getTrending();
+
+            setMovies(movies.results);
+            setTrending(trending.results);
         };
 
         fetchData();
     }, []);
+
     if (!movies) return <p>Loading...</p>;
+
     return (
         <>
-            <Heading as="h1" fontSize="5xl" mt={10} mb={8}>
+            <Box mt={10}>
+                <Carousel data={trending} heading="Trending" />
+            </Box>
+            <Heading
+                as="h2"
+                mt={10}
+                mb={5}
+                fontSize={{
+                    base: "xl",
+                    md: "2xl",
+                    lg: "3xl",
+                }}
+            >
                 Browse
             </Heading>
             <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={10}>

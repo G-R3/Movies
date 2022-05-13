@@ -6,7 +6,7 @@ import { Box, Heading, Image, Text } from "@chakra-ui/react";
 import "swiper/css";
 import "swiper/css/navigation";
 
-export default function Carousel({ cast }: any) {
+export default function Cast({ cast }: any) {
     return (
         <Box>
             <Heading
