@@ -32,7 +32,7 @@ const Navbar = (): JSX.Element => {
                 Movie
             </Link>
             <Spacer />
-            <Stack direction="row">
+            <Stack direction="row" alignItems="center">
                 <Link
                     as={RouterLink}
                     to="/browse"

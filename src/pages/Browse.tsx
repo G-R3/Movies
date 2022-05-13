@@ -4,6 +4,7 @@ import Card from "../components/Card";
 
 import { getMovies, getTrending } from "../api/index";
 import Carousel from "../components/Carousel";
+import Search from "../components/Search";
 
 interface Genres {
     id: number;
@@ -47,8 +48,10 @@ const Browse = (): JSX.Element => {
     if (!movies) return <p>Loading...</p>;
 
     return (
-        <>
-            <Box mt={10}>
+        <Box mt={10}>
+            <Search />
+
+            <Box>
                 <Carousel data={trending} heading="Trending" />
             </Box>
             <Heading
@@ -68,7 +71,7 @@ const Browse = (): JSX.Element => {
                     <Card key={movie.id} movie={movie} />
                 ))}
             </SimpleGrid>
-        </>
+        </Box>
     );
 };
 
