@@ -50,6 +50,20 @@ const getTrending = async () => {
     return data;
 };
 
+const searchMovie = async (searchValue: string) => {
+    if (!searchValue) return [];
+
+    const query = new URLSearchParams({ query: searchValue });
+
+    const response = await fetch(
+        `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&${query}&page=1&include_adult=false`
+    );
+
+    const data = await response.json();
+
+    return data;
+};
+
 // eslint-disable-next-line import/prefer-default-export
 export {
     getMovies,
@@ -57,4 +71,5 @@ export {
     getMovieCredits,
     getMovieRecommendations,
     getTrending,
+    searchMovie,
 };
