@@ -5,7 +5,6 @@ import {
     Box,
     Text,
     useDisclosure,
-    useColorMode,
     useColorModeValue,
     useOutsideClick,
     ScaleFade,
