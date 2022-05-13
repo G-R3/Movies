@@ -1,5 +1,0 @@
-node_modules
-
-# ignore artifact:
-build
-coverage

@@ -126,11 +126,10 @@ export default function Search() {
                             },
                         }}
                     >
-                        {movies.map((movie: any) => {
+                        {movies.map((movie: Movie) => {
                             return (
-                                <Link to={`/browse/${movie.id}`}>
+                                <Link to={`/browse/${movie.id}`} key={movie.id}>
                                     <Text
-                                        key={movie.id}
                                         width="full"
                                         padding={2}
                                         borderRadius="sm"
