@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import { Home, Browse, MoviePage } from "./pages";
-import Register from "./pages/Register";
+import { Home, Browse, MoviePage, Login } from "./pages";
 
 function App(): JSX.Element {
     return (
@@ -12,7 +11,6 @@ function App(): JSX.Element {
                 <Route path="browse">
                     <Route path=":movieId" element={<MoviePage />} />
                 </Route>
-                <Route path="register" element={<Register />} />
             </Route>
         </Routes>
     );
