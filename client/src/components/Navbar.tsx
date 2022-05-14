@@ -7,10 +7,24 @@ import {
     IconButton,
     useColorMode,
     Button,
+    useDisclosure,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import RegisterModal from "./RegisterModal";
+import LoginModal from "./LoginModal";
 
 const Navbar = (): JSX.Element => {
+    const {
+        isOpen: isRegisterModalOpen,
+        onOpen: onRegisterModalOpen,
+        onClose: onRegisterModalClose,
+    } = useDisclosure();
+    const {
+        isOpen: isLoginModalOpen,
+        onOpen: onLoginModalOpen,
+        onClose: onLoginModalClose,
+    } = useDisclosure();
+
     const { colorMode, toggleColorMode } = useColorMode();
 
     return (
@@ -42,12 +56,17 @@ const Navbar = (): JSX.Element => {
                     >
                         Browse
                     </Link>
+                    <Link
+                        onClick={onLoginModalOpen}
+                        _hover={{ textDecoration: "none" }}
+                    >
+                        Login
+                    </Link>
                     <Button
+                        onClick={onRegisterModalOpen}
                         colorScheme="purple"
                         variant={"solid"}
                         outline="none"
-                        as={RouterLink}
-                        to="/register"
                         _hover={{ textDecoration: "none" }}
                     >
                         Sign Up
@@ -59,6 +78,12 @@ const Navbar = (): JSX.Element => {
                     onClick={toggleColorMode}
                 />
             </HStack>
+
+            <LoginModal isOpen={isLoginModalOpen} onClose={onLoginModalClose} />
+            <RegisterModal
+                isOpen={isRegisterModalOpen}
+                onClose={onRegisterModalClose}
+            />
         </Flex>
     );
 };
