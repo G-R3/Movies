@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import { Home, Browse, MoviePage, Login } from "./pages";
+import { Home, Browse, MoviePage } from "./pages";
 
 function App(): JSX.Element {
     return (
