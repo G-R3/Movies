@@ -51,30 +51,38 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
                 </Skeleton>
                 <Box paddingTop={2} paddingBottom={2} borderBottomRadius="md">
                     <HStack>
-                        <Text
-                            color={
-                                colorMode === "light" ? "gray.500" : "gray.400"
-                            }
-                            _after={{
-                                content: "'\\2022'",
-                                display: "inline-block",
-                                ml: "5px",
-                            }}
-                        >
-                            {releaseYear}
-                        </Text>
-                        <Text
-                            color={
-                                colorMode === "light" ? "gray.500" : "gray.400"
-                            }
-                            _after={{
-                                content: "'\\2022'",
-                                display: "inline-block",
-                                ml: "5px",
-                            }}
-                        >
-                            {movie.vote_average}
-                        </Text>
+                        {releaseYear && (
+                            <Text
+                                color={
+                                    colorMode === "light"
+                                        ? "gray.500"
+                                        : "gray.400"
+                                }
+                                _after={{
+                                    content: "'\\2022'",
+                                    display: "inline-block",
+                                    ml: "5px",
+                                }}
+                            >
+                                {releaseYear}
+                            </Text>
+                        )}
+                        {movie.vote_average !== 0 && (
+                            <Text
+                                color={
+                                    colorMode === "light"
+                                        ? "gray.500"
+                                        : "gray.400"
+                                }
+                                _after={{
+                                    content: "'\\2022'",
+                                    display: "inline-block",
+                                    ml: "5px",
+                                }}
+                            >
+                                {movie.vote_average}
+                            </Text>
+                        )}
                         <Text
                             color={
                                 colorMode === "light" ? "gray.500" : "gray.400"
