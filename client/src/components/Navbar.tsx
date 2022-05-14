@@ -3,9 +3,10 @@ import {
     Link,
     Flex,
     Spacer,
-    Stack,
+    HStack,
     IconButton,
     useColorMode,
+    Button,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
@@ -32,20 +33,32 @@ const Navbar = (): JSX.Element => {
                 Movie
             </Link>
             <Spacer />
-            <Stack direction="row" alignItems="center">
-                <Link
-                    as={RouterLink}
-                    to="/browse"
-                    _hover={{ textDecoration: "none" }}
-                >
-                    Browse
-                </Link>
-            </Stack>
-            <IconButton
-                aria-label="Toggle Theme"
-                icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-                onClick={toggleColorMode}
-            />
+            <HStack gap={5}>
+                <Flex align={"center"} gap={5}>
+                    <Link
+                        as={RouterLink}
+                        to="/browse"
+                        _hover={{ textDecoration: "none" }}
+                    >
+                        Browse
+                    </Link>
+                    <Button
+                        colorScheme="purple"
+                        variant={"solid"}
+                        outline="none"
+                        as={RouterLink}
+                        to="/register"
+                        _hover={{ textDecoration: "none" }}
+                    >
+                        Sign Up
+                    </Button>
+                </Flex>
+                <IconButton
+                    aria-label="Toggle Theme"
+                    icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+                    onClick={toggleColorMode}
+                />
+            </HStack>
         </Flex>
     );
 };
