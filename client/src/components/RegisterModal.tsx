@@ -25,7 +25,7 @@ type FormData = {
     password: string;
 };
 
-const validate = (values) => {
+const validate = (values: FormData): ErrorData => {
     let errors: ErrorData = {};
 
     if (!values.email) {
@@ -52,7 +52,7 @@ const RegisterModal = ({ isOpen, onClose }): JSX.Element => {
 
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e): Promise<void> => {
         e.preventDefault();
 
         const validationErrors = validate(formData);
@@ -76,12 +76,12 @@ const RegisterModal = ({ isOpen, onClose }): JSX.Element => {
 
             const data = await response.json();
 
-            console.log(data);
             if (data.status === 400) {
                 console.log("Form field errors");
                 console.log(data);
                 return;
             }
+            console.log(data);
 
             setErrors({});
             setFormData({
@@ -97,7 +97,7 @@ const RegisterModal = ({ isOpen, onClose }): JSX.Element => {
         }
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e): void => {
         setFormData((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,

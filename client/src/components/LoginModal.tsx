@@ -25,7 +25,7 @@ type FormData = {
     password: string;
 };
 
-const validate = (values) => {
+const validate = (values: FormData): ErrorData => {
     let errors: ErrorData = {};
 
     if (!values.email) {
@@ -51,7 +51,7 @@ const LoginModal = ({ isOpen, onClose }): JSX.Element => {
     const [errors, setErrors] = useState<ErrorData>({});
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e): Promise<void> => {
         e.preventDefault();
 
         const validationErrors = validate(formData);
@@ -96,7 +96,7 @@ const LoginModal = ({ isOpen, onClose }): JSX.Element => {
         }
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e): void => {
         setFormData((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,
