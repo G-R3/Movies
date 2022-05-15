@@ -14,6 +14,7 @@ import {
     ModalCloseButton,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type ErrorData = {
     email?: string;
@@ -49,35 +50,51 @@ const RegisterModal = ({ isOpen, onClose }): JSX.Element => {
     });
     const [errors, setErrors] = useState<ErrorData>({});
 
+    const navigate = useNavigate();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const validationErrors = validate(formData);
 
-        if (Object.keys(validationErrors)) {
+        if (Object.keys(validationErrors).length !== 0) {
             setErrors(validationErrors);
             return;
         }
 
-        const response = await fetch("/api/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email: formData.email,
-                password: formData.password,
-            }),
-        });
+        try {
+            const response = await fetch("/api/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: formData.email,
+                    password: formData.password,
+                }),
+            });
 
-        if (response.status === 400) {
-            console.log("Form field errors");
-            return;
+            const data = await response.json();
+
+            console.log(data);
+            if (data.status === 400) {
+                console.log("Form field errors");
+                console.log(data);
+                return;
+            }
+
+            setErrors({});
+            setFormData({
+                email: "",
+                password: "",
+            });
+            onClose();
+
+            navigate("/browse");
+        } catch (err) {
+            console.log("ERROR SUBMITTING");
+            console.log(err);
         }
-
-        const data = await response.json();
-        console.log("REGISTERED", data);
-        setErrors({});
     };
 
     const handleChange = (e) => {
