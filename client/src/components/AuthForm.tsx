@@ -101,7 +101,7 @@ const AuthForm = ({
                 <ModalFooter justifyContent={"space-between"}>
                     {showSignUpForm ? (
                         <HStack>
-                            <Text>Already a member?</Text>
+                            <Text>Already have an account?</Text>
                             <Button
                                 variant={"unstyled"}
                                 onClick={() => setShowSignUpForm(false)}
@@ -111,7 +111,7 @@ const AuthForm = ({
                         </HStack>
                     ) : (
                         <HStack>
-                            <Text>Not a member?</Text>
+                            <Text>Don't have an account?</Text>
                             <Button
                                 variant={"unstyled"}
                                 onClick={() => setShowSignUpForm(true)}

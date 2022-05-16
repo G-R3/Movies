@@ -48,15 +48,6 @@ const Navbar = (): JSX.Element => {
                     >
                         Browse
                     </Link>
-                    <Link
-                        _hover={{ textDecoration: "none" }}
-                        onClick={() => {
-                            setShowSignUpForm(false);
-                            onOpen();
-                        }}
-                    >
-                        Login
-                    </Link>
                     <Button
                         colorScheme="purple"
                         variant={"solid"}
