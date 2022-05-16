@@ -1,4 +1,5 @@
 import {
+    Text,
     Input,
     FormControl,
     FormLabel,
@@ -12,6 +13,7 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
+    HStack,
 } from "@chakra-ui/react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -44,16 +46,24 @@ const validate = (values: FormData): ErrorData => {
 };
 
 type Props = {
+    showSignUpForm: boolean;
+    setShowSignUpForm: any;
     isOpen: boolean;
     onClose: any;
 };
 
-const LoginModal = ({ isOpen, onClose }: Props): JSX.Element => {
+const AuthForm = ({
+    showSignUpForm,
+    setShowSignUpForm,
+    isOpen,
+    onClose,
+}: Props): JSX.Element => {
     const [formData, setFormData] = useState<FormData>({
         email: "",
         password: "",
     });
     const [errors, setErrors] = useState<ErrorData>({});
+
     const navigate = useNavigate();
 
     const handleSubmit = async (
@@ -68,8 +78,15 @@ const LoginModal = ({ isOpen, onClose }: Props): JSX.Element => {
             return;
         }
 
+        let url;
+        if (showSignUpForm) {
+            url = "/api/register";
+        } else {
+            url = "/api/login";
+        }
+
         try {
-            const response = await fetch("/api/login", {
+            const response = await fetch(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -113,10 +130,17 @@ const LoginModal = ({ isOpen, onClose }: Props): JSX.Element => {
     const { email, password } = formData;
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} preserveScrollBarGap>
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            size={"lg"}
+            preserveScrollBarGap
+        >
             <ModalOverlay />
             <ModalContent marginX={2}>
-                <ModalHeader textAlign={"center"}>Login</ModalHeader>
+                <ModalHeader textAlign={"center"}>
+                    {showSignUpForm ? "Sign Up" : "Login"}
+                </ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                     <form id="register-form" onSubmit={(e) => handleSubmit(e)}>
@@ -167,22 +191,44 @@ const LoginModal = ({ isOpen, onClose }: Props): JSX.Element => {
                     </form>
                 </ModalBody>
 
-                <ModalFooter>
-                    <Button
-                        type="submit"
-                        mr={3}
-                        colorScheme="blue"
-                        form="register-form"
-                    >
-                        Submit
-                    </Button>
-                    <Button variant={"ghost"} mr={3} onClick={onClose}>
-                        Close
-                    </Button>
+                <ModalFooter justifyContent={"space-between"}>
+                    {showSignUpForm ? (
+                        <HStack>
+                            <Text>Already a member?</Text>
+                            <Button
+                                variant={"unstyled"}
+                                onClick={() => setShowSignUpForm(false)}
+                            >
+                                Login
+                            </Button>
+                        </HStack>
+                    ) : (
+                        <HStack>
+                            <Text>Not a member?</Text>
+                            <Button
+                                variant={"unstyled"}
+                                onClick={() => setShowSignUpForm(true)}
+                            >
+                                Sign up
+                            </Button>
+                        </HStack>
+                    )}
+                    <HStack mr={3}>
+                        <Button
+                            type="submit"
+                            colorScheme="blue"
+                            form="register-form"
+                        >
+                            Submit
+                        </Button>
+                        <Button variant={"ghost"} onClick={onClose}>
+                            Close
+                        </Button>
+                    </HStack>
                 </ModalFooter>
             </ModalContent>
         </Modal>
     );
 };
 
-export default LoginModal;
+export default AuthForm;

@@ -13,7 +13,7 @@ import {
     ModalBody,
     ModalCloseButton,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 type ErrorData = {
@@ -43,7 +43,12 @@ const validate = (values: FormData): ErrorData => {
     return errors;
 };
 
-const RegisterModal = ({ isOpen, onClose }): JSX.Element => {
+type Props = {
+    isOpen: boolean;
+    onClose: any;
+};
+
+const RegisterModal = ({ isOpen, onClose }: Props): JSX.Element => {
     const [formData, setFormData] = useState<FormData>({
         email: "",
         password: "",
@@ -52,7 +57,9 @@ const RegisterModal = ({ isOpen, onClose }): JSX.Element => {
 
     const navigate = useNavigate();
 
-    const handleSubmit = async (e): Promise<void> => {
+    const handleSubmit = async (
+        e: FormEvent<HTMLFormElement>
+    ): Promise<void> => {
         e.preventDefault();
 
         const validationErrors = validate(formData);
@@ -97,7 +104,7 @@ const RegisterModal = ({ isOpen, onClose }): JSX.Element => {
         }
     };
 
-    const handleChange = (e): void => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setFormData((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,

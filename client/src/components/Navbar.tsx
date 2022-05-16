@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
     Link,
@@ -10,22 +11,13 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import RegisterModal from "./RegisterModal";
-import LoginModal from "./LoginModal";
+import AuthForm from "./AuthForm";
 
 const Navbar = (): JSX.Element => {
-    const {
-        isOpen: isRegisterModalOpen,
-        onOpen: onRegisterModalOpen,
-        onClose: onRegisterModalClose,
-    } = useDisclosure();
-    const {
-        isOpen: isLoginModalOpen,
-        onOpen: onLoginModalOpen,
-        onClose: onLoginModalClose,
-    } = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const { colorMode, toggleColorMode } = useColorMode();
+    const [showSignUpForm, setShowSignUpForm] = useState<boolean>(false);
 
     return (
         <Flex
@@ -57,17 +49,23 @@ const Navbar = (): JSX.Element => {
                         Browse
                     </Link>
                     <Link
-                        onClick={onLoginModalOpen}
                         _hover={{ textDecoration: "none" }}
+                        onClick={() => {
+                            setShowSignUpForm(false);
+                            onOpen();
+                        }}
                     >
                         Login
                     </Link>
                     <Button
-                        onClick={onRegisterModalOpen}
                         colorScheme="purple"
                         variant={"solid"}
                         outline="none"
                         _hover={{ textDecoration: "none" }}
+                        onClick={() => {
+                            setShowSignUpForm(true);
+                            onOpen();
+                        }}
                     >
                         Sign Up
                     </Button>
@@ -79,10 +77,11 @@ const Navbar = (): JSX.Element => {
                 />
             </HStack>
 
-            <LoginModal isOpen={isLoginModalOpen} onClose={onLoginModalClose} />
-            <RegisterModal
-                isOpen={isRegisterModalOpen}
-                onClose={onRegisterModalClose}
+            <AuthForm
+                showSignUpForm={showSignUpForm}
+                setShowSignUpForm={setShowSignUpForm}
+                isOpen={isOpen}
+                onClose={onClose}
             />
         </Flex>
     );
