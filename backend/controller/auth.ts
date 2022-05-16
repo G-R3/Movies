@@ -12,7 +12,9 @@ const register = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(400).send({ status: 400, error: "Empty fields" });
+        return res
+            .status(400)
+            .send({ success: false, message: "Empty fields" });
     }
 
     const existingUser = await User.findOne({
@@ -22,19 +24,17 @@ const register = async (req: Request, res: Response) => {
     if (existingUser) {
         return res
             .status(400)
-            .send({ status: 400, error: "User already exists" });
+            .send({ success: false, message: "User already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = await User.create({ email, password: hashedPassword });
 
-    console.log(typeof user._id);
-
     return res
         .status(200)
         .cookie("token", generateToken(user._id), { httpOnly: true })
         .send({
-            status: 200,
+            success: true,
             user: user.email,
             message: "Welcome aboard!",
         });
@@ -44,7 +44,9 @@ const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(400).send({ error: "Empty fields" });
+        return res
+            .status(400)
+            .send({ success: false, message: "Empty fields" });
     }
 
     const user = await User.findOne({ email });
@@ -52,7 +54,7 @@ const login = async (req: Request, res: Response) => {
     if (!user) {
         return res
             .status(400)
-            .send({ status: 400, error: "Invalid email or password" });
+            .send({ success: false, message: "Invalid email or password" });
     }
 
     const isValid = await bcrypt.compare(password, user.password);
@@ -60,14 +62,14 @@ const login = async (req: Request, res: Response) => {
     if (!isValid) {
         return res
             .status(400)
-            .send({ status: 400, error: "Invalid email or password" });
+            .send({ success: false, error: "Invalid email or password" });
     }
 
     return res
         .status(200)
         .cookie("token", generateToken(user._id), { httpOnly: true })
         .send({
-            status: 200,
+            success: true,
             user: user.email,
             message: "Welcome back",
         });
