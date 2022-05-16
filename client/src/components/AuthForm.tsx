@@ -5,7 +5,6 @@ import {
     FormLabel,
     FormErrorMessage,
     Button,
-    Box,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -144,49 +143,39 @@ const AuthForm = ({
                 <ModalCloseButton />
                 <ModalBody>
                     <form id="register-form" onSubmit={(e) => handleSubmit(e)}>
+                        <FormControl isInvalid={errors.hasOwnProperty("email")}>
+                            <FormLabel htmlFor="email">Email address</FormLabel>
+                            <Input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="example@email.com"
+                                value={email}
+                                onChange={(e) => handleChange(e)}
+                            />
+                            {errors?.email && (
+                                <FormErrorMessage>
+                                    {errors?.email}
+                                </FormErrorMessage>
+                            )}
+                        </FormControl>
                         <FormControl
-                            isInvalid={Object.keys(errors).length !== 0}
-                            display={"flex"}
-                            flexDirection="column"
-                            gap={5}
+                            isInvalid={errors.hasOwnProperty("password")}
                         >
-                            <Box>
-                                <FormLabel htmlFor="email">
-                                    Email address
-                                </FormLabel>
-                                <Input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    placeholder="example@email.com"
-                                    value={email}
-                                    onChange={(e) => handleChange(e)}
-                                />
-                                {errors?.email && (
-                                    <FormErrorMessage>
-                                        {errors?.email}
-                                    </FormErrorMessage>
-                                )}
-                            </Box>
+                            <FormLabel htmlFor="password">Password</FormLabel>
+                            <Input
+                                type="password"
+                                id="password"
+                                name="password"
+                                value={password}
+                                onChange={(e) => handleChange(e)}
+                            />
 
-                            <Box>
-                                <FormLabel htmlFor="password">
-                                    Password
-                                </FormLabel>
-                                <Input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    value={password}
-                                    onChange={(e) => handleChange(e)}
-                                />
-
-                                {errors?.password && (
-                                    <FormErrorMessage>
-                                        {errors?.password}
-                                    </FormErrorMessage>
-                                )}
-                            </Box>
+                            {errors?.password && (
+                                <FormErrorMessage>
+                                    {errors?.password}
+                                </FormErrorMessage>
+                            )}
                         </FormControl>
                     </form>
                 </ModalBody>

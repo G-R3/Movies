@@ -18,6 +18,12 @@ body {
     height: 100%;
 }
 
+#register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
 @media screen and (min-width: 375px) {
     .swiper-wrapper {
         width: 320px;
