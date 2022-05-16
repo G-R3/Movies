@@ -48,25 +48,17 @@ const Browse = (): JSX.Element => {
     if (!movies) return <p>Loading...</p>;
 
     return (
-        <Box mt={10}>
+        <Box mt={"14"}>
             <Search />
-
             <Box>
                 <Carousel data={trending} heading="Trending" />
             </Box>
-            <Heading
-                as="h2"
-                mt={10}
-                mb={5}
-                fontSize={{
-                    base: "xl",
-                    md: "2xl",
-                    lg: "3xl",
-                }}
+
+            <SimpleGrid
+                columns={{ base: 1, sm: 2, lg: 3 }}
+                spacing={10}
+                mt={"24"}
             >
-                Browse
-            </Heading>
-            <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={10}>
                 {movies.map((movie) => (
                     <Card key={movie.id} movie={movie} />
                 ))}

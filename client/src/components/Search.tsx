@@ -82,7 +82,6 @@ export default function Search() {
             flexDirection="column"
             width="300px"
             ref={ref}
-            mb={2}
         >
             <Input
                 width="100%"

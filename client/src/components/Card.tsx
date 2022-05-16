@@ -50,7 +50,7 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
                     />
                 </Skeleton>
                 <Box paddingTop={2} paddingBottom={2} borderBottomRadius="md">
-                    <HStack>
+                    <HStack fontSize={"sm"}>
                         {releaseYear && (
                             <Text
                                 color={
@@ -92,8 +92,9 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
                         </Text>
                     </HStack>
                     <Heading
+                        mt={"1"}
                         as="h2"
-                        fontSize={{ sm: "xs", md: "sm", lg: "lg" }}
+                        fontSize={{ sm: "xs", md: "sm", lg: "md" }}
                     >
                         {movie.title}
                     </Heading>
