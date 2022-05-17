@@ -62,7 +62,7 @@ const login = async (req: Request, res: Response) => {
     if (!isValid) {
         return res
             .status(400)
-            .send({ success: false, error: "Invalid email or password" });
+            .send({ success: false, message: "Invalid email or password" });
     }
 
     return res
