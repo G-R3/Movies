@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import {
     chakra,
@@ -15,6 +15,8 @@ import {
 } from "@chakra-ui/react";
 import Cast from "../components/Cast";
 import Carousel from "../components/Carousel";
+import ListMenu from "../components/ListMenu";
+import { AuthContext } from "../context/Auth";
 
 import { getMovie, getMovieCredits, getMovieRecommendations } from "../api";
 import GenreTag from "../components/Tag";
@@ -60,6 +62,7 @@ const MoviePage = (): JSX.Element => {
     const [data, setdata] = useState<Movie>({} as Movie);
     const [recommended, setRecommended] = useState<Movie[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const { isLoggedIn } = useContext(AuthContext);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -105,14 +108,16 @@ const MoviePage = (): JSX.Element => {
                 </Box>
                 <Flex direction="column" height="full">
                     <Flex
-                        direction="row"
                         flexWrap="wrap"
-                        gap={3}
                         mt={{ base: 10, md: 0 }}
+                        justifyContent={"space-between"}
                     >
-                        {movie.genres.map((genre) => (
-                            <GenreTag key={genre.id} name={genre.name} />
-                        ))}
+                        <HStack>
+                            {movie.genres.map((genre) => (
+                                <GenreTag key={genre.id} name={genre.name} />
+                            ))}
+                        </HStack>
+                        {isLoggedIn && <ListMenu />}
                     </Flex>
                     <Flex direction="column" gap={1} flex="1 0 0">
                         <Heading

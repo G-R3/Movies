@@ -18,7 +18,8 @@ body {
     height: 100%;
 }
 
-#register-form {
+#register-form,
+#create-form {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
