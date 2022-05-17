@@ -42,8 +42,8 @@ const validate = (values: FormData) => {
         errors.title = "Title is required";
     }
 
-    if (values.description.length >= 200) {
-        errors.description = "Description must be less than 200 characters";
+    if (values.description.length > 200) {
+        errors.description = "Max length exceeded";
     }
 
     return errors;
@@ -136,9 +136,9 @@ export default function CreateList({ isOpen, onClose }: Props): JSX.Element {
                                         w="fit-content"
                                         ml={"auto"}
                                         color={
-                                            listData.description.length >= 200
+                                            listData.description.length > 200
                                                 ? "red.400"
-                                                : ""
+                                                : "gray.400"
                                         }
                                     >
                                         {description.length} / 200
