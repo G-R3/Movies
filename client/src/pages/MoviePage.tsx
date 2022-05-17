@@ -58,8 +58,8 @@ interface Movie {
 const MoviePage = (): JSX.Element => {
     const { movieId } = useParams<string>();
     const [data, setdata] = useState<Movie>({} as Movie);
-    const [recommended, setRecommended] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [recommended, setRecommended] = useState<Movie[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -77,9 +77,10 @@ const MoviePage = (): JSX.Element => {
         fetchData();
     }, [movieId]);
 
-    if (isLoading || !data || !recommended) {
+    if (isLoading) {
         return <p>Loading...</p>;
     }
+
     const { movie, cast } = data;
     return (
         <Flex
@@ -232,7 +233,11 @@ const MoviePage = (): JSX.Element => {
                 mt={{ base: 14, md: 16, lg: 20 }}
                 paddingBottom={"10"}
             >
-                <Carousel data={recommended} heading="Recommended" />
+                {recommended?.length > 0 ? (
+                    <Carousel data={recommended} heading="Recommended" />
+                ) : (
+                    <></>
+                )}
                 <Cast cast={cast.slice(0, 20)} />
             </Flex>
         </Flex>
