@@ -98,38 +98,48 @@ const AuthForm = ({
                     </form>
                 </ModalBody>
 
-                <ModalFooter justifyContent={"space-between"}>
-                    {showSignUpForm ? (
-                        <HStack>
-                            <Text>Already have an account?</Text>
-                            <Button
-                                variant={"unstyled"}
-                                onClick={() => setShowSignUpForm(false)}
-                            >
-                                Login
-                            </Button>
-                        </HStack>
-                    ) : (
-                        <HStack>
-                            <Text>Don't have an account?</Text>
-                            <Button
-                                variant={"unstyled"}
-                                onClick={() => setShowSignUpForm(true)}
-                            >
-                                Sign up
-                            </Button>
-                        </HStack>
-                    )}
-                    <HStack mr={3}>
+                <ModalFooter
+                    justifyContent={"space-between"}
+                    flexDirection={{ base: "column-reverse", sm: "row" }}
+                >
+                    <HStack mt={{ base: 5, sm: 0 }}>
+                        {showSignUpForm ? (
+                            <>
+                                <Text>Already have an account?</Text>
+                                <Button
+                                    variant={"unstyled"}
+                                    onClick={() => setShowSignUpForm(false)}
+                                >
+                                    Login
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Text>Don't have an account?</Text>
+                                <Button
+                                    variant={"unstyled"}
+                                    onClick={() => setShowSignUpForm(true)}
+                                >
+                                    Sign up
+                                </Button>
+                            </>
+                        )}
+                    </HStack>
+                    <HStack w={{ base: "100%", sm: "auto" }}>
                         <Button
                             type="submit"
                             colorScheme="blue"
                             form="register-form"
+                            w={{ base: "100%" }}
                             isLoading={isSubmitting}
                         >
                             Submit
                         </Button>
-                        <Button variant={"ghost"} onClick={onClose}>
+                        <Button
+                            variant={"ghost"}
+                            w={{ base: "100%" }}
+                            onClick={onClose}
+                        >
                             Close
                         </Button>
                     </HStack>
