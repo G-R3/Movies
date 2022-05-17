@@ -160,15 +160,15 @@ const MoviePage = (): JSX.Element => {
             </SimpleGrid>
             <Flex
                 direction={{ base: "column", md: "row" }}
-                mt={{ base: 14, md: 24, lg: 28 }}
+                mt={10}
                 gap={{ base: 9, md: "0" }}
             >
                 <Stat>
                     <StatLabel
-                        fontSize="md"
                         textAlign="center"
                         color="gray.500"
                         fontWeight="normal"
+                        fontSize={"lg"}
                     >
                         Rating
                     </StatLabel>
@@ -178,7 +178,7 @@ const MoviePage = (): JSX.Element => {
                         textAlign="center"
                     >
                         {movie.vote_average}
-                        <chakra.span fontSize="2xl" color="gray.500">
+                        <chakra.span fontSize="lg" color="gray.500">
                             {" "}
                             / 10
                         </chakra.span>
@@ -186,10 +186,10 @@ const MoviePage = (): JSX.Element => {
                 </Stat>
                 <Stat>
                     <StatLabel
-                        fontSize="md"
                         textAlign="center"
                         color="gray.500"
                         fontWeight="normal"
+                        fontSize={"lg"}
                     >
                         Vote Count
                     </StatLabel>
@@ -199,7 +199,7 @@ const MoviePage = (): JSX.Element => {
                         textAlign="center"
                     >
                         {numberFormat(movie.vote_count)}{" "}
-                        <chakra.span fontSize="2xl" color="gray.500">
+                        <chakra.span fontSize="xl" color="gray.500">
                             {" "}
                             votes
                         </chakra.span>
@@ -207,10 +207,10 @@ const MoviePage = (): JSX.Element => {
                 </Stat>
                 <Stat>
                     <StatLabel
-                        fontSize="md"
                         textAlign="center"
                         color="gray.500"
                         fontWeight="normal"
+                        fontSize={"lg"}
                     >
                         Budget
                     </StatLabel>
@@ -229,7 +229,8 @@ const MoviePage = (): JSX.Element => {
             <Flex
                 flexDirection="column"
                 gap={20}
-                mt={{ base: 14, md: 24, lg: 28 }}
+                mt={{ base: 14, md: 16, lg: 20 }}
+                paddingBottom={"10"}
             >
                 <Carousel data={recommended} heading="Recommended" />
                 <Cast cast={cast.slice(0, 20)} />
