@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }: Props) => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
     const getIsLoggedIn = async (): Promise<void> => {
-        const response = await fetch("/api/isLoggedIn");
+        const response = await fetch("/auth/isLoggedIn");
         const data = await response.json();
 
         setIsLoggedIn(data);
