@@ -96,9 +96,20 @@ const AuthForm = ({
                             )}
                         </FormControl>
                     </form>
+                    {errors.message && (
+                        <Text
+                            mt={5}
+                            color={"red.300"}
+                            fontWeight={"bold"}
+                            fontSize={"lg"}
+                        >
+                            {errors.message}
+                        </Text>
+                    )}
                 </ModalBody>
 
                 <ModalFooter
+                    paddingTop={0}
                     justifyContent={"space-between"}
                     flexDirection={{ base: "column-reverse", sm: "row" }}
                 >

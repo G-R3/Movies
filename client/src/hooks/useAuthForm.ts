@@ -4,6 +4,7 @@ import { AuthContext } from "../context/Auth";
 type ErrorData = {
     email?: string;
     password?: string;
+    message?: string;
 };
 type Props = {
     email?: string;
@@ -45,7 +46,6 @@ const useAuthForm = ({ email, password, url, onClose }: Props) => {
 
                         const data = await response.json();
                         if (!data.success) {
-                            console.log(data);
                             throw data.message;
                         }
 
@@ -56,19 +56,20 @@ const useAuthForm = ({ email, password, url, onClose }: Props) => {
                         });
                         setIsSubmitting(false);
                         onClose();
-                        console.log("Authenticated");
                         // use the optional chaining (?.) operator when invoking the function.
                         await getIsLoggedIn?.();
                         navigate("/");
                     };
 
                     authUser(url).catch((err) => {
-                        console.log(err);
                         setIsSubmitting(false);
+                        setErrors({ message: err });
                     });
                 } catch (err) {
-                    console.log("Error submitting form");
-                    console.log(err);
+                    console.error(
+                        "Something went wrong while submitting the form"
+                    );
+                    console.error(err);
                     setIsSubmitting(false);
                 }
             } else {
