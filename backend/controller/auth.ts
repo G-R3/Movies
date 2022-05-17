@@ -80,4 +80,18 @@ const logout = (req: Request, res: Response) => {
     return res.status(200).send({ message: "Comback soon" });
 };
 
-export { register, login, logout };
+const isLoggedIn = (req: Request, res: Response) => {
+    try {
+        const { token } = req.cookies;
+
+        if (!token) return res.send(false);
+
+        jwt.verify(token, `${process.env.JWT_KEY}`);
+
+        res.send(true);
+    } catch (err) {
+        res.send(false);
+    }
+};
+
+export { register, login, logout, isLoggedIn };
