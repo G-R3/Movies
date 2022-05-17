@@ -64,8 +64,8 @@ const MoviePage = (): JSX.Element => {
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            const movie = await getMovie(Number(movieId!));
-            const movieCredits = await getMovieCredits(Number(movieId!));
+            const movie = await getMovie(Number(movieId));
+            const movieCredits = await getMovieCredits(Number(movieId));
             const recommendedMovies = await getMovieRecommendations(
                 Number(movieId)
             );
