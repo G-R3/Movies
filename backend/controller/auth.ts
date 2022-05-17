@@ -14,7 +14,7 @@ const register = async (req: Request, res: Response) => {
     if (!email || !password) {
         return res
             .status(400)
-            .send({ success: false, message: "Empty fields" });
+            .send({ success: false, message: "All fields are required" });
     }
 
     const existingUser = await User.findOne({
@@ -22,9 +22,10 @@ const register = async (req: Request, res: Response) => {
     });
 
     if (existingUser) {
-        return res
-            .status(400)
-            .send({ success: false, message: "User already exists" });
+        return res.status(400).send({
+            success: false,
+            message: "Email is not available",
+        });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -35,7 +36,6 @@ const register = async (req: Request, res: Response) => {
         .cookie("token", generateToken(user._id), { httpOnly: true })
         .send({
             success: true,
-            user: user.email,
             message: "Welcome aboard!",
         });
 };
@@ -46,7 +46,7 @@ const login = async (req: Request, res: Response) => {
     if (!email || !password) {
         return res
             .status(400)
-            .send({ success: false, message: "Empty fields" });
+            .send({ success: false, message: "All fields are required" });
     }
 
     const user = await User.findOne({ email });
@@ -70,7 +70,6 @@ const login = async (req: Request, res: Response) => {
         .cookie("token", generateToken(user._id), { httpOnly: true })
         .send({
             success: true,
-            user: user.email,
             message: "Welcome back",
         });
 };
