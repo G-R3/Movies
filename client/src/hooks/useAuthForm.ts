@@ -1,6 +1,6 @@
-import { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import { ChangeEvent, FormEvent, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { AuthContext } from "../context/Auth";
 type ErrorData = {
     email?: string;
     password?: string;
@@ -24,6 +24,7 @@ const useAuthForm = ({ email, password, url, onClose }: Props) => {
     });
     const [errors, setErrors] = useState<ErrorData>({});
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const { getIsLoggedIn } = useContext(AuthContext);
 
     useEffect(() => {
         if (isSubmitting) {
@@ -44,6 +45,7 @@ const useAuthForm = ({ email, password, url, onClose }: Props) => {
 
                         const data = await response.json();
                         if (!data.success) {
+                            console.log(data);
                             throw data.message;
                         }
 
@@ -55,6 +57,8 @@ const useAuthForm = ({ email, password, url, onClose }: Props) => {
                         setIsSubmitting(false);
                         onClose();
                         console.log("Authenticated");
+                        // use the optional chaining (?.) operator when invoking the function.
+                        await getIsLoggedIn?.();
                         navigate("/");
                     };
 
