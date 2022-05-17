@@ -18,12 +18,10 @@ const isAuthorized = (req: Request, res: Response, next: NextFunction) => {
         }
 
         const decoded = jwt.verify(token, `${process.env.JWT_KEY}`);
-        console.log(decoded);
 
         req.user = decoded;
         next();
     } catch (err) {
-        console.error("Unauthorized");
         return res
             .status(401)
             .send({ success: false, message: "Unauthorized" });
