@@ -22,7 +22,7 @@ const Navbar = (): JSX.Element => {
 
     const logOut = async () => {
         try {
-            await fetch("/api/logout");
+            await fetch("/auth/logout");
             await getIsLoggedIn?.();
         } catch (err) {
             console.error(err);
