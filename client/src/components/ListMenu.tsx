@@ -7,7 +7,7 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
-import CreateList from "./CreateList";
+import ListModal from "./ListModal";
 
 export default function ListMenu() {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -15,7 +15,9 @@ export default function ListMenu() {
     return (
         <>
             <Menu placement="bottom-end">
-                <MenuButton as={Button}>Add to list</MenuButton>
+                <MenuButton as={Button} marginTop="2">
+                    Add to list
+                </MenuButton>
                 <MenuList>
                     <MenuItem icon={<AddIcon />} onClick={onOpen}>
                         Create new list
@@ -23,7 +25,7 @@ export default function ListMenu() {
                     <MenuItem>Watch list</MenuItem>
                 </MenuList>
             </Menu>
-            <CreateList isOpen={isOpen} onClose={onClose} />
+            <ListModal isOpen={isOpen} onClose={onClose} />
         </>
     );
 }

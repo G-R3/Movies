@@ -58,7 +58,9 @@ const Navbar = (): JSX.Element => {
                     >
                         Browse
                     </Link>
-                    {!isLoggedIn ? (
+                    {isLoggedIn ? (
+                        <Button onClick={logOut}>Logout</Button>
+                    ) : (
                         <Button
                             colorScheme="purple"
                             variant={"solid"}
@@ -71,8 +73,6 @@ const Navbar = (): JSX.Element => {
                         >
                             Sign Up
                         </Button>
-                    ) : (
-                        <Button onClick={logOut}>Logout</Button>
                     )}
                 </Flex>
                 <IconButton
