@@ -58,7 +58,7 @@ const useAuthForm = ({ email, password, url, onClose }: Props) => {
                         onClose();
                         // use the optional chaining (?.) operator when invoking the function.
                         await getIsLoggedIn?.();
-                        navigate("/");
+                        navigate("/profile");
                     };
 
                     authUser(url).catch((err) => {

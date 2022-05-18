@@ -59,7 +59,16 @@ const Navbar = (): JSX.Element => {
                         Browse
                     </Link>
                     {isLoggedIn ? (
-                        <Button onClick={logOut}>Logout</Button>
+                        <>
+                            <Link
+                                as={RouterLink}
+                                to="/profile"
+                                _hover={{ textDecoration: "none" }}
+                            >
+                                Profile
+                            </Link>
+                            <Button onClick={logOut}>Logout</Button>
+                        </>
                     ) : (
                         <Button
                             colorScheme="purple"
