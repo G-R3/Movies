@@ -17,6 +17,7 @@ import Cast from "../components/Cast";
 import Carousel from "../components/Carousel";
 import ListMenu from "../components/ListMenu";
 import { AuthContext } from "../context/Auth";
+import moment from "moment";
 
 import { getMovie, getMovieCredits, getMovieRecommendations } from "../api";
 import GenreTag from "../components/Tag";
@@ -146,7 +147,9 @@ const MoviePage = (): JSX.Element => {
                                 Release Date
                             </StatLabel>
                             <StatNumber fontSize="sm" fontWeight="bold">
-                                {movie.release_date}
+                                {moment(movie.release_date).format(
+                                    "MMM D, YYYY"
+                                )}
                             </StatNumber>
                         </Stat>
                         <Stat>
