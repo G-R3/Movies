@@ -12,6 +12,7 @@ function App(): JSX.Element {
                     <Route path=":movieId" element={<MoviePage />} />
                 </Route>
                 <Route path="profile" element={<Profile />} />
+                <Route path="*" element={"Not found"} />
             </Route>
         </Routes>
     );
