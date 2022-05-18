@@ -26,6 +26,8 @@ const Home = (): JSX.Element => {
                             Track and organize your movies
                         </Text>
                         <Button
+                            as={Link}
+                            to={"/browse"}
                             mt="5"
                             colorScheme="purple"
                             alignSelf={"start"}
@@ -33,7 +35,7 @@ const Home = (): JSX.Element => {
                             fontWeight={"semibold"}
                             padding={"6"}
                         >
-                            <Link to="/browse">Get Started</Link>
+                            Get Started
                         </Button>
                     </Flex>
                 </GridItem>
