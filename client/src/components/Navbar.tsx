@@ -49,7 +49,7 @@ const Navbar = (): JSX.Element => {
                 Movie
             </Link>
             <Spacer />
-            <HStack gap={5}>
+            <HStack gap={2}>
                 <Flex align={"center"} gap={5}>
                     <Link
                         as={RouterLink}
