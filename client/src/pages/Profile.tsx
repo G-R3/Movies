@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
 import { Grid, GridItem, Heading, Box, Flex, Text } from "@chakra-ui/react";
+import { useEffect, useState, useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../context/Auth";
 
 interface List {
     _id: string;
@@ -10,6 +12,7 @@ interface List {
 export default function Profile() {
     const [lists, setLists] = useState<List[]>([]);
     const [error, setError] = useState<string>();
+    const { isLoggedIn } = useContext(AuthContext);
 
     useEffect(() => {
         const getLists = async () => {
@@ -29,6 +32,8 @@ export default function Profile() {
         getLists();
     }, []);
 
+    if (!isLoggedIn) return <Navigate to="/" replace />;
+
     return (
         <Grid templateColumns={"repeat(12,1fr)"}>
             <GridItem colSpan={6}>
@@ -37,7 +42,7 @@ export default function Profile() {
                     marginY={"28"}
                     className="profile-header"
                 >
-                    Hello, Gerardo
+                    Profile
                 </Heading>
             </GridItem>
             <GridItem rowStart={2} colSpan={12}>
