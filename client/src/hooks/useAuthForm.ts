@@ -29,24 +29,21 @@ const useAuthForm = ({ email, password, url, onClose }: Props) => {
 
     useEffect(() => {
         if (isSubmitting) {
-            const hasErrors = Object.keys(errors).length !== 0;
-            if (!hasErrors) {
-                try {
-                    const authUser = async (url: string) => {
+            const hasNoErrors = Object.keys(errors).length !== 0;
+            if (!hasNoErrors) {
+                const authUser = async (url: string) => {
+                    try {
                         const response = await fetch(url, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
                             },
-                            body: JSON.stringify({
-                                email: formData.email,
-                                password: formData.password,
-                            }),
+                            body: JSON.stringify(formData),
                         });
 
                         const data = await response.json();
                         if (!data.success) {
-                            throw data.message;
+                            throw new Error(data.message);
                         }
 
                         setErrors({});
@@ -59,19 +56,12 @@ const useAuthForm = ({ email, password, url, onClose }: Props) => {
                         // use the optional chaining (?.) operator when invoking the function.
                         await getIsLoggedIn?.();
                         navigate("/profile");
-                    };
-
-                    authUser(url).catch((err) => {
+                    } catch (err) {
                         setIsSubmitting(false);
-                        setErrors({ message: err });
-                    });
-                } catch (err) {
-                    console.error(
-                        "Something went wrong while submitting the form"
-                    );
-                    console.error(err);
-                    setIsSubmitting(false);
-                }
+                        setErrors({ message: "Something went wrong" });
+                    }
+                };
+                authUser(url);
             } else {
                 setIsSubmitting(false);
             }
