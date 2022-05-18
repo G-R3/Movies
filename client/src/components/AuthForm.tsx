@@ -31,9 +31,9 @@ const AuthForm = ({
 }: Props): JSX.Element => {
     let url: string;
     if (showSignUpForm) {
-        url = "/api/register";
+        url = "/auth/register";
     } else {
-        url = "/api/login";
+        url = "/auth/login";
     }
 
     const { handleSubmit, handleChange, formData, errors, isSubmitting } =

@@ -1,11 +1,14 @@
-import express, { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-interface IUserRequest extends Request {
-    user: any;
+// https://stackoverflow.com/questions/58200432/argument-of-type-req-request-res-iresponse-next-nextfunction-void-is
+declare module "express-serve-static-core" {
+    interface Request {
+        user: any;
+    }
 }
 
-const isAuthorized = (req: IUserRequest, res: Response, next: NextFunction) => {
+const isAuthorized = (req: Request, res: Response, next: NextFunction) => {
     try {
         const { token } = req.cookies;
         if (!token) {
@@ -15,12 +18,10 @@ const isAuthorized = (req: IUserRequest, res: Response, next: NextFunction) => {
         }
 
         const decoded = jwt.verify(token, `${process.env.JWT_KEY}`);
-        console.log(decoded);
 
         req.user = decoded;
         next();
     } catch (err) {
-        console.error("Unauthorized");
         return res
             .status(401)
             .send({ success: false, message: "Unauthorized" });
