@@ -1,8 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid, GridItem, Heading, Box, Flex, Text } from "@chakra-ui/react";
 
+interface List {
+    _id: string;
+    title: string;
+    description: string;
+}
+
 export default function Profile() {
-    const [lists, setLists] = useState();
+    const [lists, setLists] = useState<List[]>([]);
+    const [error, setError] = useState<string>();
+
+    useEffect(() => {
+        const getLists = async () => {
+            try {
+                const response = await fetch("/api/lists");
+                const data = await response.json();
+
+                if (!data.success) {
+                    throw new Error(data.message);
+                }
+
+                setLists(data.lists);
+            } catch (err) {
+                setError("Failed to fetch lists");
+            }
+        };
+        getLists();
+    }, []);
 
     return (
         <Grid templateColumns={"repeat(12,1fr)"}>
@@ -19,73 +44,43 @@ export default function Profile() {
                 <Heading as={"h2"} mb={5}>
                     Your lists
                 </Heading>
-                <Flex justifyContent={"space-between"}>
-                    <Box
-                        w={"365px"}
-                        h="210px"
-                        borderRadius={10}
-                        shadow={"2xl"}
-                        padding={"5"}
-                        style={{
-                            backgroundColor: "#2D3748",
-                        }}
+                {lists.length > 0 ? (
+                    <Flex wrap="wrap" gap={5}>
+                        {lists.map((list) => (
+                            <Box
+                                key={list["_id"]}
+                                w={"365px"}
+                                h="210px"
+                                borderRadius={10}
+                                shadow={"2xl"}
+                                padding={"5"}
+                                style={{
+                                    backgroundColor: "#2D3748",
+                                }}
+                            >
+                                <Heading
+                                    as={"h3"}
+                                    fontSize="2xl"
+                                    fontWeight={"semibold"}
+                                >
+                                    {list.title}
+                                </Heading>
+                                <Text mt={3} color={"gray.400"}>
+                                    {list.description}
+                                </Text>
+                            </Box>
+                        ))}
+                    </Flex>
+                ) : (
+                    <Heading
+                        as="h3"
+                        textAlign={"center"}
+                        color={"gray.600"}
+                        fontSize="2xl"
                     >
-                        <Heading
-                            as={"h3"}
-                            fontSize="2xl"
-                            fontWeight={"semibold"}
-                        >
-                            Watchlist
-                        </Heading>
-                        <Text mt={3} color={"gray.400"}>
-                            Movies that you just must watch
-                        </Text>
-                    </Box>
-                    <Box
-                        w={"365px"}
-                        h="210px"
-                        borderRadius={10}
-                        shadow={"2xl"}
-                        padding={"5"}
-                        style={{
-                            backgroundColor: "#2D3748",
-                        }}
-                    >
-                        <Heading
-                            as={"h3"}
-                            fontSize="2xl"
-                            fontWeight={"semibold"}
-                        >
-                            My List
-                        </Heading>
-                        <Text mt={3} color={"gray.400"}>
-                            This is my first list. These are movies that I want
-                            to watch at some point
-                        </Text>
-                    </Box>
-                    <Box
-                        w={"365px"}
-                        h="210px"
-                        borderRadius={10}
-                        shadow={"2xl"}
-                        padding={"5"}
-                        style={{
-                            backgroundColor: "#2D3748",
-                        }}
-                    >
-                        <Heading
-                            as={"h3"}
-                            fontSize="2xl"
-                            fontWeight={"semibold"}
-                        >
-                            Anime Movies
-                        </Heading>
-                        <Text mt={3} color={"gray.400"}>
-                            IM NOT A WEEB... I PROMISE PLZ THESE ARE JUST
-                            ANIMATION MOVIES 🎬
-                        </Text>
-                    </Box>
-                </Flex>
+                        {error}
+                    </Heading>
+                )}
             </GridItem>
         </Grid>
     );

@@ -1,5 +1,19 @@
 import { Request, Response } from "express";
+import mongoose from "mongoose";
 import List from "../models/list";
+
+const getUserLists = async (req: Request, res: Response) => {
+    const { id } = req.user;
+
+    const userLists = await List.find(
+        {
+            owner: new mongoose.Types.ObjectId(id),
+        },
+        "-owner -updatedAt -__v-_id"
+    );
+
+    return res.status(200).send({ success: true, lists: userLists });
+};
 
 const createList = async (req: Request, res: Response) => {
     try {
@@ -32,4 +46,4 @@ const createList = async (req: Request, res: Response) => {
     }
 };
 
-export { createList };
+export { getUserLists, createList };

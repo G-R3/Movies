@@ -52,6 +52,7 @@ const validate = (values: FormData) => {
 export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
     const [listData, setListData] = useState({ title: "", description: "" });
     const [errors, setErrors] = useState<Errors>({});
+
     const handleChange = (e: IOnChange): void => {
         setListData((prev) => ({
             ...prev,
@@ -70,17 +71,16 @@ export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
             return;
         }
 
-        let formData = new FormData(e.currentTarget);
-        const response = await fetch("/api/create", {
+        await fetch("/api/create", {
             method: "POST",
-            body: formData,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(listData),
         });
 
-        const data = await response.json();
-
-        console.log(data);
-
         setErrors({});
+        onClose();
     };
 
     const { title, description } = listData;
