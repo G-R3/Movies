@@ -49,7 +49,7 @@ const validate = (values: FormData) => {
     return errors;
 };
 
-export default function CreateList({ isOpen, onClose }: Props): JSX.Element {
+export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
     const [listData, setListData] = useState({ title: "", description: "" });
     const [errors, setErrors] = useState<Errors>({});
     const handleChange = (e: IOnChange): void => {
@@ -69,14 +69,14 @@ export default function CreateList({ isOpen, onClose }: Props): JSX.Element {
             setErrors({ ...hasErrors });
             return;
         }
-        console.log(e.currentTarget);
 
         let formData = new FormData(e.currentTarget);
         const response = await fetch("/api/create", {
             method: "POST",
             body: formData,
         });
-        const data = response.json();
+
+        const data = await response.json();
 
         console.log(data);
 
