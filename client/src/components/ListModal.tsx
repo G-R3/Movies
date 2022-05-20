@@ -111,8 +111,9 @@ export default function ListModal({
                 title: "List was created",
                 description: data.message,
                 status: "success",
-                duration: 9000,
+                duration: 5000,
                 isClosable: true,
+                position: "bottom",
             });
         } catch (err) {
             setisSubmitting(false);

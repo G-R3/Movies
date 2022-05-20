@@ -93,16 +93,18 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
                 title: "Movie Added",
                 description: data.message,
                 status: "success",
-                duration: 9000,
+                duration: 5000,
                 isClosable: true,
+                position: "bottom",
             });
         } catch (err: any) {
             toast({
                 title: "Failed to add movie",
                 description: err.message,
                 status: "error",
-                duration: 9000,
+                duration: 5000,
                 isClosable: true,
+                position: "bottom",
             });
         }
     };
