@@ -52,7 +52,8 @@ const createList = async (req: Request, res: Response) => {
 };
 
 const addMovieToList = async (req: Request, res: Response) => {
-    const { id, movie } = req.body;
+    const { id } = req.params;
+    const { movie } = req.body;
     let movieId: Types.ObjectId;
 
     if (!id || !movie) {
