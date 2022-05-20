@@ -6,6 +6,7 @@ import {
     Button,
     useDisclosure,
     useToast,
+    useColorModeValue,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import ListModal from "./ListModal";
@@ -46,6 +47,11 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
     const [lists, setLists] = useState<List[]>([]);
     const toast = useToast();
 
+    const bgAlt = useColorModeValue(
+        "RGBA(0, 0, 0, 0.16)",
+        "RGBA(255, 255, 255, 0.16)"
+    );
+
     useEffect(() => {
         const getLists = async () => {
             try {
@@ -62,7 +68,7 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
             }
         };
         getLists();
-    }, [lists]);
+    }, []);
 
     const handleClick = async (id: string) => {
         try {
@@ -75,7 +81,7 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
             });
 
             if (response.status === 404) {
-                throw new Error("Failed to add movie. Try again later.");
+                throw new Error("Failed to add movie to the list");
             }
 
             const data = await response.json();
@@ -107,7 +113,23 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
                 <MenuButton as={Button} marginTop="2">
                     Add to list
                 </MenuButton>
-                <MenuList>
+                <MenuList
+                    height="auto"
+                    maxHeight="300px"
+                    overflowY="scroll"
+                    css={{
+                        "&::-webkit-scrollbar": {
+                            width: "4px",
+                        },
+                        "&::-webkit-scrollbar-track": {
+                            width: "6px",
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                            background: bgAlt,
+                            borderRadius: "24px",
+                        },
+                    }}
+                >
                     <MenuItem icon={<AddIcon />} onClick={onOpen}>
                         Create new list
                     </MenuItem>
@@ -122,7 +144,13 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
                         ))}
                 </MenuList>
             </Menu>
-            <ListModal isOpen={isOpen} onClose={onClose} />
+
+            <ListModal
+                isOpen={isOpen}
+                onClose={onClose}
+                lists={lists}
+                setLists={setLists}
+            />
         </>
     );
 }

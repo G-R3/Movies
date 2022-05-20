@@ -20,6 +20,8 @@ import {
 interface Props {
     isOpen: boolean;
     onClose(): void;
+    lists: any;
+    setLists?: any;
 }
 
 // prettier-ignore
@@ -49,7 +51,12 @@ const validate = (values: FormData) => {
     return errors;
 };
 
-export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
+export default function ListModal({
+    isOpen,
+    onClose,
+    lists,
+    setLists,
+}: Props): JSX.Element {
     const [listData, setListData] = useState({ title: "", description: "" });
     const [errors, setErrors] = useState<Errors>({});
 
@@ -71,7 +78,7 @@ export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
             return;
         }
 
-        await fetch("/api/create", {
+        const response = await fetch("/api/create", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -79,7 +86,15 @@ export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
             body: JSON.stringify(listData),
         });
 
+        const data = await response.json();
+
+        setLists([...lists, data.list]);
+
         setErrors({});
+        setListData({
+            title: "",
+            description: "",
+        });
         onClose();
     };
 
