@@ -14,8 +14,11 @@ const getMovies = async () => {
 const getMovie = async (movieId: number) => {
     const response = await fetch(`/api/movie/${movieId}`);
 
-    const data = await response.json();
+    if (response.status === 404) {
+        return { success: false };
+    }
 
+    const data = await response.json();
     return data;
 };
 
