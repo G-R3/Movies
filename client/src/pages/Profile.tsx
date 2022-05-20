@@ -165,7 +165,7 @@ export default function Profile() {
                         {error}
                     </Heading>
                 ) : (
-                    <Flex justifyContent={"center"} flexDirection="column">
+                    <Flex alignItems={"center"} flexDirection="column">
                         <Heading
                             as="h3"
                             textAlign={"center"}

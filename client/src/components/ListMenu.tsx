@@ -53,7 +53,6 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
     );
 
     const getLists = async () => {
-        console.log("Hello");
         try {
             const response = await fetch("/api/lists");
             const data = await response.json();
@@ -72,14 +71,14 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
         getLists();
     }, []);
 
-    const handleClick = async (id: string) => {
+    const handleClick = async (listId: string) => {
         try {
-            const response = await fetch("/api/add", {
+            const response = await fetch(`/api/add/${listId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ id, movie }),
+                body: JSON.stringify({ movie }),
             });
 
             if (response.status === 404) {
