@@ -105,4 +105,18 @@ const addMovieToList = async (req: Request, res: Response) => {
     res.status(200).send({ success: true, message: "Movie added to list" });
 };
 
-export { getUserLists, createList, addMovieToList };
+const deleteList = async (req: Request, res: Response) => {
+    const { listId } = req.params;
+
+    if (!listId.trim()) {
+        return res
+            .status(400)
+            .send({ success: false, message: "List does not exist" });
+    }
+
+    await List.findByIdAndDelete(listId);
+
+    return res.status(200).send({ success: true, message: "List was deleted" });
+};
+
+export { getUserLists, createList, addMovieToList, deleteList };
