@@ -47,7 +47,7 @@ export default function Cast({ cast }: any) {
             >
                 {cast.map((member: any) => (
                     <SwiperSlide
-                        key={member.id}
+                        key={member.cast_id}
                         tag="li"
                         style={{ listStyle: "none" }}
                     >
