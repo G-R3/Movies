@@ -6,6 +6,7 @@ interface IList {
     title: string;
     description?: string;
     owner: Types.ObjectId;
+    movies: Types.ObjectId[];
 }
 
 const listSchema = new Schema<IList>(
@@ -22,6 +23,12 @@ const listSchema = new Schema<IList>(
             type: Schema.Types.ObjectId,
             ref: "User",
         },
+        movies: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Movies",
+            },
+        ],
     },
     { timestamps: true }
 );
