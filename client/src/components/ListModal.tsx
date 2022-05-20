@@ -15,6 +15,8 @@ import {
     Textarea,
     FormErrorMessage,
     Flex,
+    useToast,
+    Text,
 } from "@chakra-ui/react";
 
 interface Props {
@@ -30,6 +32,7 @@ type IOnChange = ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement
 interface Errors {
     title?: string;
     description?: string;
+    message?: string;
 }
 
 interface FormData {
@@ -59,6 +62,8 @@ export default function ListModal({
 }: Props): JSX.Element {
     const [listData, setListData] = useState({ title: "", description: "" });
     const [errors, setErrors] = useState<Errors>({});
+    const [isSubmitting, setisSubmitting] = useState<boolean>(false);
+    const toast = useToast();
 
     const handleChange = (e: IOnChange): void => {
         setListData((prev) => ({
@@ -71,31 +76,48 @@ export default function ListModal({
         e: FormEvent<HTMLFormElement>
     ): Promise<void> => {
         e.preventDefault();
+        setisSubmitting(true);
         const hasErrors = validate(listData);
 
         if (Object.keys(hasErrors).length !== 0) {
             setErrors({ ...hasErrors });
+            setisSubmitting(false);
             return;
         }
+        try {
+            const response = await fetch("/api/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(listData),
+            });
 
-        const response = await fetch("/api/create", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(listData),
-        });
+            if (response.status === 404) {
+                throw new Error();
+            }
 
-        const data = await response.json();
+            const data = await response.json();
 
-        setLists([...lists, data.list]);
-
-        setErrors({});
-        setListData({
-            title: "",
-            description: "",
-        });
-        onClose();
+            setLists([...lists, data.list]);
+            setisSubmitting(false);
+            setErrors({});
+            setListData({
+                title: "",
+                description: "",
+            });
+            onClose();
+            toast({
+                title: "List was created",
+                description: data.message,
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+            });
+        } catch (err) {
+            setisSubmitting(false);
+            setErrors({ message: "Failed to create list. Try again later." });
+        }
     };
 
     const { title, description } = listData;
@@ -161,6 +183,16 @@ export default function ListModal({
                                 </Flex>
                             </FormControl>
                         </form>
+                        {errors.message && (
+                            <Text
+                                mt={5}
+                                color={"red.300"}
+                                fontWeight={"bold"}
+                                textAlign="center"
+                            >
+                                {errors.message}
+                            </Text>
+                        )}
                     </ModalBody>
 
                     <ModalFooter>
@@ -169,6 +201,7 @@ export default function ListModal({
                             mr={3}
                             type="submit"
                             form={"create-form"}
+                            isLoading={isSubmitting}
                         >
                             Create
                         </Button>
