@@ -205,7 +205,6 @@ const MoviePage = (): JSX.Element => {
                 flexDirection="column"
                 gap={20}
                 mt={{ base: 14, md: 16, lg: 20 }}
-                paddingBottom={"10"}
             >
                 {recommendations?.length > 0 ? (
                     <Carousel data={recommendations} heading="Recommended" />

@@ -1,4 +1,12 @@
-import { Grid, GridItem, Heading, Box, Flex, Text } from "@chakra-ui/react";
+import {
+    Grid,
+    GridItem,
+    Heading,
+    Box,
+    Flex,
+    Text,
+    SimpleGrid,
+} from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../context/Auth";
@@ -50,11 +58,14 @@ export default function Profile() {
                     Your lists
                 </Heading>
                 {lists.length > 0 ? (
-                    <Flex wrap="wrap" gap={5}>
+                    <SimpleGrid
+                        columns={{ base: 1, md: 2, lg: 3 }}
+                        spacing={"40px"}
+                    >
                         {lists.map((list) => (
                             <Box
                                 key={list["_id"]}
-                                w={"365px"}
+                                w={"100%"}
                                 h="210px"
                                 borderRadius={10}
                                 shadow={"2xl"}
@@ -75,8 +86,34 @@ export default function Profile() {
                                 </Text>
                             </Box>
                         ))}
-                    </Flex>
+                    </SimpleGrid>
                 ) : (
+                    // <Flex wrap="wrap" gap={5}>
+                    //     {lists.map((list) => (
+                    //         <Box
+                    //             key={list["_id"]}
+                    //             w={"365px"}
+                    //             h="210px"
+                    //             borderRadius={10}
+                    //             shadow={"2xl"}
+                    //             padding={"5"}
+                    //             style={{
+                    //                 backgroundColor: "#2D3748",
+                    //             }}
+                    //         >
+                    //             <Heading
+                    //                 as={"h3"}
+                    //                 fontSize="2xl"
+                    //                 fontWeight={"semibold"}
+                    //             >
+                    //                 {list.title}
+                    //             </Heading>
+                    //             <Text mt={3} color={"gray.400"}>
+                    //                 {list.description}
+                    //             </Text>
+                    //         </Box>
+                    //     ))}
+                    // </Flex>
                     <Heading
                         as="h3"
                         textAlign={"center"}
