@@ -29,6 +29,7 @@ const MoviePage = (): JSX.Element => {
     const [isLoading, setIsLoading] = useState(true);
     const { isLoggedIn } = useContext(AuthContext);
     const navigate = useNavigate();
+
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
@@ -84,7 +85,7 @@ const MoviePage = (): JSX.Element => {
                                 <GenreTag key={genre.id} name={genre.name} />
                             ))}
                         </HStack>
-                        {isLoggedIn && <ListMenu />}
+                        {isLoggedIn && <ListMenu movie={movie} />}
                     </Flex>
                     <Flex direction="column" gap={1} flex="1 0 0">
                         <Heading
