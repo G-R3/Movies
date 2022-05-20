@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
     Box,
     Skeleton,
+    SkeletonText,
     Image,
     Heading,
     Text,
@@ -37,11 +38,7 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
             transition="transform 200ms ease"
         >
             <Link to={`/browse/${movie.id}`}>
-                <Skeleton
-                    isLoaded={imageLoaded}
-                    startColor="gray.500"
-                    endColor="gray.700"
-                >
+                <Skeleton isLoaded={imageLoaded}>
                     <Image
                         borderTopRadius="md"
                         src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
@@ -52,52 +49,67 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
                 <Box paddingTop={2} paddingBottom={2} borderBottomRadius="md">
                     <HStack fontSize={"sm"}>
                         {releaseYear && (
-                            <Text
-                                color={
-                                    colorMode === "light"
-                                        ? "gray.500"
-                                        : "gray.400"
-                                }
-                                _after={{
-                                    content: "'\\2022'",
-                                    display: "inline-block",
-                                    ml: "5px",
-                                }}
-                            >
-                                {releaseYear}
-                            </Text>
+                            <SkeletonText noOfLines={1} isLoaded={imageLoaded}>
+                                <Text
+                                    color={
+                                        colorMode === "light"
+                                            ? "gray.500"
+                                            : "gray.400"
+                                    }
+                                    _after={{
+                                        content: "'\\2022'",
+                                        display: "inline-block",
+                                        ml: "5px",
+                                    }}
+                                >
+                                    {releaseYear}
+                                </Text>
+                            </SkeletonText>
                         )}
                         {movie.vote_average !== 0 && (
+                            <SkeletonText noOfLines={1} isLoaded={imageLoaded}>
+                                <Text
+                                    color={
+                                        colorMode === "light"
+                                            ? "gray.500"
+                                            : "gray.400"
+                                    }
+                                    _after={{
+                                        content: "'\\2022'",
+                                        display: "inline-block",
+                                        ml: "5px",
+                                    }}
+                                >
+                                    {movie.vote_average}
+                                </Text>
+                            </SkeletonText>
+                        )}
+                        <SkeletonText noOfLines={1} isLoaded={imageLoaded}>
                             <Text
                                 color={
                                     colorMode === "light"
                                         ? "gray.500"
                                         : "gray.400"
                                 }
-                                _after={{
-                                    content: "'\\2022'",
-                                    display: "inline-block",
-                                    ml: "5px",
-                                }}
                             >
-                                {movie.vote_average}
+                                {movie.adult ? "18+" : "PG"}
                             </Text>
-                        )}
-                        <Text
-                            color={
-                                colorMode === "light" ? "gray.500" : "gray.400"
-                            }
-                        >
-                            {movie.adult ? "18+" : "PG"}
-                        </Text>
+                        </SkeletonText>
                     </HStack>
-                    <Heading
-                        mt={"1"}
-                        as="h2"
-                        fontSize={{ sm: "xs", md: "sm", lg: "md" }}
+                    <SkeletonText
+                        noOfLines={1}
+                        w="75%"
+                        mt={2}
+                        isLoaded={imageLoaded}
                     >
-                        {movie.title}
-                    </Heading>
+                        <Heading
+                            mt={"1"}
+                            as="h2"
+                            fontSize={{ sm: "xs", md: "sm", lg: "md" }}
+                        >
+                            {movie.title}
+                        </Heading>
+                    </SkeletonText>
                 </Box>
             </Link>
         </Box>

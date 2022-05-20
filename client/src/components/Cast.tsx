@@ -1,12 +1,15 @@
 /* eslint-disable import/no-unresolved */
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
-import { Box, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Heading, Image, Text, Skeleton } from "@chakra-ui/react";
+import { useState } from "react";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
 export default function Cast({ cast }: any) {
+    const [imageLoaded, setImageLoaded] = useState(false);
+
     return (
         <Box>
             <Heading
@@ -48,14 +51,19 @@ export default function Cast({ cast }: any) {
                         tag="li"
                         style={{ listStyle: "none" }}
                     >
-                        <Image
-                            borderRadius="md"
-                            // width="80px"
-                            src={`https://image.tmdb.org/t/p/original${member.profile_path}`}
-                        />
-                        <Text textAlign="center" fontSize="xs">
-                            {member.name}
-                        </Text>
+                        <Skeleton isLoaded={imageLoaded}>
+                            <Image
+                                borderRadius="md"
+                                src={`https://image.tmdb.org/t/p/original${member.profile_path}`}
+                                alt={member.name}
+                                onLoad={() => setImageLoaded(true)}
+                            />
+                        </Skeleton>
+                        <Skeleton isLoaded={imageLoaded}>
+                            <Text fontSize="xs" mt={2}>
+                                {member.name}
+                            </Text>
+                        </Skeleton>
                     </SwiperSlide>
                 ))}
             </Swiper>
