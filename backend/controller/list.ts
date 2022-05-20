@@ -34,13 +34,17 @@ const createList = async (req: Request, res: Response) => {
             });
         }
 
-        await List.create({
+        const list = await List.create({
             title,
             description,
             owner: id,
         });
 
-        res.status(200).send({ success: true, message: "New list created" });
+        res.status(200).send({
+            success: true,
+            message: "New list created",
+            list: { _id: list._id, title: list.title },
+        });
     } catch (err) {
         console.log("ERROR, likely some validation error when creating list");
         console.log(err);
@@ -82,6 +86,11 @@ const addMovieToList = async (req: Request, res: Response) => {
     }
 
     const list = await List.findById(id);
+    if (!list) {
+        return res
+            .status(404)
+            .send({ success: false, message: "List does not exist" });
+    }
     const movieInList = list?.movies.includes(movieId);
 
     if (movieInList) {
