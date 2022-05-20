@@ -52,21 +52,23 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
         "RGBA(255, 255, 255, 0.16)"
     );
 
-    useEffect(() => {
-        const getLists = async () => {
-            try {
-                const response = await fetch("/api/lists");
-                const data = await response.json();
+    const getLists = async () => {
+        console.log("Hello");
+        try {
+            const response = await fetch("/api/lists");
+            const data = await response.json();
 
-                if (!data.success) {
-                    throw new Error(data.message);
-                }
-
-                setLists(data.lists);
-            } catch (err) {
-                console.error("Failed to fetch lists");
+            if (!data.success) {
+                throw new Error(data.message);
             }
-        };
+
+            setLists(data.lists);
+        } catch (err) {
+            console.error("Failed to fetch lists");
+        }
+    };
+
+    useEffect(() => {
         getLists();
     }, []);
 
@@ -147,12 +149,7 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
                 </MenuList>
             </Menu>
 
-            <ListModal
-                isOpen={isOpen}
-                onClose={onClose}
-                lists={lists}
-                setLists={setLists}
-            />
+            <ListModal isOpen={isOpen} onClose={onClose} getLists={getLists} />
         </>
     );
 }

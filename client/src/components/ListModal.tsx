@@ -22,8 +22,7 @@ import {
 interface Props {
     isOpen: boolean;
     onClose(): void;
-    lists: any;
-    setLists?: any;
+    getLists: any;
 }
 
 // prettier-ignore
@@ -57,8 +56,7 @@ const validate = (values: FormData) => {
 export default function ListModal({
     isOpen,
     onClose,
-    lists,
-    setLists,
+    getLists,
 }: Props): JSX.Element {
     const [listData, setListData] = useState({ title: "", description: "" });
     const [errors, setErrors] = useState<Errors>({});
@@ -99,7 +97,7 @@ export default function ListModal({
 
             const data = await response.json();
 
-            setLists([...lists, data.list]);
+            getLists();
             setisSubmitting(false);
             setErrors({});
             setListData({
