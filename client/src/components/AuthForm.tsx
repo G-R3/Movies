@@ -97,12 +97,7 @@ const AuthForm = ({
                         </FormControl>
                     </form>
                     {errors.message && (
-                        <Text
-                            mt={5}
-                            color={"red.300"}
-                            fontWeight={"bold"}
-                            fontSize={"lg"}
-                        >
+                        <Text mt={5} color={"red.300"} fontWeight={"bold"}>
                             {errors.message}
                         </Text>
                     )}
