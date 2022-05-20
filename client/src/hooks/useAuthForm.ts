@@ -41,6 +41,10 @@ const useAuthForm = ({ email, password, url, onClose }: Props) => {
                             body: JSON.stringify(formData),
                         });
 
+                        if (response.status === 404) {
+                            throw new Error("Failed to submit form");
+                        }
+
                         const data = await response.json();
                         if (!data.success) {
                             throw new Error(data.message);
@@ -56,9 +60,13 @@ const useAuthForm = ({ email, password, url, onClose }: Props) => {
                         // use the optional chaining (?.) operator when invoking the function.
                         await getIsLoggedIn?.();
                         navigate("/profile");
-                    } catch (err) {
+                    } catch (err: any) {
+                        if (err.message) {
+                            setErrors({ message: err.message });
+                        } else {
+                            setErrors({ message: "Something went wrong" });
+                        }
                         setIsSubmitting(false);
-                        setErrors({ message: "Something went wrong" });
                     }
                 };
                 authUser(url);
