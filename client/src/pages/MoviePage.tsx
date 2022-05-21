@@ -51,7 +51,7 @@ const MoviePage = (): JSX.Element => {
     if (isLoading) {
         return (
             <Box mt={20}>
-                <Loader size="xl" />;
+                <Loader size="xl" />
             </Box>
         );
     }
