@@ -12,6 +12,7 @@ import {
     Tooltip,
     useToast,
     Flex,
+    useColorModeValue,
 } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import { Navigate, Link } from "react-router-dom";
@@ -27,6 +28,8 @@ export default function Profile() {
     const [lists, setLists] = useState<List[]>([]);
     const [error, setError] = useState<string>();
     const { isLoggedIn } = useContext(AuthContext);
+
+    const bg = useColorModeValue("gray.100", "#2D3748");
     const toast = useToast();
 
     const getLists = async () => {
@@ -98,7 +101,7 @@ export default function Profile() {
 
     return (
         <Grid templateColumns={"repeat(12,1fr)"}>
-            <GridItem colSpan={6}>
+            <GridItem>
                 <Heading
                     fontSize={"7xl"}
                     marginY={"28"}
@@ -124,9 +127,7 @@ export default function Profile() {
                                 borderRadius={10}
                                 shadow={"2xl"}
                                 padding={"5"}
-                                style={{
-                                    backgroundColor: "#2D3748",
-                                }}
+                                bg={bg}
                             >
                                 <HStack justifyContent={"space-between"}>
                                     <Heading
