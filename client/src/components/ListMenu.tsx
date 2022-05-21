@@ -9,8 +9,10 @@ import {
     useColorModeValue,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/Auth";
 import ListModal from "./ListModal";
-import { useEffect, useState } from "react";
+import AuthForm from "./AuthForm";
 
 interface List {
     _id: string;
@@ -43,6 +45,7 @@ interface Movie {
 }
 
 export default function ListMenu({ movie }: Movie): JSX.Element {
+    const { isLoggedIn } = useContext(AuthContext);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [lists, setLists] = useState<List[]>([]);
     const toast = useToast();
@@ -68,6 +71,7 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
     };
 
     useEffect(() => {
+        if (!isLoggedIn) return;
         getLists();
     }, []);
 
@@ -109,6 +113,18 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
             });
         }
     };
+
+    if (!isLoggedIn) {
+        console.log("not lgged in");
+        return (
+            <>
+                <Button marginTop="2" onClick={() => onOpen()}>
+                    Add to list
+                </Button>
+                <AuthForm isOpen={isOpen} onClose={onClose} />
+            </>
+        );
+    }
 
     return (
         <>
