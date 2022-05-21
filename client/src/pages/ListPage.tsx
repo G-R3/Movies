@@ -1,4 +1,4 @@
-import { Heading, Text, SimpleGrid } from "@chakra-ui/react";
+import { Heading, Text, SimpleGrid, Box } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
@@ -41,17 +41,14 @@ export default function ListPage() {
 
     return (
         <>
-            <Heading
-                fontSize={"7xl"}
-                marginTop={"28"}
-                marginBottom={"10"}
-                className="profile-header"
-            >
-                Watchlist
-            </Heading>
-            <Text fontSize={"xl"} color={"gray.400"}>
-                For movies that you just most watch
-            </Text>
+            <Box marginY={"28"}>
+                <Heading fontSize={"7xl"} className="profile-header">
+                    Watchlist
+                </Heading>
+                <Text fontSize={"xl"} color={"gray.400"}>
+                    For movies that you just most watch
+                </Text>
+            </Box>
 
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={"40px"}>
                 {list &&
