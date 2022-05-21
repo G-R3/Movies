@@ -4,6 +4,7 @@ import {
     getUserLists,
     addMovieToList,
     deleteList,
+    getList,
 } from "../controller/list";
 import isAuthorized from "../middleware/auth";
 import isListOwner from "../middleware/isListOwner";
@@ -11,6 +12,7 @@ import isListOwner from "../middleware/isListOwner";
 const router = express.Router();
 
 router.get("/lists", isAuthorized, getUserLists);
+router.get("/list/:listId/movies", isAuthorized, getList);
 router.post("/create", isAuthorized, createList);
 router.post("/add/:listId", isAuthorized, isListOwner, addMovieToList);
 router.delete("/delete/:listId", isAuthorized, isListOwner, deleteList);

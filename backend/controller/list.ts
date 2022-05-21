@@ -1,7 +1,24 @@
 import { Request, Response } from "express";
 import mongoose, { Types } from "mongoose";
-import List from "../models/list";
+import List from "../models/List";
 import Movie from "../models/Movie";
+
+const getList = async (req: Request, res: Response) => {
+    const { listId } = req.params;
+
+    if (!listId.trim()) {
+        return res
+            .status(400)
+            .send({ success: false, message: "List does not exist" });
+    }
+
+    const list = await List.findById(
+        listId,
+        "-owner -updatedAt -__v -_id"
+    ).populate("movies");
+
+    return res.status(200).send({ success: true, list });
+};
 
 const getUserLists = async (req: Request, res: Response) => {
     const { id } = req.user;
@@ -10,7 +27,7 @@ const getUserLists = async (req: Request, res: Response) => {
         {
             owner: new mongoose.Types.ObjectId(id),
         },
-        "-owner -updatedAt -__v-_id"
+        "-owner -updatedAt -__v"
     );
 
     return res.status(200).send({ success: true, lists: userLists });
@@ -52,41 +69,43 @@ const createList = async (req: Request, res: Response) => {
 };
 
 const addMovieToList = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { listId } = req.params;
     const { movie } = req.body;
     let movieId: Types.ObjectId;
 
-    if (!id || !movie) {
+    console.log(listId);
+
+    if (!listId || !movie) {
         return res
             .status(400)
-            .send({ seuccess: false, message: "Missing movie or id" });
+            .send({ success: false, message: "Missing movie or id" });
     }
 
-    // check if movie already exists
-    const foundMovie = await Movie.findOne({ movieId: movie.id });
+    const foundMovie = await Movie.findOne({ id: movie.id });
 
     if (!foundMovie) {
         const movieGenres = movie.genres.map(
             (genre: { name: string; id: number }) => genre.name
         );
         ({ _id: movieId } = await Movie.create({
+            backdrop_path: movie.backdrop_path,
             budget: movie.budget,
             genres: movieGenres,
-            movieId: movie.id,
-            name: movie.name || movie.original_title,
+            id: movie.id,
+            title: movie.title || movie.original_title,
             overview: movie.overview,
             popularity: movie.popularity,
-            releaseDate: movie.release_date,
+            release_date: movie.release_date,
             runtime: movie.runtime,
             tagline: movie.tagline,
-            voteAverage: movie.vote_average,
-            voteCount: movie.vote_count,
+            vote_average: movie.vote_average,
+            vote_count: movie.vote_count,
         }));
     } else {
         movieId = foundMovie._id;
     }
 
-    const list = await List.findById(id);
+    const list = await List.findById(listId);
     if (!list) {
         return res
             .status(404)
@@ -120,4 +139,4 @@ const deleteList = async (req: Request, res: Response) => {
     return res.status(200).send({ success: true, message: "List was deleted" });
 };
 
-export { getUserLists, createList, addMovieToList, deleteList };
+export { getUserLists, createList, addMovieToList, deleteList, getList };
