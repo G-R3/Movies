@@ -26,7 +26,7 @@ const listSchema = new Schema<IList>(
         movies: [
             {
                 type: Schema.Types.ObjectId,
-                ref: "Movies",
+                ref: "Movie",
             },
         ],
     },
