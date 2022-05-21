@@ -5,6 +5,7 @@ import Card from "../components/Card";
 import { getMovies, getTrending } from "../api/index";
 import Carousel from "../components/Carousel";
 import Search from "../components/Search";
+import Loader from "../components/Loader";
 
 interface Genres {
     id: number;
@@ -45,7 +46,12 @@ const Browse = (): JSX.Element => {
         fetchData();
     }, []);
 
-    if (!movies) return <p>Loading...</p>;
+    if (!movies)
+        return (
+            <Box mt={20}>
+                <Loader size="xl" />;
+            </Box>
+        );
 
     return (
         <Box mt={"14"}>

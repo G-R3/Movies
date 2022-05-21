@@ -16,6 +16,7 @@ import {
 import Cast from "../components/Cast";
 import Carousel from "../components/Carousel";
 import ListMenu from "../components/ListMenu";
+import Loader from "../components/Loader";
 import { AuthContext } from "../context/Auth";
 import moment from "moment";
 
@@ -48,7 +49,11 @@ const MoviePage = (): JSX.Element => {
     }, [movieId]);
 
     if (isLoading) {
-        return <p>Loading...</p>;
+        return (
+            <Box mt={20}>
+                <Loader size="xl" />;
+            </Box>
+        );
     }
 
     const { movie, cast, recommendations } = data;
