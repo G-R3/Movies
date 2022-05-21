@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import List from "../models/list";
+import List from "../models/List";
 
 const isListOwner = async (req: Request, res: Response, next: NextFunction) => {
     try {
