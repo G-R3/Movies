@@ -90,7 +90,7 @@ const MoviePage = (): JSX.Element => {
                                 <GenreTag key={genre.id} name={genre.name} />
                             ))}
                         </HStack>
-                        {isLoggedIn && <ListMenu movie={movie} />}
+                        <ListMenu movie={movie} />
                     </Flex>
                     <Flex direction="column" gap={1} flex="1 0 0">
                         <Heading

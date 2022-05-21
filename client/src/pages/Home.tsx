@@ -7,11 +7,14 @@ import {
     Heading,
     Text,
     VStack,
+    useDisclosure,
 } from "@chakra-ui/react";
 import { CSSProperties } from "react";
-import { Link } from "react-router-dom";
+import AuthForm from "../components/AuthForm";
 
 const Home = (): JSX.Element => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     return (
         <>
             <Grid templateColumns="repeat(12, 1fr)" gap={6}>
@@ -26,17 +29,17 @@ const Home = (): JSX.Element => {
                             Track and organize your movies
                         </Text>
                         <Button
-                            as={Link}
-                            to={"/browse"}
                             mt="5"
                             colorScheme="purple"
                             alignSelf={"start"}
                             fontSize={"lg"}
                             fontWeight={"semibold"}
                             padding={"6"}
+                            onClick={() => onOpen()}
                         >
                             Get Started
                         </Button>
+                        <AuthForm isOpen={isOpen} onClose={onClose} />
                     </Flex>
                 </GridItem>
                 <GridItem colSpan={6}>
