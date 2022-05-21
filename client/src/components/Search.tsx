@@ -14,6 +14,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { searchMovie } from "../api";
+import Loader from "./Loader";
 
 const Fade = chakra(ScaleFade);
 
@@ -37,6 +38,7 @@ interface Movie {
 export default function Search() {
     const [value, setValue] = useState<string>("");
     const [movies, setMovies] = useState<Movie[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
     const ref = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -54,8 +56,10 @@ export default function Search() {
         }
 
         const fetchMovies = async () => {
+            setIsLoading(true);
             const movies = await searchMovie(value);
             setMovies(movies.results);
+            setIsLoading(false);
         };
 
         onOpen();
@@ -93,7 +97,10 @@ export default function Search() {
                 onChange={(e) => setValue(e.target.value)}
             />
             {/* eslint-disable-next-line react/no-children-prop */}
-            <InputRightElement pointerEvents="none" children={<SearchIcon />} />
+            <InputRightElement
+                pointerEvents="none"
+                children={isLoading ? <Loader size="sm" /> : <SearchIcon />}
+            />
             {movies && movies.length && isOpen ? (
                 <Fade
                     initialScale={0.9}
@@ -134,6 +141,10 @@ export default function Search() {
                                         borderRadius="sm"
                                         fontSize="sm"
                                         _hover={{
+                                            backgroundColor: bgAlt,
+                                        }}
+                                        _focus={{
+                                            outline: "none",
                                             backgroundColor: bgAlt,
                                         }}
                                     >
