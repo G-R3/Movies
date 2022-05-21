@@ -4,20 +4,32 @@ import List from "../models/List";
 import Movie from "../models/Movie";
 
 const getList = async (req: Request, res: Response) => {
-    const { listId } = req.params;
+    try {
+        const { listId } = req.params;
 
-    if (!listId.trim()) {
+        if (!listId.trim()) {
+            return res
+                .status(400)
+                .send({ success: false, message: "List does not exist" });
+        }
+
+        const list = await List.findById(
+            listId,
+            "-owner -updatedAt -__v -_id"
+        ).populate("movies");
+
+        if (!list) {
+            return res
+                .status(404)
+                .send({ success: false, message: "List does not exist" });
+        }
+
+        return res.status(200).send({ success: true, list });
+    } catch (err) {
         return res
-            .status(400)
-            .send({ success: false, message: "List does not exist" });
+            .status(404)
+            .send({ success: false, message: "List was not found" });
     }
-
-    const list = await List.findById(
-        listId,
-        "-owner -updatedAt -__v -_id"
-    ).populate("movies");
-
-    return res.status(200).send({ success: true, list });
 };
 
 const getUserLists = async (req: Request, res: Response) => {
