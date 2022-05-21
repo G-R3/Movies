@@ -3,33 +3,34 @@ import mongoose, { model, Types } from "mongoose";
 const { Schema } = mongoose;
 
 interface IMovie {
-    name: string;
-    image: string;
+    title: string;
+    backdrop_path: string;
     budget: number;
     genres: string[];
-    movieId: number;
+    id: number;
     overview: string;
     popularity: number;
-    releaseDate: string;
+    release_date: string;
     runtime: number;
     tagline: string;
-    voteAverage: number;
-    voteCount: number;
+    vote_average: number;
+    vote_count: number;
 }
 
 const movieSchema = new Schema<IMovie>(
     {
+        backdrop_path: String,
         budget: Number,
         genres: [String],
-        movieId: Number,
-        name: { type: String, required: true },
+        id: Number,
+        title: { type: String, required: true },
         overview: String,
         popularity: Number,
-        releaseDate: String,
+        release_date: String,
         runtime: Number,
         tagline: String,
-        voteAverage: Number,
-        voteCount: Number,
+        vote_average: Number,
+        vote_count: Number,
     },
     { timestamps: true }
 );
