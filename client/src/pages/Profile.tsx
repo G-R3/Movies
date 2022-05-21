@@ -4,7 +4,6 @@ import {
     Grid,
     GridItem,
     Heading,
-    Box,
     IconButton,
     Text,
     SimpleGrid,
@@ -19,6 +18,7 @@ import {
 import { useEffect, useState, useContext } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/Auth";
+import Loader from "../components/Loader";
 
 interface List {
     _id: string;
@@ -29,9 +29,10 @@ interface List {
 export default function Profile() {
     const [lists, setLists] = useState<List[]>([]);
     const [error, setError] = useState<string>();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const { isLoggedIn } = useContext(AuthContext);
 
-    const bg = useColorModeValue("gray.100", "#2D3748");
+    const bg = useColorModeValue("gray.50", "#2D3748");
     const toast = useToast();
 
     const getLists = async () => {
@@ -50,8 +51,10 @@ export default function Profile() {
 
             setLists(data.lists);
             setError("");
+            setIsLoading(false);
         } catch (err) {
             setError("Failed to fetch lists");
+            setIsLoading(false);
         }
     };
 
@@ -128,9 +131,13 @@ export default function Profile() {
                                 w={"100%"}
                                 h="210px"
                                 borderRadius={10}
-                                shadow={"2xl"}
+                                shadow={"md"}
                                 padding={"5"}
                                 bg={bg}
+                                _hover={{
+                                    shadow: "lg",
+                                }}
+                                transition="box-shadow 200ms ease"
                             >
                                 <HStack justifyContent={"space-between"}>
                                     <Heading
@@ -164,6 +171,8 @@ export default function Profile() {
                             </LinkBox>
                         ))}
                     </SimpleGrid>
+                ) : isLoading ? (
+                    <Loader size="xl" />
                 ) : error ? (
                     <Heading
                         as="h3"
@@ -173,7 +182,7 @@ export default function Profile() {
                     >
                         {error}
                     </Heading>
-                ) : (
+                ) : lists.length === 0 ? (
                     <Flex alignItems={"center"} flexDirection="column">
                         <Heading
                             as="h3"
@@ -195,6 +204,8 @@ export default function Profile() {
                             Browse
                         </Button>
                     </Flex>
+                ) : (
+                    <></>
                 )}
             </GridItem>
         </Grid>

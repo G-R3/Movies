@@ -1,6 +1,7 @@
 import { Heading, Text, SimpleGrid, Box } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useNavigate, useParams, Navigate } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../context/Auth";
 import Card from "../components/Card";
 
 interface IList {
@@ -13,6 +14,7 @@ interface IList {
 export default function ListPage() {
     const { listId } = useParams();
     const [list, setList] = useState<IList>();
+    const { isLoggedIn } = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -38,6 +40,8 @@ export default function ListPage() {
 
         getMovies();
     }, []);
+
+    if (!isLoggedIn) return <Navigate to="/" replace />;
 
     return (
         <>
