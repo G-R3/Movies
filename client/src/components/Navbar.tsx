@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
     Link,
@@ -17,7 +17,6 @@ import { AuthContext } from "../context/Auth";
 const Navbar = (): JSX.Element => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { colorMode, toggleColorMode } = useColorMode();
-    const [showSignUpForm, setShowSignUpForm] = useState<boolean>(false);
     const { isLoggedIn, getIsLoggedIn } = useContext(AuthContext);
 
     const logOut = async () => {
@@ -76,7 +75,6 @@ const Navbar = (): JSX.Element => {
                             outline="none"
                             _hover={{ textDecoration: "none" }}
                             onClick={() => {
-                                setShowSignUpForm(true);
                                 onOpen();
                             }}
                         >
@@ -91,12 +89,7 @@ const Navbar = (): JSX.Element => {
                 />
             </HStack>
 
-            <AuthForm
-                showSignUpForm={showSignUpForm}
-                setShowSignUpForm={setShowSignUpForm}
-                isOpen={isOpen}
-                onClose={onClose}
-            />
+            <AuthForm isOpen={isOpen} onClose={onClose} />
         </Flex>
     );
 };

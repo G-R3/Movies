@@ -9,7 +9,7 @@ type ErrorData = {
 type Props = {
     email?: string;
     password?: string;
-    url: string;
+    showSignUpForm: boolean;
     onClose: any;
 };
 type FormData = {
@@ -17,7 +17,7 @@ type FormData = {
     password?: string;
 };
 
-const useAuthForm = ({ email, password, url, onClose }: Props) => {
+const useAuthForm = ({ email, password, showSignUpForm, onClose }: Props) => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState<FormData>({
         email: email,
@@ -31,6 +31,10 @@ const useAuthForm = ({ email, password, url, onClose }: Props) => {
         if (isSubmitting) {
             const hasNoErrors = Object.keys(errors).length !== 0;
             if (!hasNoErrors) {
+                let url: string = showSignUpForm
+                    ? "/auth/register"
+                    : "/auth/login";
+
                 const authUser = async (url: string) => {
                     try {
                         const response = await fetch(url, {

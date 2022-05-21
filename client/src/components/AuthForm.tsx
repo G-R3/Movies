@@ -14,30 +14,19 @@ import {
     ModalCloseButton,
     HStack,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import useAuthForm from "../hooks/useAuthForm";
 
 type Props = {
-    showSignUpForm: boolean;
-    setShowSignUpForm: any;
     isOpen: boolean;
     onClose: any;
 };
 
-const AuthForm = ({
-    showSignUpForm,
-    setShowSignUpForm,
-    isOpen,
-    onClose,
-}: Props): JSX.Element => {
-    let url: string;
-    if (showSignUpForm) {
-        url = "/auth/register";
-    } else {
-        url = "/auth/login";
-    }
+const AuthForm = ({ isOpen, onClose }: Props): JSX.Element => {
+    const [showSignUpForm, setShowSignUpForm] = useState<boolean>(true);
 
     const { handleSubmit, handleChange, formData, errors, isSubmitting } =
-        useAuthForm({ email: "", password: "", url, onClose });
+        useAuthForm({ email: "", password: "", showSignUpForm, onClose });
 
     const { email, password } = formData;
 
