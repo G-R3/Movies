@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import { Home, Browse, MoviePage, Profile } from "./pages";
+import { Home, Browse, MoviePage, Profile, ListPage } from "./pages";
 
 function App(): JSX.Element {
     return (
@@ -12,6 +12,10 @@ function App(): JSX.Element {
                     <Route path=":movieId" element={<MoviePage />} />
                 </Route>
                 <Route path="profile" element={<Profile />} />
+                <Route path="profile">
+                    <Route path=":listId" element={<ListPage />} />
+                </Route>
+
                 <Route path="*" element={"Not found"} />
             </Route>
         </Routes>

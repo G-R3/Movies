@@ -13,6 +13,8 @@ import {
     useToast,
     Flex,
     useColorModeValue,
+    LinkBox,
+    LinkOverlay,
 } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import { Navigate, Link } from "react-router-dom";
@@ -120,7 +122,8 @@ export default function Profile() {
                         spacing={"40px"}
                     >
                         {lists.map((list) => (
-                            <Box
+                            <LinkBox
+                                as="article"
                                 key={list._id}
                                 w={"100%"}
                                 h="210px"
@@ -135,7 +138,12 @@ export default function Profile() {
                                         fontSize="2xl"
                                         fontWeight={"semibold"}
                                     >
-                                        {list.title}
+                                        <LinkOverlay
+                                            as={Link}
+                                            to={`/profile/${list._id}`}
+                                        >
+                                            {list.title}
+                                        </LinkOverlay>
                                     </Heading>
                                     <Tooltip
                                         label="Delete list"
@@ -153,7 +161,7 @@ export default function Profile() {
                                 <Text mt={3} color={"gray.400"}>
                                     {list.description}
                                 </Text>
-                            </Box>
+                            </LinkBox>
                         ))}
                     </SimpleGrid>
                 ) : error ? (
