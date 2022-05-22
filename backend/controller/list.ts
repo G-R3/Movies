@@ -15,7 +15,7 @@ const getList = async (req: Request, res: Response) => {
 
         const list = await List.findById(
             listId,
-            "-owner -updatedAt -__v -_id"
+            "-owner -updatedAt -__v"
         ).populate("movies");
 
         if (!list) {
@@ -85,8 +85,6 @@ const addMovieToList = async (req: Request, res: Response) => {
     const { movie } = req.body;
     let movieId: Types.ObjectId;
 
-    console.log(listId);
-
     if (!listId || !movie) {
         return res
             .status(400)
@@ -151,4 +149,40 @@ const deleteList = async (req: Request, res: Response) => {
     return res.status(200).send({ success: true, message: "List was deleted" });
 };
 
-export { getUserLists, createList, addMovieToList, deleteList, getList };
+const deleteMovieFromList = async (req: Request, res: Response) => {
+    const { listId, movieId } = req.params;
+
+    if (!listId.trim() || !movieId.trim()) {
+        return res.status(400).send("List or movie don't exist");
+    }
+
+    try {
+        const list = await List.findByIdAndUpdate(
+            listId,
+            { $pull: { movies: { $in: movieId } } },
+            { new: true }
+        )
+            .select("-owner -updatedAt -__v")
+            .populate("movies");
+
+        res.status(200).send({
+            success: true,
+            message: "Movie was removed from list",
+            list,
+        });
+    } catch (err) {
+        res.status(404).send({
+            sucess: false,
+            message: "List or movie was not found",
+        });
+    }
+};
+
+export {
+    getUserLists,
+    createList,
+    addMovieToList,
+    deleteList,
+    getList,
+    deleteMovieFromList,
+};
