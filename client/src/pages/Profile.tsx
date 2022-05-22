@@ -30,7 +30,6 @@ export default function Profile() {
     const [lists, setLists] = useState<List[]>([]);
     const [error, setError] = useState<string>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const { isLoggedIn } = useContext(AuthContext);
 
     const bg = useColorModeValue("gray.50", "#2D3748");
     const toast = useToast();
@@ -101,8 +100,6 @@ export default function Profile() {
             });
         }
     };
-
-    if (!isLoggedIn) return <Navigate to="/" replace />;
 
     return (
         <Grid templateColumns={"repeat(12,1fr)"}>

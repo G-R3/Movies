@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
+import RequireAuth from "./components/RequireAuth";
 import { Home, Browse, MoviePage, Profile, ListPage } from "./pages";
 
 function App(): JSX.Element {
@@ -11,9 +12,23 @@ function App(): JSX.Element {
                 <Route path="browse">
                     <Route path=":movieId" element={<MoviePage />} />
                 </Route>
-                <Route path="profile" element={<Profile />} />
+                <Route
+                    path="profile"
+                    element={
+                        <RequireAuth>
+                            <Profile />
+                        </RequireAuth>
+                    }
+                />
                 <Route path="profile">
-                    <Route path=":listId" element={<ListPage />} />
+                    <Route
+                        path=":listId"
+                        element={
+                            <RequireAuth>
+                                <ListPage />
+                            </RequireAuth>
+                        }
+                    />
                 </Route>
 
                 <Route path="*" element={"Not found"} />
