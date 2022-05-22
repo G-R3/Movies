@@ -1,9 +1,18 @@
-import { Heading, Text, SimpleGrid, Box } from "@chakra-ui/react";
+import {
+    Heading,
+    Text,
+    SimpleGrid,
+    Box,
+    VStack,
+    Button,
+    useToast,
+} from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
 
 interface IList {
+    _id: string;
     title: string;
     description: string;
     movies: [];
@@ -14,6 +23,7 @@ export default function ListPage() {
     const { listId } = useParams();
     const [list, setList] = useState<IList>();
     const navigate = useNavigate();
+    const toast = useToast();
 
     useEffect(() => {
         const getMovies = async () => {
@@ -39,6 +49,46 @@ export default function ListPage() {
         getMovies();
     }, []);
 
+    const handleClick = async (listId: string, movieId: string) => {
+        try {
+            const response = await fetch(
+                `/api/delete/${listId}/movie/${movieId}`,
+                {
+                    method: "DELETE",
+                }
+            );
+
+            if (response.status === 404) {
+                throw new Error("Failed to remove movie");
+            }
+
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error(data.message);
+            }
+
+            setList(data.list);
+            toast({
+                title: "Movie removed",
+                description: data.message,
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom",
+            });
+        } catch (err: any) {
+            toast({
+                title: "Movie Added",
+                description: err.message,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom",
+            });
+        }
+    };
+
     return (
         <>
             <Box marginY={"28"}>
@@ -53,7 +103,17 @@ export default function ListPage() {
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={"40px"}>
                 {list &&
                     list.movies.map((movie: any) => (
-                        <Card key={movie.id} movie={movie} />
+                        <VStack key={movie.id}>
+                            <Card movie={movie} />
+                            <Button
+                                width={"full"}
+                                variant="outline"
+                                colorScheme={"red"}
+                                onClick={() => handleClick(list._id, movie._id)}
+                            >
+                                Remove from list
+                            </Button>
+                        </VStack>
                     ))}
             </SimpleGrid>
         </>
