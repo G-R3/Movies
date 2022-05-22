@@ -1,9 +1,8 @@
 import { createContext, ReactElement, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 
 interface AuthContextInterface {
-    isLoggedIn: boolean;
-    getIsLoggedIn?: () => void;
+    isLoggedIn: undefined;
+    getIsLoggedIn: () => Promise<void>;
 }
 
 type Props = {
@@ -11,14 +10,14 @@ type Props = {
 };
 
 const defaultState = {
-    isLoggedIn: false,
+    isLoggedIn: undefined,
+    getIsLoggedIn: async (): Promise<void> => {},
 };
 
 export const AuthContext = createContext<AuthContextInterface>(defaultState);
 
 export const AuthProvider = ({ children }: Props) => {
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-    const location = useLocation();
+    const [isLoggedIn, setIsLoggedIn] = useState<any>(undefined);
 
     const getIsLoggedIn = async (): Promise<void> => {
         const response = await fetch("/auth/isLoggedIn");
@@ -29,7 +28,7 @@ export const AuthProvider = ({ children }: Props) => {
 
     useEffect(() => {
         getIsLoggedIn();
-    }, [location]);
+    }, [false]);
     return (
         <AuthContext.Provider value={{ isLoggedIn, getIsLoggedIn }}>
             {children}
