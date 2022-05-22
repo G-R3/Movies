@@ -22,11 +22,13 @@ const Navbar = (): JSX.Element => {
     const logOut = async () => {
         try {
             await fetch("/auth/logout");
-            await getIsLoggedIn?.();
+            await getIsLoggedIn();
         } catch (err) {
             console.error(err);
         }
     };
+
+    console.log(isLoggedIn);
 
     return (
         <Flex
@@ -57,7 +59,8 @@ const Navbar = (): JSX.Element => {
                     >
                         Browse
                     </Link>
-                    {isLoggedIn ? (
+                    {/* for now this will do. I need to find a better solution */}
+                    {isLoggedIn === true ? (
                         <>
                             <Link
                                 as={RouterLink}
@@ -68,7 +71,7 @@ const Navbar = (): JSX.Element => {
                             </Link>
                             <Button onClick={logOut}>Logout</Button>
                         </>
-                    ) : (
+                    ) : isLoggedIn === false ? (
                         <Button
                             colorScheme="purple"
                             variant={"solid"}
@@ -80,6 +83,8 @@ const Navbar = (): JSX.Element => {
                         >
                             Sign Up
                         </Button>
+                    ) : (
+                        <></>
                     )}
                 </Flex>
                 <IconButton
