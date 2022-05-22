@@ -115,7 +115,6 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
     };
 
     if (!isLoggedIn) {
-        console.log("not lgged in");
         return (
             <>
                 <Button marginTop="2" onClick={() => onOpen()}>
