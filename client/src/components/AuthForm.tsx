@@ -13,6 +13,8 @@ import {
     ModalBody,
     ModalCloseButton,
     HStack,
+    VStack,
+    Flex,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import useAuthForm from "../hooks/useAuthForm";
@@ -56,6 +58,7 @@ const AuthForm = ({ isOpen, onClose }: Props): JSX.Element => {
                                 type="email"
                                 id="email"
                                 name="email"
+                                size={"md"}
                                 placeholder="example@email.com"
                                 value={email}
                                 onChange={(e) => handleChange(e)}
@@ -74,6 +77,7 @@ const AuthForm = ({ isOpen, onClose }: Props): JSX.Element => {
                                 type="password"
                                 id="password"
                                 name="password"
+                                size={"md"}
                                 value={password}
                                 onChange={(e) => handleChange(e)}
                             />
@@ -96,13 +100,18 @@ const AuthForm = ({ isOpen, onClose }: Props): JSX.Element => {
                     paddingTop={0}
                     justifyContent={"space-between"}
                     flexDirection={{ base: "column-reverse", sm: "row" }}
+                    mt={2}
                 >
-                    <HStack mt={{ base: 5, sm: 0 }}>
+                    <Flex
+                        mt={{ base: 6, sm: 0 }}
+                        flexDirection={{ base: "column", sm: "row" }}
+                        columnGap={2}
+                    >
                         {showSignUpForm ? (
                             <>
                                 <Text>Already have an account?</Text>
                                 <Button
-                                    variant={"unstyled"}
+                                    variant={"link"}
                                     onClick={() => setShowSignUpForm(false)}
                                 >
                                     Login
@@ -112,15 +121,19 @@ const AuthForm = ({ isOpen, onClose }: Props): JSX.Element => {
                             <>
                                 <Text>Don't have an account?</Text>
                                 <Button
-                                    variant={"unstyled"}
+                                    variant={"link"}
                                     onClick={() => setShowSignUpForm(true)}
                                 >
                                     Sign up
                                 </Button>
                             </>
                         )}
-                    </HStack>
-                    <HStack w={{ base: "100%", sm: "auto" }}>
+                    </Flex>
+                    <Flex
+                        w={{ base: "100%", sm: "auto" }}
+                        flexDirection={{ base: "column", sm: "row" }}
+                        gap={2}
+                    >
                         <Button
                             type="submit"
                             colorScheme="blue"
@@ -131,13 +144,13 @@ const AuthForm = ({ isOpen, onClose }: Props): JSX.Element => {
                             Submit
                         </Button>
                         <Button
-                            variant={"ghost"}
+                            variant={"outline"}
                             w={{ base: "100%" }}
                             onClick={onClose}
                         >
                             Close
                         </Button>
-                    </HStack>
+                    </Flex>
                 </ModalFooter>
             </ModalContent>
         </Modal>
