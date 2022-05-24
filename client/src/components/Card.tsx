@@ -98,7 +98,7 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
                     </HStack>
                     <SkeletonText
                         noOfLines={1}
-                        w="75%"
+                        w="full"
                         mt={2}
                         isLoaded={imageLoaded}
                     >

@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 const Layout = (): JSX.Element => {
     const color = useColorModeValue("gray.800", "gray.300");
     return (
-        <Box color={color} paddingX={[2, 10, 20]} paddingBottom={10}>
+        <Box color={color} paddingX={[5, 10, 20]} paddingBottom={10}>
             <Container maxW="container.xl" p={0}>
                 <header>
                     <Navbar />

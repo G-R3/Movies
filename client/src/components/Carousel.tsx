@@ -23,17 +23,17 @@ export default function Carousel({ data, heading }: any): JSX.Element {
                 {heading}
             </Heading>
             <Swiper
-                slidesPerView={3}
+                slidesPerView={1}
                 spaceBetween={20}
                 navigation
                 freeMode
                 modules={[Navigation]}
                 wrapperTag="ul"
                 breakpoints={{
-                    320: {
-                        slidesPerView: 1,
-                    },
                     480: {
+                        slidesPerView: 2,
+                    },
+                    1024: {
                         slidesPerView: 3,
                     },
                 }}
