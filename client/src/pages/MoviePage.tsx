@@ -17,11 +17,10 @@ import Cast from "../components/Cast";
 import Carousel from "../components/Carousel";
 import ListMenu from "../components/ListMenu";
 import Loader from "../components/Loader";
-import { AuthContext } from "../context/Auth";
 import moment from "moment";
 
 import { getMovie } from "../api";
-import GenreTag from "../components/Tag";
+import GenreTag from "../components/GenreTag";
 import { numberFormat, minutesToHrsMins } from "../utils/index";
 
 const MoviePage = (): JSX.Element => {
