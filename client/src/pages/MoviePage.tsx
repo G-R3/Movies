@@ -28,7 +28,6 @@ const MoviePage = (): JSX.Element => {
     const { movieId } = useParams<string>();
     const [data, setData] = useState<any>();
     const [isLoading, setIsLoading] = useState(true);
-    const { isLoggedIn } = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -66,7 +65,7 @@ const MoviePage = (): JSX.Element => {
             gap={20}
         >
             <SimpleGrid
-                columns={{ sm: 1, md: 2 }}
+                columns={{ md: 1, lg: 2 }}
                 spacingX="40px"
                 mt={10}
                 alignItems="center"
@@ -79,7 +78,7 @@ const MoviePage = (): JSX.Element => {
                         shadow="dark-lg"
                     />
                 </Box>
-                <Flex direction="column" height="full">
+                <Flex direction="column" height="full" mt={{ md: 10, lg: 0 }}>
                     <Flex
                         flexWrap="wrap"
                         mt={{ base: 10, md: 0 }}
@@ -96,15 +95,15 @@ const MoviePage = (): JSX.Element => {
                         <Heading
                             as="h1"
                             fontSize={{
-                                base: "2xl",
-                                md: "3xl",
-                                lg: "5xl",
+                                base: "xl",
+                                md: "2xl",
+                                lg: "4xl",
                             }}
                             mt={2}
                         >
                             {movie.title}
                         </Heading>
-                        <Text color="gray.400" fontWeight="semibold">
+                        <Text as={"i"} color="gray.400" fontWeight="semibold">
                             {movie.tagline}
                         </Text>
                         <Text mt={2}>{movie.overview}</Text>
@@ -140,7 +139,7 @@ const MoviePage = (): JSX.Element => {
                 </Flex>
             </SimpleGrid>
             <Flex
-                direction={{ base: "column", md: "row" }}
+                direction={{ base: "column", sm: "row" }}
                 mt={10}
                 gap={{ base: 9, md: "0" }}
             >
