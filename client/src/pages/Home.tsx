@@ -17,24 +17,41 @@ const Home = (): JSX.Element => {
 
     return (
         <>
-            <Grid templateColumns="repeat(12, 1fr)" gap={6}>
-                <GridItem colSpan={6}>
+            <Grid
+                templateColumns={{
+                    base: "repeat(1, 1fr)",
+                    md: "repeat(12,1fr)",
+                }}
+                gap={6}
+            >
+                <GridItem colSpan={{ base: 1, md: 7, xl: 6 }}>
                     <Flex
                         h="full"
                         flexDirection={"column"}
                         justifyContent={"center"}
+                        alignItems={{ base: "center", md: "flex-start" }}
+                        mt={{ base: "32", md: "0" }}
+                        textAlign={{ base: "center", sm: "start" }}
                     >
-                        <Heading fontSize="7xl">Movie Manager</Heading>
-                        <Text textAlign={"start"} fontSize={"xl"}>
+                        <Heading
+                            fontSize={{
+                                base: "4xl",
+                                md: "5xl",
+                                lg: "6xl",
+                                xl: "7xl",
+                            }}
+                        >
+                            Movie Manager
+                        </Heading>
+                        <Text fontSize={{ base: "md", md: "lg", lg: "xl" }}>
                             Track and organize your movies
                         </Text>
                         <Button
                             mt="5"
                             colorScheme="purple"
-                            alignSelf={"start"}
-                            fontSize={"lg"}
+                            fontSize={{ base: "md", md: "lg" }}
                             fontWeight={"semibold"}
-                            padding={"6"}
+                            padding={{ base: 4, md: 6 }}
                             onClick={() => onOpen()}
                         >
                             Get Started
@@ -42,12 +59,15 @@ const Home = (): JSX.Element => {
                         <AuthForm isOpen={isOpen} onClose={onClose} />
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={6}>
+                <GridItem
+                    colSpan={{ base: 1, md: 5, xl: 6 }}
+                    display={{ base: "none", md: "block" }}
+                >
                     <VStack h="full" alignItems="start" gap={10} mt={"8"}>
                         <Flex gap={10}>
                             <Box
-                                w="400px"
-                                h="280px"
+                                w="350px"
+                                h="230px"
                                 bg="tomato"
                                 borderRadius={10}
                                 shadow={"2xl"}
@@ -55,8 +75,8 @@ const Home = (): JSX.Element => {
                                 style={{ "--order": 1 } as CSSProperties}
                             ></Box>
                             <Box
-                                w="400px"
-                                h="280px"
+                                w="350px"
+                                h="230px"
                                 bg="tomato"
                                 borderRadius={10}
                                 shadow={"2xl"}
@@ -72,8 +92,8 @@ const Home = (): JSX.Element => {
                                 borderRadius={10}
                             ></Box>
                             <Box
-                                w="400px"
-                                h="280px"
+                                w="350px"
+                                h="230px"
                                 bg="tomato"
                                 borderRadius={10}
                                 shadow={"2xl"}
@@ -81,8 +101,8 @@ const Home = (): JSX.Element => {
                                 style={{ "--order": 3 } as CSSProperties}
                             ></Box>
                             <Box
-                                w="400px"
-                                h="280px"
+                                w="350px"
+                                h="230px"
                                 bg="tomato"
                                 borderRadius={10}
                                 shadow={"2xl"}
