@@ -6,10 +6,12 @@ import {
     VStack,
     Button,
     useToast,
+    Flex,
 } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
+import Loader from "../components/Loader";
 
 interface IList {
     _id: string;
@@ -24,9 +26,11 @@ export default function ListPage() {
     const [list, setList] = useState<IList>();
     const navigate = useNavigate();
     const toast = useToast();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const getMovies = async () => {
+            setIsLoading(true);
             try {
                 const response = await fetch(`/api/list/${listId}/movies`);
 
@@ -41,6 +45,7 @@ export default function ListPage() {
                 }
 
                 setList(data.list);
+                setIsLoading(false);
             } catch (err) {
                 console.warn(err);
             }
@@ -89,19 +94,34 @@ export default function ListPage() {
         }
     };
 
+    if (isLoading)
+        return (
+            <Box mt={20}>
+                <Loader size="xl" />
+            </Box>
+        );
+
     return (
         <>
             <Box marginY={"28"}>
-                <Heading fontSize={"7xl"} className="profile-header">
+                <Heading
+                    fontSize={{ base: "4xl", lg: "7xl" }}
+                    className="profile-header"
+                    noOfLines={1}
+                >
                     {list && list.title}
                 </Heading>
-                <Text fontSize={"xl"} color={"gray.400"}>
+                <Text
+                    fontSize={{ base: "md", lg: "xl" }}
+                    color={"gray.400"}
+                    mt={2}
+                >
                     {list && list.description}
                 </Text>
             </Box>
 
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={"40px"}>
-                {list &&
+                {list && list.movies.length ? (
                     list.movies.map((movie: any) => (
                         <VStack key={movie.id}>
                             <Card movie={movie} />
@@ -114,7 +134,30 @@ export default function ListPage() {
                                 Remove from list
                             </Button>
                         </VStack>
-                    ))}
+                    ))
+                ) : (
+                    <Flex alignItems={"center"} flexDirection="column">
+                        <Heading
+                            as="h3"
+                            textAlign={"center"}
+                            color={"gray.600"}
+                            fontSize="2xl"
+                        >
+                            Looks like you haven't added any movies to this list
+                        </Heading>
+                        <Button
+                            as={Link}
+                            to={"/browse"}
+                            mt="5"
+                            colorScheme="purple"
+                            fontSize={"lg"}
+                            fontWeight={"semibold"}
+                            padding={"6"}
+                        >
+                            Browse Movies
+                        </Button>
+                    </Flex>
+                )}
             </SimpleGrid>
         </>
     );
