@@ -1,4 +1,4 @@
-import { Flex, Spinner } from "@chakra-ui/react";
+import { Center, Spinner } from "@chakra-ui/react";
 
 interface Props {
     size: string;
@@ -6,8 +6,8 @@ interface Props {
 
 export default function Loader({ size }: Props): JSX.Element {
     return (
-        <Flex justifyContent={"center"}>
+        <Center justifyContent={"center"}>
             <Spinner size={size} />
-        </Flex>
+        </Center>
     );
 }
