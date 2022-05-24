@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Heading, SimpleGrid, Box } from "@chakra-ui/react";
+import { SimpleGrid, Box } from "@chakra-ui/react";
 import Card from "../components/Card";
 
 import { getMovies, getTrending } from "../api/index";
