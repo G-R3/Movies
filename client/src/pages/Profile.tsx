@@ -1,8 +1,6 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import {
     Button,
-    Grid,
-    GridItem,
     Heading,
     IconButton,
     Text,
@@ -102,109 +100,108 @@ export default function Profile() {
     };
 
     return (
-        <Grid templateColumns={"repeat(12,1fr)"}>
-            <GridItem>
-                <Heading
-                    fontSize={"7xl"}
-                    marginY={"28"}
-                    className="profile-header"
+        <>
+            <Heading
+                as="h1"
+                fontSize={"7xl"}
+                marginY={"28"}
+                className="profile-header"
+            >
+                Profile
+            </Heading>
+
+            <Heading as={"h2"} mb={5}>
+                Your lists
+            </Heading>
+            {lists.length > 0 ? (
+                <SimpleGrid
+                    columns={{ base: 1, md: 2, lg: 3 }}
+                    spacing={"40px"}
                 >
-                    Profile
-                </Heading>
-            </GridItem>
-            <GridItem rowStart={2} colSpan={12}>
-                <Heading as={"h2"} mb={5}>
-                    Your lists
-                </Heading>
-                {lists.length > 0 ? (
-                    <SimpleGrid
-                        columns={{ base: 1, md: 2, lg: 3 }}
-                        spacing={"40px"}
-                    >
-                        {lists.map((list) => (
-                            <LinkBox
-                                as="article"
-                                key={list._id}
-                                w={"100%"}
-                                h="210px"
-                                borderRadius={10}
-                                shadow={"md"}
-                                padding={"5"}
-                                bg={bg}
-                                _hover={{
-                                    shadow: "lg",
-                                }}
-                                transition="box-shadow 200ms ease"
-                            >
-                                <HStack justifyContent={"space-between"}>
-                                    <Heading
-                                        as={"h3"}
-                                        fontSize="2xl"
-                                        fontWeight={"semibold"}
+                    {lists.map((list) => (
+                        <LinkBox
+                            as="article"
+                            key={list._id}
+                            w={"100%"}
+                            h="210px"
+                            borderRadius={10}
+                            shadow={"md"}
+                            padding={"5"}
+                            bg={bg}
+                            _hover={{
+                                shadow: "lg",
+                            }}
+                            transition="box-shadow 200ms ease"
+                        >
+                            <HStack justifyContent={"space-between"}>
+                                <Heading
+                                    as={"h3"}
+                                    fontSize="2xl"
+                                    fontWeight={"semibold"}
+                                >
+                                    <LinkOverlay
+                                        as={Link}
+                                        to={`/profile/${list._id}`}
+                                        noOfLines={1}
                                     >
-                                        <LinkOverlay
-                                            as={Link}
-                                            to={`/profile/${list._id}`}
-                                        >
-                                            {list.title}
-                                        </LinkOverlay>
-                                    </Heading>
-                                    <Tooltip
-                                        label="Delete list"
-                                        aria-label="Delete list"
-                                    >
-                                        <IconButton
-                                            aria-label="Delete movie list"
-                                            icon={<DeleteIcon />}
-                                            variant={"outline"}
-                                            colorScheme="red"
-                                            onClick={() => deleteList(list._id)}
-                                        />
-                                    </Tooltip>
-                                </HStack>
-                                <Text mt={3} color={"gray.400"}>
-                                    {list.description}
-                                </Text>
-                            </LinkBox>
-                        ))}
-                    </SimpleGrid>
-                ) : isLoading ? (
-                    <Loader size="xl" />
-                ) : error ? (
+                                        {list.title}
+                                    </LinkOverlay>
+                                </Heading>
+                                <Tooltip
+                                    label="Delete list"
+                                    aria-label="Delete list"
+                                >
+                                    <IconButton
+                                        aria-label="Delete movie list"
+                                        icon={<DeleteIcon />}
+                                        variant={"outline"}
+                                        colorScheme="red"
+                                        onClick={() => deleteList(list._id)}
+                                    />
+                                </Tooltip>
+                            </HStack>
+                            <Text mt={3} color={"gray.400"} noOfLines={3}>
+                                {list.description}
+                            </Text>
+                        </LinkBox>
+                    ))}
+                </SimpleGrid>
+            ) : isLoading ? (
+                <Loader size="xl" />
+            ) : error ? (
+                <Heading
+                    as="h3"
+                    textAlign={"center"}
+                    color={"gray.600"}
+                    fontSize="2xl"
+                >
+                    {error}
+                </Heading>
+            ) : lists.length === 0 ? (
+                <Flex alignItems={"center"} flexDirection="column">
                     <Heading
                         as="h3"
                         textAlign={"center"}
                         color={"gray.600"}
                         fontSize="2xl"
                     >
-                        {error}
+                        Looks like you haven't created any lists
                     </Heading>
-                ) : lists.length === 0 ? (
-                    <Flex alignItems={"center"} flexDirection="column">
-                        <Heading
-                            as="h3"
-                            textAlign={"center"}
-                            color={"gray.600"}
-                            fontSize="2xl"
-                        >
-                            Not lists where found
-                        </Heading>
-                        <Button
-                            as={Link}
-                            to={"/browse"}
-                            mt="5"
-                            colorScheme="purple"
-                            fontSize={"lg"}
-                            fontWeight={"semibold"}
-                            padding={"6"}
-                        >
-                            Browse
-                        </Button>
-                    </Flex>
-                ) : (
-                    <></>
-                )}
-            </GridItem>
-        </Grid>
+                    <Button
+                        as={Link}
+                        to={"/browse"}
+                        mt="5"
+                        colorScheme="purple"
+                        fontSize={"lg"}
+                        fontWeight={"semibold"}
+                        padding={"6"}
+                    >
+                        Browse
+                    </Button>
+                </Flex>
+            ) : (
+                <></>
+            )}
+        </>
     );
 }
