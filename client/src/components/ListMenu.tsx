@@ -1,4 +1,5 @@
 import {
+    Text,
     Menu,
     MenuButton,
     MenuList,
@@ -7,6 +8,7 @@ import {
     useDisclosure,
     useToast,
     useColorModeValue,
+    chakra,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { useContext, useEffect, useState } from "react";
@@ -134,6 +136,7 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
                 <MenuList
                     height="auto"
                     maxHeight="300px"
+                    width="300px"
                     overflowY="scroll"
                     css={{
                         "&::-webkit-scrollbar": {
@@ -157,7 +160,9 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
                                 key={list._id}
                                 onClick={() => handleClick(list._id)}
                             >
-                                {list.title}
+                                <chakra.span noOfLines={1}>
+                                    {list.title}
+                                </chakra.span>
                             </MenuItem>
                         ))}
                 </MenuList>
