@@ -39,8 +39,8 @@ const Browse = (): JSX.Element => {
             const movies = await getMovies();
             const trending = await getTrending();
 
-            setMovies(movies.results);
-            setTrending(trending.results);
+            setMovies(movies.data.results);
+            setTrending(trending.data.results);
         };
 
         fetchData();

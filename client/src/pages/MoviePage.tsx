@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     chakra,
@@ -19,7 +19,6 @@ import ListMenu from "../components/ListMenu";
 import Loader from "../components/Loader";
 import moment from "moment";
 
-import { getMovie } from "../api";
 import GenreTag from "../components/GenreTag";
 import { numberFormat, minutesToHrsMins } from "../utils/index";
 
@@ -32,14 +31,15 @@ const MoviePage = (): JSX.Element => {
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            const response = await getMovie(Number(movieId));
+            const response = await fetch(`/api/movies/${movieId}`);
 
-            if (!response.success) {
+            if (response.status === 404) {
                 navigate("/404", { replace: true });
-                return;
             }
 
-            setData(response.data);
+            const data = await response.json();
+
+            setData(data.data);
             setIsLoading(false);
         };
 
