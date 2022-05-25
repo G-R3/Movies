@@ -13,8 +13,6 @@ import {
 import { SearchIcon } from "@chakra-ui/icons";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { searchMovie } from "../api";
-import Loader from "./Loader";
 
 const Fade = chakra(ScaleFade);
 
@@ -38,7 +36,6 @@ interface Movie {
 export default function Search() {
     const [value, setValue] = useState<string>("");
     const [movies, setMovies] = useState<Movie[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
     const ref = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -55,15 +52,24 @@ export default function Search() {
             return;
         }
 
-        const fetchMovies = async () => {
-            setIsLoading(true);
-            const movies = await searchMovie(value);
-            setMovies(movies.results);
-            setIsLoading(false);
-        };
+        try {
+            const fetchMovies = async () => {
+                const response = await fetch(`/api/movies/search/${value}`);
 
-        onOpen();
-        fetchMovies();
+                if (response.status === 404) {
+                    throw new Error(
+                        "Something went wrong while searching for a movie"
+                    );
+                }
+
+                const data = await response.json();
+
+                setMovies(data.data);
+            };
+
+            onOpen();
+            fetchMovies();
+        } catch (err) {}
     }, [value]);
 
     useOutsideClick({
@@ -97,10 +103,7 @@ export default function Search() {
                 onChange={(e) => setValue(e.target.value)}
             />
             {/* eslint-disable-next-line react/no-children-prop */}
-            <InputRightElement
-                pointerEvents="none"
-                children={isLoading ? <Loader size="sm" /> : <SearchIcon />}
-            />
+            <InputRightElement pointerEvents="none" children={<SearchIcon />} />
             {movies && movies.length && isOpen ? (
                 <Fade
                     initialScale={0.9}
