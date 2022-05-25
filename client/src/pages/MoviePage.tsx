@@ -131,7 +131,9 @@ const MoviePage = (): JSX.Element => {
                                 Runtime
                             </StatLabel>
                             <StatNumber fontSize="sm" fontWeight="bold">
-                                {minutesToHrsMins(movie.runtime)}
+                                {movie.runtime
+                                    ? minutesToHrsMins(movie.runtime)
+                                    : "N/A"}
                             </StatNumber>
                         </Stat>
                     </HStack>
