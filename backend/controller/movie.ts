@@ -26,11 +26,29 @@ interface Movie {
     vote_count: number;
 }
 
+const getMovies = async (req: Request, res: Response) => {
+    try {
+        const response = await axios.get(
+            `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`
+        );
+
+        res.status(200).send({
+            success: true,
+            data: response.data,
+        });
+    } catch (err) {
+        res.status(404).send({
+            success: false,
+            message: "Something went wrong fetching movies",
+        });
+    }
+};
+
 const getMovie = async (req: Request, res: Response) => {
     try {
         const { movieId } = req.params;
         if (!movieId.trim()) {
-            return res.status(404).send({
+            return res.status(400).send({
                 success: false,
                 message: "Invalid movie id",
             });
@@ -106,4 +124,36 @@ const getMovie = async (req: Request, res: Response) => {
     }
 };
 
-export { getMovie };
+const getTrending = async (req: Request, res: Response) => {
+    try {
+        const response = await axios.get(
+            `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.API_KEY}`
+        );
+
+        res.status(200).send({ success: true, data: response.data });
+    } catch (err) {
+        res.status(404).send({
+            success: false,
+            message: "Something went wrong fetching movies",
+        });
+    }
+};
+
+const searchMovie = async (req: Request, res: Response) => {
+    try {
+        const { query } = req.params;
+        console.log(req.params);
+        const response = await axios.get(
+            `https://api.themoviedb.org/3/search/movie?api_key=${process.env.API_KEY}&language=en-US&query=${query}&page=1&include_adult=false`
+        );
+
+        res.status(200).send({ success: true, data: response.data.results });
+    } catch (err) {
+        res.status(404).send({
+            success: false,
+            message: "Something went wrong while searching for movies",
+        });
+    }
+};
+
+export { getMovies, getMovie, getTrending, searchMovie };
