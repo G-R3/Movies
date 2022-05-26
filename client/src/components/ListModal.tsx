@@ -18,7 +18,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import { FormEvent, ChangeEvent, useState, useContext } from "react";
-import { ListContext } from "../context/ListContext";
+import { ListDispatchContext } from "../context/ListContext";
 
 interface Props {
     isOpen: boolean;
@@ -57,7 +57,7 @@ export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
     const [listData, setListData] = useState({ title: "", description: "" });
     const [errors, setErrors] = useState<Errors>({});
     const [isSubmitting, setisSubmitting] = useState<boolean>(false);
-    const { dispatch } = useContext(ListContext);
+    const dispatch = useContext(ListDispatchContext);
     const toast = useToast();
 
     const handleChange = (e: IOnChange): void => {
@@ -94,13 +94,13 @@ export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
 
             const data = await response.json();
 
-            dispatch({ type: "ADD_LIST", payload: data.list });
             setisSubmitting(false);
             setErrors({});
             setListData({
                 title: "",
                 description: "",
             });
+            dispatch({ type: "ADD_LIST", payload: data.list });
             onClose();
             toast({
                 title: "List was created",
