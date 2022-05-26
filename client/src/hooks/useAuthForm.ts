@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/Auth";
+import { AuthContext } from "../context/AuthContext";
 type ErrorData = {
     email?: string;
     password?: string;

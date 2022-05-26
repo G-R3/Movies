@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import AuthForm from "./AuthForm";
-import { AuthContext } from "../context/Auth";
+import { AuthContext } from "../context/AuthContext";
 
 const Navbar = (): JSX.Element => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -27,8 +27,6 @@ const Navbar = (): JSX.Element => {
             console.error(err);
         }
     };
-
-    console.log(isLoggedIn);
 
     return (
         <Flex
