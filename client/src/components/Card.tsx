@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import {
     Box,
     Skeleton,
@@ -116,4 +116,4 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
     );
 };
 
-export default Card;
+export default memo(Card);
