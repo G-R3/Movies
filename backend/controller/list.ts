@@ -135,6 +135,38 @@ const addMovieToList = async (req: Request, res: Response) => {
     res.status(200).send({ success: true, message: "Movie added to list" });
 };
 
+const editList = async (req: Request, res: Response) => {
+    const { listId } = req.params;
+    const { title, description } = req.body;
+
+    if (!title) {
+        return res
+            .status(400)
+            .send({ success: false, message: "Title is required" });
+    }
+    if (description && description.length > 200) {
+        return res.status(400).send({
+            success: false,
+            message: "Description most be equal to or less than 200 characters",
+        });
+    }
+
+    const updatedList = await List.findByIdAndUpdate(
+        listId,
+        {
+            title,
+            description,
+        },
+        { new: true }
+    ).select("-owner -updatedAt -__v");
+
+    res.status(200).send({
+        success: true,
+        message: "List was updated",
+        list: updatedList,
+    });
+};
+
 const deleteList = async (req: Request, res: Response) => {
     const { listId } = req.params;
 
@@ -144,15 +176,15 @@ const deleteList = async (req: Request, res: Response) => {
             .send({ success: false, message: "List does not exist" });
     }
 
-    const deletedList = await List.findByIdAndDelete(listId);
+    const deletedList = await List.findByIdAndDelete(listId).select(
+        "-owner -updatedAt -__v"
+    );
 
-    return res
-        .status(200)
-        .send({
-            success: true,
-            message: "List was deleted",
-            list: deletedList,
-        });
+    return res.status(200).send({
+        success: true,
+        message: "List was deleted",
+        list: deletedList,
+    });
 };
 
 const deleteMovieFromList = async (req: Request, res: Response) => {
@@ -188,6 +220,7 @@ export {
     getUserLists,
     createList,
     addMovieToList,
+    editList,
     deleteList,
     getList,
     deleteMovieFromList,
