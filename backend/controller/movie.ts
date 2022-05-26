@@ -142,7 +142,7 @@ const getTrending = async (req: Request, res: Response) => {
 const searchMovie = async (req: Request, res: Response) => {
     try {
         const { query } = req.params;
-        console.log(req.params);
+
         const response = await axios.get(
             `https://api.themoviedb.org/3/search/movie?api_key=${process.env.API_KEY}&language=en-US&query=${query}&page=1&include_adult=false`
         );
