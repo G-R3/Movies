@@ -17,13 +17,15 @@ import {
     useToast,
     Text,
 } from "@chakra-ui/react";
-import { FormEvent, ChangeEvent, useState, useContext } from "react";
+import {
+    FormEvent,
+    ChangeEvent,
+    useState,
+    useContext,
+    Dispatch,
+    SetStateAction,
+} from "react";
 import { ListDispatchContext } from "../context/ListContext";
-
-interface Props {
-    isOpen: boolean;
-    onClose(): void;
-}
 
 // prettier-ignore
 type IOnChange = ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>;
@@ -37,6 +39,21 @@ interface Errors {
 interface FormData {
     title: string;
     description: string;
+}
+
+interface List {
+    _id: string;
+    title: string;
+    description: string;
+    movies: [];
+    createdAt: string;
+}
+
+interface Props {
+    isOpen: boolean;
+    onClose(): void;
+    list?: List;
+    setList?: Dispatch<SetStateAction<List>>;
 }
 
 const validate = (values: FormData) => {
@@ -53,8 +70,16 @@ const validate = (values: FormData) => {
     return errors;
 };
 
-export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
-    const [listData, setListData] = useState({ title: "", description: "" });
+export default function ListModal({
+    isOpen,
+    onClose,
+    list,
+    setList,
+}: Props): JSX.Element {
+    const [listData, setListData] = useState({
+        title: list?.title || "",
+        description: list?.description || "",
+    });
     const [errors, setErrors] = useState<Errors>({});
     const [isSubmitting, setisSubmitting] = useState<boolean>(false);
     const dispatch = useContext(ListDispatchContext);
@@ -75,18 +100,22 @@ export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
         const hasErrors = validate(listData);
 
         if (Object.keys(hasErrors).length !== 0) {
-            setErrors({ ...hasErrors });
+            setErrors(hasErrors);
             setisSubmitting(false);
             return;
         }
+
         try {
-            const response = await fetch("/api/create", {
-                method: "POST",
+            const url = list ? `/api/edit/${list._id}` : "/api/create";
+            const options = {
+                method: list ? "PUT" : "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(listData),
-            });
+            };
+
+            const response = await fetch(url, options);
 
             if (response.status === 404) {
                 throw new Error();
@@ -94,25 +123,46 @@ export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
 
             const data = await response.json();
 
+            if (list) {
+                dispatch({ type: "EDIT_LIST", payload: data.list });
+                setList?.({
+                    ...list,
+                    title: data.list.title,
+                    description: data.list.description,
+                });
+                toast({
+                    title: "List updated",
+                    description: data.message,
+                    status: "success",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom",
+                });
+            } else {
+                dispatch({ type: "ADD_LIST", payload: data.list });
+                toast({
+                    title: "List created",
+                    description: data.message,
+                    status: "success",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom",
+                });
+                setListData({
+                    title: "",
+                    description: "",
+                });
+            }
+
             setisSubmitting(false);
             setErrors({});
-            setListData({
-                title: "",
-                description: "",
-            });
-            dispatch({ type: "ADD_LIST", payload: data.list });
             onClose();
-            toast({
-                title: "List was created",
-                description: data.message,
-                status: "success",
-                duration: 5000,
-                isClosable: true,
-                position: "bottom",
-            });
         } catch (err) {
+            const message = list
+                ? "Failed to edit list try again later"
+                : "Failed to create list try again later.";
             setisSubmitting(false);
-            setErrors({ message: "Failed to create list. Try again later." });
+            setErrors({ message });
         }
     };
 
@@ -122,7 +172,9 @@ export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
             <Modal isOpen={isOpen} onClose={onClose} preserveScrollBarGap>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Create a list</ModalHeader>
+                    <ModalHeader>
+                        {list ? "Edit list" : "Create list"}
+                    </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <form
@@ -199,7 +251,7 @@ export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
                             form={"create-form"}
                             isLoading={isSubmitting}
                         >
-                            Create
+                            {list ? "Edit" : "Create"}
                         </Button>
                         <Button variant="ghost" onClick={onClose}>
                             Close
