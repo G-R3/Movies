@@ -39,7 +39,7 @@ const getUserLists = async (req: Request, res: Response) => {
         {
             owner: new mongoose.Types.ObjectId(id),
         },
-        "-owner -updatedAt -__v"
+        "-owner -updatedAt -__v -movies"
     );
 
     return res.status(200).send({ success: true, lists: userLists });
@@ -144,9 +144,15 @@ const deleteList = async (req: Request, res: Response) => {
             .send({ success: false, message: "List does not exist" });
     }
 
-    await List.findByIdAndDelete(listId);
+    const deletedList = await List.findByIdAndDelete(listId);
 
-    return res.status(200).send({ success: true, message: "List was deleted" });
+    return res
+        .status(200)
+        .send({
+            success: true,
+            message: "List was deleted",
+            list: deletedList,
+        });
 };
 
 const deleteMovieFromList = async (req: Request, res: Response) => {

@@ -7,6 +7,13 @@ const isListOwner = async (req: Request, res: Response, next: NextFunction) => {
 
         const list = await List.findById(listId);
 
+        if (!list) {
+            return res.status(404).send({
+                success: false,
+                message: "List does not exist",
+            });
+        }
+
         if (!list?.owner?.equals(req?.user?.id)) {
             return res.status(401).send({
                 success: false,
