@@ -2,6 +2,7 @@ enum ListActionKind {
     FETCH = "FETCH_LISTS",
     SET = "SET_LIST",
     ADD = "ADD_LIST",
+    EDIT = "EDIT_LIST",
     REMOVE = "REMOVE_LIST",
 }
 
@@ -39,6 +40,21 @@ const reducer = (state: State, action: ListAction): State => {
             return {
                 ...state,
                 lists: [...state.lists, { ...action.payload }],
+            };
+        }
+        case ListActionKind.EDIT: {
+            return {
+                ...state,
+                lists: state.lists.map((list) => {
+                    if (list._id === action.payload._id) {
+                        return {
+                            ...list,
+                            title: action.payload.title,
+                            description: action.payload.description,
+                        };
+                    }
+                    return list;
+                }),
             };
         }
         case ListActionKind.REMOVE: {

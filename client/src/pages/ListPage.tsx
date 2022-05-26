@@ -7,11 +7,15 @@ import {
     Button,
     useToast,
     Flex,
+    IconButton,
+    useDisclosure,
 } from "@chakra-ui/react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import Loader from "../components/Loader";
+import { EditIcon } from "@chakra-ui/icons";
+import ListModal from "../components/ListModal";
 
 interface IList {
     _id: string;
@@ -23,16 +27,16 @@ interface IList {
 
 export default function ListPage() {
     const { listId } = useParams();
-    const [list, setList] = useState<IList>();
+    const [list, setList] = useState<IList>({} as IList);
+    const [isLoading, setIsLoading] = useState(true);
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const navigate = useNavigate();
     const toast = useToast();
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        const getMovies = async () => {
-            setIsLoading(true);
+        const getListById = async () => {
             try {
-                const response = await fetch(`/api/list/${listId}/movies`);
+                const response = await fetch(`/api/list/${listId}`);
 
                 if (response.status === 404) {
                     navigate("/404", { replace: true });
@@ -51,7 +55,7 @@ export default function ListPage() {
             }
         };
 
-        getMovies();
+        getListById();
     }, []);
 
     const handleClick = async (listId: string, movieId: string) => {
@@ -103,25 +107,32 @@ export default function ListPage() {
 
     return (
         <>
-            <Box marginY={"28"}>
-                <Heading
-                    fontSize={{ base: "4xl", lg: "7xl" }}
-                    className="profile-header"
-                    noOfLines={1}
-                >
-                    {list && list.title}
-                </Heading>
-                <Text
-                    fontSize={{ base: "md", lg: "xl" }}
-                    color={"gray.400"}
-                    mt={2}
-                >
-                    {list && list.description}
-                </Text>
-            </Box>
+            <Flex justifyContent={"space-between"} marginY={"28"}>
+                <Box>
+                    <Heading
+                        fontSize={{ base: "4xl", lg: "7xl" }}
+                        className="profile-header"
+                        noOfLines={1}
+                    >
+                        {list && list.title}
+                    </Heading>
+                    <Text
+                        fontSize={{ base: "md", lg: "xl" }}
+                        color={"gray.400"}
+                        mt={2}
+                    >
+                        {list && list.description}
+                    </Text>
+                </Box>
+                <IconButton
+                    aria-label="Edit list"
+                    icon={<EditIcon />}
+                    onClick={onOpen}
+                />
+            </Flex>
 
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={"40px"}>
-                {list && list.movies.length ? (
+                {list && list?.movies?.length ? (
                     list.movies.map((movie: any) => (
                         <VStack key={movie.id}>
                             <Card movie={movie} />
@@ -159,6 +170,13 @@ export default function ListPage() {
                     </Flex>
                 )}
             </SimpleGrid>
+
+            <ListModal
+                isOpen={isOpen}
+                onClose={onClose}
+                list={list}
+                setList={setList}
+            />
         </>
     );
 }
