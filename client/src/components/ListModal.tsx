@@ -1,4 +1,3 @@
-import { FormEvent, ChangeEvent, useState } from "react";
 import {
     Modal,
     ModalOverlay,
@@ -18,11 +17,12 @@ import {
     useToast,
     Text,
 } from "@chakra-ui/react";
+import { FormEvent, ChangeEvent, useState, useContext } from "react";
+import { ListContext } from "../context/ListContext";
 
 interface Props {
     isOpen: boolean;
     onClose(): void;
-    getLists: any;
 }
 
 // prettier-ignore
@@ -53,14 +53,11 @@ const validate = (values: FormData) => {
     return errors;
 };
 
-export default function ListModal({
-    isOpen,
-    onClose,
-    getLists,
-}: Props): JSX.Element {
+export default function ListModal({ isOpen, onClose }: Props): JSX.Element {
     const [listData, setListData] = useState({ title: "", description: "" });
     const [errors, setErrors] = useState<Errors>({});
     const [isSubmitting, setisSubmitting] = useState<boolean>(false);
+    const { dispatch } = useContext(ListContext);
     const toast = useToast();
 
     const handleChange = (e: IOnChange): void => {
@@ -97,7 +94,7 @@ export default function ListModal({
 
             const data = await response.json();
 
-            getLists();
+            dispatch({ type: "ADD_LIST", payload: data.list });
             setisSubmitting(false);
             setErrors({});
             setListData({

@@ -12,15 +12,17 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/Auth";
+import { AuthContext } from "../context/AuthContext";
 import ListModal from "./ListModal";
 import AuthForm from "./AuthForm";
+import { ListContext } from "../context/ListContext";
 
 interface List {
     _id: string;
     title: string;
     description: string;
 }
+
 interface Genres {
     id: number;
     name: string;
@@ -49,7 +51,7 @@ interface Movie {
 export default function ListMenu({ movie }: Movie): JSX.Element {
     const { isLoggedIn } = useContext(AuthContext);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [lists, setLists] = useState<List[]>([]);
+    const { lists, dispatch } = useContext(ListContext);
     const toast = useToast();
 
     const bgAlt = useColorModeValue(
@@ -57,23 +59,14 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
         "RGBA(255, 255, 255, 0.16)"
     );
 
-    const getLists = async () => {
-        try {
+    useEffect(() => {
+        const getLists = async () => {
             const response = await fetch("/api/lists");
             const data = await response.json();
 
-            if (!data.success) {
-                throw new Error(data.message);
-            }
+            dispatch({ type: "SET_LIST", payload: data.lists });
+        };
 
-            setLists(data.lists);
-        } catch (err) {
-            console.error("Failed to fetch lists");
-        }
-    };
-
-    useEffect(() => {
-        if (!isLoggedIn) return;
         getLists();
     }, []);
 
@@ -155,7 +148,7 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
                         Create new list
                     </MenuItem>
                     {lists.length > 0 &&
-                        lists.map((list) => (
+                        lists.map((list: List) => (
                             <MenuItem
                                 key={list._id}
                                 onClick={() => handleClick(list._id)}
@@ -168,7 +161,7 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
                 </MenuList>
             </Menu>
 
-            <ListModal isOpen={isOpen} onClose={onClose} getLists={getLists} />
+            <ListModal isOpen={isOpen} onClose={onClose} />
         </>
     );
 }

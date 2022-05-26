@@ -3,7 +3,8 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import theme from "../theme";
-import { AuthProvider } from "./context/Auth";
+import { AuthProvider } from "./context/AuthContext";
+import { ListProvider } from "./context/ListContext";
 import App from "./App";
 import "./index.css";
 
@@ -16,7 +17,9 @@ root.render(
             <ColorModeScript initialColorMode={theme.config.initialColorMode} />
             <BrowserRouter>
                 <AuthProvider>
-                    <App />
+                    <ListProvider>
+                        <App />
+                    </ListProvider>
                 </AuthProvider>
             </BrowserRouter>
         </ChakraProvider>
