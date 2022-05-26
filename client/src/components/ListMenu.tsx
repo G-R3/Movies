@@ -15,7 +15,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import ListModal from "./ListModal";
 import AuthForm from "./AuthForm";
-import { ListContext } from "../context/ListContext";
+import { ListContext, ListDispatchContext } from "../context/ListContext";
 
 interface List {
     _id: string;
@@ -51,24 +51,14 @@ interface Movie {
 export default function ListMenu({ movie }: Movie): JSX.Element {
     const { isLoggedIn } = useContext(AuthContext);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { lists, dispatch } = useContext(ListContext);
+    const { lists } = useContext(ListContext);
+
     const toast = useToast();
 
     const bgAlt = useColorModeValue(
         "RGBA(0, 0, 0, 0.16)",
         "RGBA(255, 255, 255, 0.16)"
     );
-
-    useEffect(() => {
-        const getLists = async () => {
-            const response = await fetch("/api/lists");
-            const data = await response.json();
-
-            dispatch({ type: "SET_LIST", payload: data.lists });
-        };
-
-        getLists();
-    }, []);
 
     const handleClick = async (listId: string) => {
         try {

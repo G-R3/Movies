@@ -13,9 +13,10 @@ import {
     LinkBox,
     LinkOverlay,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
+import { ListContext, ListDispatchContext } from "../context/ListContext";
 
 interface List {
     _id: string;
@@ -24,39 +25,11 @@ interface List {
 }
 
 export default function Profile() {
-    const [lists, setLists] = useState<List[]>([]);
-    const [error, setError] = useState<string>();
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const { lists, isLoading } = useContext(ListContext);
+    const dispatch = useContext(ListDispatchContext);
 
     const bg = useColorModeValue("gray.50", "#2D3748");
     const toast = useToast();
-
-    const getLists = async () => {
-        try {
-            const response = await fetch("/api/lists");
-
-            if (response.status === 404) {
-                throw new Error();
-            }
-
-            const data = await response.json();
-
-            if (!data.success) {
-                throw new Error(data.message);
-            }
-
-            setLists(data.lists);
-            setError("");
-            setIsLoading(false);
-        } catch (err) {
-            setError("Failed to fetch lists");
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        getLists();
-    }, []);
 
     const deleteList = async (listId: string) => {
         try {
@@ -74,8 +47,8 @@ export default function Profile() {
                 throw new Error(data.message);
             }
 
-            getLists();
-            setError("");
+            dispatch({ type: "REMOVE_LIST", payload: data.list });
+
             toast({
                 title: "List deleted",
                 description: data.message,
@@ -86,7 +59,7 @@ export default function Profile() {
             });
         } catch (err: any) {
             let message = err?.message || "something happened";
-            setError(message);
+
             toast({
                 title: "Oh No",
                 description: message,
@@ -117,7 +90,7 @@ export default function Profile() {
                     columns={{ base: 1, md: 2, lg: 3 }}
                     spacing={"40px"}
                 >
-                    {lists.map((list) => (
+                    {lists.map((list: List) => (
                         <LinkBox
                             as="article"
                             key={list._id}
@@ -167,15 +140,6 @@ export default function Profile() {
                 </SimpleGrid>
             ) : isLoading ? (
                 <Loader size="xl" />
-            ) : error ? (
-                <Heading
-                    as="h3"
-                    textAlign={"center"}
-                    color={"gray.600"}
-                    fontSize="2xl"
-                >
-                    {error}
-                </Heading>
             ) : lists.length === 0 ? (
                 <Flex alignItems={"center"} flexDirection="column">
                     <Heading
