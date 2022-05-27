@@ -25,4 +25,4 @@ const validateAuth = async (
     next();
 };
 
-export { validateAuth };
+export default validateAuth;
