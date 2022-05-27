@@ -50,19 +50,6 @@ const createList = async (req: Request, res: Response) => {
         const { title, description } = req.body;
         const { id } = req.user;
 
-        if (!title) {
-            return res
-                .status(400)
-                .send({ success: false, message: "Title is required" });
-        }
-        if (description && description.length > 200) {
-            return res.status(400).send({
-                success: false,
-                message:
-                    "Description most be equal to or less than 200 characters",
-            });
-        }
-
         const list = await List.create({
             title,
             description,
@@ -85,7 +72,7 @@ const addMovieToList = async (req: Request, res: Response) => {
     const { movie } = req.body;
     let movieId: Types.ObjectId;
 
-    if (!listId || !movie) {
+    if (!listId.trim() || !Object.keys(movie)) {
         return res
             .status(400)
             .send({ success: false, message: "Missing movie or id" });
@@ -138,18 +125,6 @@ const addMovieToList = async (req: Request, res: Response) => {
 const editList = async (req: Request, res: Response) => {
     const { listId } = req.params;
     const { title, description } = req.body;
-
-    if (!title) {
-        return res
-            .status(400)
-            .send({ success: false, message: "Title is required" });
-    }
-    if (description && description.length > 200) {
-        return res.status(400).send({
-            success: false,
-            message: "Description most be equal to or less than 200 characters",
-        });
-    }
 
     const updatedList = await List.findByIdAndUpdate(
         listId,
