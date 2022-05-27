@@ -8,12 +8,10 @@ const validateAuth = async (
 ) => {
     const { email, password } = req.body;
     if (!email.trim() || !password.trim()) {
-        return res
-            .status(400)
-            .send({
-                success: false,
-                message: "Email and password are required",
-            });
+        return res.status(400).send({
+            success: false,
+            message: "Email and password are required",
+        });
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
         return res
             .status(400)
@@ -22,17 +20,6 @@ const validateAuth = async (
         return res.status(400).send({
             success: false,
             message: "Password must be at least 6 characters long",
-        });
-    }
-
-    const existingUser = await User.findOne({
-        email,
-    });
-
-    if (existingUser) {
-        return res.status(400).send({
-            success: false,
-            message: "Email is not available",
         });
     }
 
