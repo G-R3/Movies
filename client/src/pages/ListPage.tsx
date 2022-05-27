@@ -58,9 +58,10 @@ export default function ListPage() {
         getListById();
     }, []);
 
-    const handleClick = async (listId: string, movieId: string) => {
-        setIsLoading(true);
+    const handleClick = async (e: any, listId: string, movieId: string) => {
+        e.currentTarget.disabled = true;
         try {
+            setIsLoading(true);
             const response = await fetch(
                 `/api/delete/${listId}/movie/${movieId}`,
                 {
@@ -146,9 +147,9 @@ export default function ListPage() {
                                 width={"full"}
                                 variant="outline"
                                 colorScheme={"red"}
-                                onClick={() => handleClick(list._id, movie._id)}
-                                isLoading={isLoading}
-                                disabled={isLoading}
+                                onClick={(e) =>
+                                    handleClick(e, list._id, movie._id)
+                                }
                             >
                                 Remove from list
                             </Button>
