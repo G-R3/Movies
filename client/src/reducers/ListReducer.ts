@@ -4,6 +4,7 @@ enum ListActionKind {
     ADD = "ADD_LIST",
     EDIT = "EDIT_LIST",
     REMOVE = "REMOVE_LIST",
+    CLEAR = "CLEAR_LIST",
 }
 
 interface List {
@@ -55,6 +56,12 @@ const reducer = (state: State, action: ListAction): State => {
                     }
                     return list;
                 }),
+            };
+        }
+        case ListActionKind.CLEAR: {
+            return {
+                ...state,
+                lists: [],
             };
         }
         case ListActionKind.REMOVE: {

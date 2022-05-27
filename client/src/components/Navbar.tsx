@@ -13,16 +13,19 @@ import {
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import AuthForm from "./AuthForm";
 import { AuthContext } from "../context/AuthContext";
+import { ListDispatchContext } from "../context/ListContext";
 
 const Navbar = (): JSX.Element => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { colorMode, toggleColorMode } = useColorMode();
     const { isLoggedIn, getIsLoggedIn } = useContext(AuthContext);
+    const dispatch = useContext(ListDispatchContext);
 
     const logOut = async () => {
         try {
             await fetch("/auth/logout");
             await getIsLoggedIn();
+            dispatch({ action: "CLEAR_LIST" });
         } catch (err) {
             console.error(err);
         }
