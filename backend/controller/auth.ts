@@ -37,12 +37,6 @@ const register = async (req: Request, res: Response) => {
 const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-        return res
-            .status(400)
-            .send({ success: false, message: "All fields are required" });
-    }
-
     const user = await User.findOne({ email });
 
     if (!user) {
