@@ -56,6 +56,10 @@ const MoviePage = (): JSX.Element => {
 
     const { movie, cast, recommendations } = data;
 
+    const formattedDate: string = moment(movie.release_date).format(
+        "MMM D, YYYY"
+    );
+
     return (
         <Flex
             direction="column"
@@ -117,9 +121,9 @@ const MoviePage = (): JSX.Element => {
                                 Release Date
                             </StatLabel>
                             <StatNumber fontSize="sm" fontWeight="bold">
-                                {moment(movie.release_date).format(
-                                    "MMM D, YYYY"
-                                )}
+                                {formattedDate !== "Invalid date"
+                                    ? formattedDate
+                                    : "N/A"}
                             </StatNumber>
                         </Stat>
                         <Stat>
@@ -217,7 +221,8 @@ const MoviePage = (): JSX.Element => {
                 ) : (
                     <></>
                 )}
-                <Cast cast={cast.slice(0, 20)} />
+
+                {cast.length > 0 ? <Cast cast={cast.slice(0, 20)} /> : <></>}
             </Flex>
         </Flex>
     );
