@@ -1,5 +1,12 @@
-import { createContext, ReactElement, useEffect, useReducer } from "react";
+import {
+    createContext,
+    ReactElement,
+    useContext,
+    useEffect,
+    useReducer,
+} from "react";
 import listsReducer from "../reducers/ListReducer";
+import { AuthContext } from "./AuthContext";
 
 interface Props {
     children: ReactElement;
@@ -15,8 +22,10 @@ export const ListDispatchContext = createContext<any>(null);
 
 export const ListProvider = ({ children }: Props) => {
     const [state, dispatch] = useReducer(listsReducer, initialState);
+    const { isLoggedIn } = useContext(AuthContext);
 
     useEffect(() => {
+        if (!isLoggedIn) return;
         const getLists = async () => {
             dispatch({ type: "FETCH_LIST" });
 
@@ -27,7 +36,9 @@ export const ListProvider = ({ children }: Props) => {
         };
 
         getLists();
-    }, []);
+    }, [isLoggedIn]);
+
+    console.log(state);
 
     return (
         <ListContext.Provider value={state}>

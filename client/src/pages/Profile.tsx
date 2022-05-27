@@ -13,7 +13,7 @@ import {
     LinkBox,
     LinkOverlay,
 } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import { ListContext, ListDispatchContext } from "../context/ListContext";
@@ -70,6 +70,8 @@ export default function Profile() {
             });
         }
     };
+
+    console.log(lists, isLoading);
 
     return (
         <>
