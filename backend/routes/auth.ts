@@ -1,9 +1,10 @@
 import express from "express";
 import { register, login, logout, isLoggedIn } from "../controller/auth";
+import { validateAuth } from "../middleware/validate";
 
 const router = express.Router();
 
-router.post("/register", register);
+router.post("/register", validateAuth, register);
 
 router.post("/login", login);
 

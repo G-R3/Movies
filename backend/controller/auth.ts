@@ -11,23 +11,6 @@ const generateToken = (id: Types.ObjectId) => {
 const register = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-        return res
-            .status(400)
-            .send({ success: false, message: "All fields are required" });
-    }
-
-    const existingUser = await User.findOne({
-        email,
-    });
-
-    if (existingUser) {
-        return res.status(400).send({
-            success: false,
-            message: "Email is not available",
-        });
-    }
-
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = await User.create({ email, password: hashedPassword });
 
