@@ -32,24 +32,7 @@ const Navbar = (): JSX.Element => {
     };
 
     return (
-        <Flex
-            as="nav"
-            direction="row"
-            align="center"
-            justify="center"
-            py="3.5"
-            gap={5}
-        >
-            <Link
-                to="/"
-                as={RouterLink}
-                fontSize="3xl"
-                fontWeight="bold"
-                textDecoration="none"
-                _hover={{ textDecoration: "none" }}
-            >
-                Movie
-            </Link>
+        <Flex as="nav" direction="row" align="center" justify="center" gap={5}>
             <Spacer />
             <HStack gap={2}>
                 <Flex align={"center"} gap={5}>
