@@ -27,7 +27,7 @@ export const ListProvider = ({ children }: Props) => {
     useEffect(() => {
         if (!isLoggedIn) return;
         const getLists = async () => {
-            dispatch({ type: "FETCH_LIST" });
+            dispatch({ type: "LOAD_LIST" });
 
             const response = await fetch("/api/lists");
             const data = await response.json();
@@ -37,8 +37,6 @@ export const ListProvider = ({ children }: Props) => {
 
         getLists();
     }, [isLoggedIn]);
-
-    console.log(state);
 
     return (
         <ListContext.Provider value={state}>

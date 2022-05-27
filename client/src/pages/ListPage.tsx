@@ -59,6 +59,7 @@ export default function ListPage() {
     }, []);
 
     const handleClick = async (listId: string, movieId: string) => {
+        setIsLoading(true);
         try {
             const response = await fetch(
                 `/api/delete/${listId}/movie/${movieId}`,
@@ -95,10 +96,12 @@ export default function ListPage() {
                 isClosable: true,
                 position: "bottom",
             });
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    if (isLoading)
+    if (isLoading && Object.keys(list).length === 0)
         return (
             <Box mt={20}>
                 <Loader size="xl" />
@@ -131,9 +134,12 @@ export default function ListPage() {
                 />
             </Flex>
 
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={"40px"}>
-                {list && list?.movies?.length ? (
-                    list.movies.map((movie: any) => (
+            {list?.movies?.length ? (
+                <SimpleGrid
+                    columns={{ base: 1, md: 2, lg: 3 }}
+                    spacing={"40px"}
+                >
+                    {list.movies.map((movie: any) => (
                         <VStack key={movie.id}>
                             <Card movie={movie} />
                             <Button
@@ -141,35 +147,41 @@ export default function ListPage() {
                                 variant="outline"
                                 colorScheme={"red"}
                                 onClick={() => handleClick(list._id, movie._id)}
+                                isLoading={isLoading}
+                                disabled={isLoading}
                             >
                                 Remove from list
                             </Button>
                         </VStack>
-                    ))
-                ) : (
-                    <Flex alignItems={"center"} flexDirection="column">
-                        <Heading
-                            as="h3"
-                            textAlign={"center"}
-                            color={"gray.600"}
-                            fontSize="2xl"
-                        >
-                            Looks like you haven't added any movies to this list
-                        </Heading>
-                        <Button
-                            as={Link}
-                            to={"/browse"}
-                            mt="5"
-                            colorScheme="purple"
-                            fontSize={"lg"}
-                            fontWeight={"semibold"}
-                            padding={"6"}
-                        >
-                            Browse Movies
-                        </Button>
-                    </Flex>
-                )}
-            </SimpleGrid>
+                    ))}
+                </SimpleGrid>
+            ) : (
+                <></>
+            )}
+
+            {!isLoading && list.movies.length === 0 && (
+                <Flex alignItems={"center"} flexDirection="column">
+                    <Heading
+                        as="h3"
+                        textAlign={"center"}
+                        color={"gray.600"}
+                        fontSize="2xl"
+                    >
+                        Looks like you haven't added any movies to this list
+                    </Heading>
+                    <Button
+                        as={Link}
+                        to={"/browse"}
+                        mt="5"
+                        colorScheme="purple"
+                        fontSize={"lg"}
+                        fontWeight={"semibold"}
+                        padding={"6"}
+                    >
+                        Browse Movies
+                    </Button>
+                </Flex>
+            )}
 
             <ListModal
                 isOpen={isOpen}

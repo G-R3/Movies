@@ -1,5 +1,5 @@
 enum ListActionKind {
-    FETCH = "FETCH_LISTS",
+    LOAD = "LOAD_LIST",
     SET = "SET_LIST",
     ADD = "ADD_LIST",
     EDIT = "EDIT_LIST",
@@ -24,7 +24,7 @@ interface ListAction {
 
 const reducer = (state: State, action: ListAction): State => {
     switch (action.type) {
-        case ListActionKind.FETCH: {
+        case ListActionKind.LOAD: {
             return {
                 ...state,
                 isLoading: true,
@@ -66,7 +66,7 @@ const reducer = (state: State, action: ListAction): State => {
         }
         case ListActionKind.REMOVE: {
             return {
-                ...state,
+                isLoading: false,
                 lists: state.lists.filter(
                     (list) => list._id !== action.payload._id
                 ),

@@ -32,6 +32,7 @@ export default function Profile() {
     const toast = useToast();
 
     const deleteList = async (listId: string) => {
+        dispatch({ type: "LOAD_LIST" });
         try {
             const response = await fetch(`/api/delete/${listId}`, {
                 method: "DELETE",
@@ -70,8 +71,6 @@ export default function Profile() {
             });
         }
     };
-
-    console.log(lists, isLoading);
 
     return (
         <>
@@ -131,6 +130,8 @@ export default function Profile() {
                                         variant={"outline"}
                                         colorScheme="red"
                                         onClick={() => deleteList(list._id)}
+                                        isLoading={isLoading}
+                                        disabled={isLoading}
                                     />
                                 </Tooltip>
                             </HStack>
