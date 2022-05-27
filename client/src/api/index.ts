@@ -1,5 +1,7 @@
-const getMovies = async () => {
-    const response = await fetch(`/api/movies`);
+const getMovies = async (pageNumber = 1) => {
+    const response = await fetch(`/api/movies?page=${pageNumber}`, {
+        method: "GET",
+    });
     const data = await response.json();
 
     return data;
