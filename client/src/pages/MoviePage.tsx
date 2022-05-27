@@ -12,6 +12,7 @@ import {
     StatLabel,
     StatNumber,
     HStack,
+    Skeleton,
 } from "@chakra-ui/react";
 import Cast from "../components/Cast";
 import Carousel from "../components/Carousel";
@@ -26,6 +27,7 @@ const MoviePage = (): JSX.Element => {
     const { movieId } = useParams<string>();
     const [data, setData] = useState<any>();
     const [isLoading, setIsLoading] = useState(true);
+    const [imageLoaded, setImageLoaded] = useState<boolean>(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -74,12 +76,15 @@ const MoviePage = (): JSX.Element => {
                 alignItems="center"
             >
                 <Box>
-                    <Image
-                        borderRadius="lg"
-                        src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-                        alt={movie.title}
-                        shadow="dark-lg"
-                    />
+                    <Skeleton isLoaded={imageLoaded}>
+                        <Image
+                            borderRadius="lg"
+                            src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+                            alt={movie.title}
+                            shadow="dark-lg"
+                            onLoad={() => setImageLoaded(true)}
+                        />
+                    </Skeleton>
                 </Box>
                 <Flex direction="column" height="full" mt={{ md: 10, lg: 0 }}>
                     <Flex
