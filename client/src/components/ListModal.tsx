@@ -171,7 +171,7 @@ export default function ListModal({
         <>
             <Modal isOpen={isOpen} onClose={onClose} preserveScrollBarGap>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent marginX={2}>
                     <ModalHeader>
                         {list ? "Edit list" : "Create list"}
                     </ModalHeader>
