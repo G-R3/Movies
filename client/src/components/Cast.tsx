@@ -54,7 +54,7 @@ export default function Cast({ cast }: any) {
                         <Skeleton isLoaded={imageLoaded}>
                             <Image
                                 borderRadius="md"
-                                src={`https://image.tmdb.org/t/p/original${member.profile_path}`}
+                                src={`https://image.tmdb.org/t/p/w185${member.profile_path}`}
                                 alt={member.name}
                                 onLoad={() => setImageLoaded(true)}
                             />

@@ -41,7 +41,7 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
                 <Skeleton isLoaded={imageLoaded}>
                     <Image
                         borderTopRadius="md"
-                        src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+                        src={`https://image.tmdb.org/t/p/w780${movie.backdrop_path}`}
                         alt={movie.title}
                         onLoad={() => setImageLoaded(true)}
                     />
