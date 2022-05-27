@@ -43,7 +43,8 @@ body {
     }
 }
 
-.profile-header {
+.profile-header,
+.home-header {
     opacity: 0;
     transform: translateY(0);
     animation: fadeIn 1000ms ease forwards;

@@ -11,14 +11,18 @@ import {
     useMediaQuery,
     Image,
 } from "@chakra-ui/react";
-import { CSSProperties, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { CSSProperties, useContext, useEffect, useState } from "react";
 import { getTrending } from "../api";
 import AuthForm from "../components/AuthForm";
+import Loader from "../components/Loader";
+import { AuthContext } from "../context/AuthContext";
 
 const Home = (): JSX.Element => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isMobile] = useMediaQuery("(max-width: 48em)");
     const [images, setImages] = useState<string[]>([]);
+    const { isLoggedIn } = useContext(AuthContext);
 
     useEffect(() => {
         if (isMobile) return;
@@ -32,7 +36,9 @@ const Home = (): JSX.Element => {
         };
 
         fetchData();
-    }, []);
+    }, [isMobile]);
+
+    if (!images.length && !isMobile) return <Loader size="xl" />;
 
     return (
         <>
@@ -41,33 +47,39 @@ const Home = (): JSX.Element => {
                     h="full"
                     flexDirection={"column"}
                     justifyContent={"center"}
-                    alignItems={{ base: "center", md: "flex-start" }}
-                    mt={{ base: "32", md: "0" }}
-                    textAlign={{ base: "center", sm: "start" }}
+                    alignItems={"center"}
+                    mt={"32"}
+                    className="home-header"
                 >
-                    <Heading
-                        fontSize={{
-                            base: "4xl",
-                            md: "5xl",
-                            lg: "6xl",
-                            xl: "7xl",
-                        }}
-                    >
-                        Movie Manager
-                    </Heading>
-                    <Text fontSize={{ base: "md", md: "lg", lg: "xl" }}>
-                        Track and organize your movies
-                    </Text>
-                    <Button
-                        mt="5"
-                        colorScheme="purple"
-                        fontSize={{ base: "md", md: "lg" }}
-                        fontWeight={"semibold"}
-                        padding={{ base: 4, md: 6 }}
-                        onClick={() => onOpen()}
-                    >
-                        Get Started
-                    </Button>
+                    <Heading fontSize={"4xl"}>Movie Manager</Heading>
+                    <Text fontSize={"md"}>Track and organize your movies</Text>
+                    {isLoggedIn === false ? (
+                        <Button
+                            mt="5"
+                            colorScheme="purple"
+                            fontSize={"md"}
+                            fontWeight={"semibold"}
+                            padding={4}
+                            onClick={() => onOpen()}
+                        >
+                            Get Started
+                        </Button>
+                    ) : isLoggedIn === true ? (
+                        <Button
+                            as={Link}
+                            to="/browse"
+                            mt="5"
+                            colorScheme="purple"
+                            fontSize={"md"}
+                            fontWeight={"semibold"}
+                            padding={4}
+                            onClick={() => onOpen()}
+                        >
+                            Browse
+                        </Button>
+                    ) : (
+                        <></>
+                    )}
                     <AuthForm isOpen={isOpen} onClose={onClose} />
                 </Flex>
             ) : (
@@ -83,9 +95,8 @@ const Home = (): JSX.Element => {
                             h="full"
                             flexDirection={"column"}
                             justifyContent={"center"}
-                            alignItems={{ base: "center", md: "flex-start" }}
-                            mt={{ base: "32", md: "0" }}
-                            textAlign={{ base: "center", sm: "start" }}
+                            alignItems="flex-start"
+                            className="home-header"
                         >
                             <Heading
                                 fontSize={{
@@ -100,16 +111,33 @@ const Home = (): JSX.Element => {
                             <Text fontSize={{ base: "md", md: "lg", lg: "xl" }}>
                                 Track and organize your movies
                             </Text>
-                            <Button
-                                mt="5"
-                                colorScheme="purple"
-                                fontSize={{ base: "md", md: "lg" }}
-                                fontWeight={"semibold"}
-                                padding={{ base: 4, md: 6 }}
-                                onClick={() => onOpen()}
-                            >
-                                Get Started
-                            </Button>
+                            {isLoggedIn === false ? (
+                                <Button
+                                    mt="5"
+                                    colorScheme="purple"
+                                    fontSize={"md"}
+                                    fontWeight={"semibold"}
+                                    padding={4}
+                                    onClick={() => onOpen()}
+                                >
+                                    Get Started
+                                </Button>
+                            ) : isLoggedIn === true ? (
+                                <Button
+                                    as={Link}
+                                    to="/browse"
+                                    mt="5"
+                                    colorScheme="purple"
+                                    fontSize={"md"}
+                                    fontWeight={"semibold"}
+                                    padding={4}
+                                    onClick={() => onOpen()}
+                                >
+                                    Browse
+                                </Button>
+                            ) : (
+                                <></>
+                            )}
                             <AuthForm isOpen={isOpen} onClose={onClose} />
                         </Flex>
                     </GridItem>
@@ -117,22 +145,22 @@ const Home = (): JSX.Element => {
                         <VStack h="full" alignItems="start" gap={10} mt={"8"}>
                             <Flex gap={10}>
                                 <Image
-                                    w="auto"
-                                    h="230px"
+                                    w="full"
+                                    h="auto"
                                     borderRadius={10}
                                     shadow={"2xl"}
                                     className={"img-place"}
                                     style={{ "--order": 1 } as CSSProperties}
-                                    src={`https://image.tmdb.org/t/p/w1280${images[0]}`}
+                                    src={`https://image.tmdb.org/t/p/w500${images[0]}`}
                                 />
                                 <Image
-                                    w="auto"
-                                    h="230px"
+                                    w="full"
+                                    h="auto"
                                     borderRadius={10}
                                     shadow={"2xl"}
                                     className={"img-place"}
                                     style={{ "--order": 2 } as CSSProperties}
-                                    src={`https://image.tmdb.org/t/p/w1280${images[1]}`}
+                                    src={`https://image.tmdb.org/t/p/w500${images[1]}`}
                                 />
                             </Flex>
                             <Flex gap={10}>
@@ -143,22 +171,22 @@ const Home = (): JSX.Element => {
                                     borderRadius={10}
                                 ></Box>
                                 <Image
-                                    w="auto"
-                                    h="230px"
+                                    w="full"
+                                    h="auto"
                                     borderRadius={10}
                                     shadow={"2xl"}
                                     className={"img-place"}
                                     style={{ "--order": 3 } as CSSProperties}
-                                    src={`https://image.tmdb.org/t/p/w1280${images[2]}`}
+                                    src={`https://image.tmdb.org/t/p/w500${images[2]}`}
                                 />
                                 <Image
-                                    w="auto"
-                                    h="230px"
+                                    w="full"
+                                    h="auto"
                                     borderRadius={10}
                                     shadow={"2xl"}
                                     className={"img-place"}
                                     style={{ "--order": 4 } as CSSProperties}
-                                    src={`https://image.tmdb.org/t/p/w1280${images[3]}`}
+                                    src={`https://image.tmdb.org/t/p/w500${images[3]}`}
                                 />
                             </Flex>
                         </VStack>
