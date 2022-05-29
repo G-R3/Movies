@@ -30,11 +30,21 @@ export default function Carousel({ data, heading }: any): JSX.Element {
                 modules={[Navigation]}
                 wrapperTag="ul"
                 breakpoints={{
-                    480: {
+                    375: {
                         slidesPerView: 2,
                     },
-                    1024: {
+                    480: {
                         slidesPerView: 3,
+                    },
+                    768: {
+                        slidesPerView: 4,
+                    },
+
+                    980: {
+                        slidesPerView: 6,
+                    },
+                    1200: {
+                        slidesPerView: 8,
                     },
                 }}
             >

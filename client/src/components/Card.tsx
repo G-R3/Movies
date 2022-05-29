@@ -8,6 +8,7 @@ import {
     Text,
     useColorMode,
     HStack,
+    Tooltip,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
@@ -18,6 +19,7 @@ type MovieProps = {
         image?: string;
         overview: string;
         backdrop_path: string;
+        poster_path: string;
         vote_average: number;
         release_date: string;
         adult: boolean;
@@ -41,7 +43,7 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
                 <Skeleton isLoaded={imageLoaded}>
                     <Image
                         borderTopRadius="md"
-                        src={`https://image.tmdb.org/t/p/w780${movie.backdrop_path}`}
+                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                         alt={movie.title}
                         onLoad={() => setImageLoaded(true)}
                     />
@@ -102,13 +104,16 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
                         mt={2}
                         isLoaded={imageLoaded}
                     >
-                        <Heading
-                            mt={"1"}
-                            as="h2"
-                            fontSize={{ sm: "xs", md: "sm", lg: "md" }}
-                        >
-                            {movie.title}
-                        </Heading>
+                        <Tooltip label={movie.title}>
+                            <Heading
+                                mt={"1"}
+                                as="h2"
+                                fontSize={"xs"}
+                                noOfLines={1}
+                            >
+                                {movie.title}
+                            </Heading>
+                        </Tooltip>
                     </SkeletonText>
                 </Box>
             </Link>

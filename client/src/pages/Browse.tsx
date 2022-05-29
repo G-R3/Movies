@@ -77,7 +77,7 @@ const Browse = (): JSX.Element => {
             </Box>
 
             <SimpleGrid
-                columns={{ base: 1, sm: 2, lg: 3 }}
+                columns={{ base: 2, sm: 3, md: 4, lg: 6 }}
                 spacing={10}
                 mt={"24"}
             >
