@@ -9,6 +9,7 @@ import {
     useToast,
     useColorModeValue,
     chakra,
+    Divider,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { useContext, useEffect, useState } from "react";
@@ -137,6 +138,7 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
                     <MenuItem icon={<AddIcon />} onClick={onOpen}>
                         Create new list
                     </MenuItem>
+                    <Divider marginY={2} />
                     {lists.length > 0 &&
                         lists.map((list: List) => (
                             <MenuItem

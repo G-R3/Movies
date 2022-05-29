@@ -48,7 +48,18 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
                         onLoad={() => setImageLoaded(true)}
                     />
                 </Skeleton>
-                <Box paddingTop={2} paddingBottom={2} borderBottomRadius="md">
+                <Box
+                    transition="all 350ms ease"
+                    transform={"translateY(-50px)"}
+                    opacity="0"
+                    _groupHover={{
+                        transform: "translateY(0)",
+                        opacity: 1,
+                    }}
+                    paddingTop={2}
+                    paddingBottom={2}
+                    borderBottomRadius="md"
+                >
                     <HStack fontSize={"sm"}>
                         {releaseYear && (
                             <SkeletonText noOfLines={1} isLoaded={imageLoaded}>

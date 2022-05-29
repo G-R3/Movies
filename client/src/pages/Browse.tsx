@@ -78,8 +78,9 @@ const Browse = (): JSX.Element => {
 
             <SimpleGrid
                 columns={{ base: 2, sm: 3, md: 4, lg: 6 }}
-                spacing={10}
-                mt={"24"}
+                spacingY={5}
+                spacingX={10}
+                mt={"16"}
             >
                 {movies.map((movie: Movie) => (
                     <Card key={movie.id} movie={movie} />
