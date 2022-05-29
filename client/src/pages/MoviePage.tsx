@@ -13,6 +13,7 @@ import {
     StatNumber,
     HStack,
     Skeleton,
+    Center,
 } from "@chakra-ui/react";
 import Cast from "../components/Cast";
 import Carousel from "../components/Carousel";
@@ -63,29 +64,33 @@ const MoviePage = (): JSX.Element => {
     );
 
     return (
-        <Flex
-            direction="column"
-            justifyContent="space-between"
-            h="full"
-            gap={20}
-        >
+        <Flex direction="column" justifyContent="space-between" gap={20}>
             <SimpleGrid
                 columns={{ md: 1, lg: 2 }}
-                spacingX="40px"
-                mt={10}
-                alignItems="center"
+                spacingX={{ md: "40px", xl: "0" }}
+                backgroundPosition="center"
+                backgroundSize={"cover"}
+                backgroundRepeat="no-repeat"
+                paddingY={5}
+                paddingX={2}
+                borderRadius={"md"}
+                style={{
+                    backgroundImage: `
+                    linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.3) 100%), url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+                }}
             >
-                <Box>
+                <Center>
                     <Skeleton isLoaded={imageLoaded}>
                         <Image
+                            w={{ base: "250px", sm: "350px", lg: "400px" }}
                             borderRadius="lg"
-                            src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+                            src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                             alt={movie.title}
                             shadow="dark-lg"
                             onLoad={() => setImageLoaded(true)}
                         />
                     </Skeleton>
-                </Box>
+                </Center>
                 <Flex direction="column" height="full" mt={{ md: 10, lg: 0 }}>
                     <Flex
                         flexWrap="wrap"
@@ -99,7 +104,7 @@ const MoviePage = (): JSX.Element => {
                         </HStack>
                         <ListMenu movie={movie} />
                     </Flex>
-                    <Flex direction="column" gap={1} flex="1 0 0">
+                    <Flex direction="column" gap={1}>
                         <Heading
                             as="h1"
                             fontSize={{
@@ -116,7 +121,7 @@ const MoviePage = (): JSX.Element => {
                         </Text>
                         <Text mt={2}>{movie.overview}</Text>
                     </Flex>
-                    <HStack mt={10} textAlign="center">
+                    <HStack mt={20} textAlign="center">
                         <Stat>
                             <StatLabel
                                 color="gray.500"
@@ -148,6 +153,7 @@ const MoviePage = (): JSX.Element => {
                     </HStack>
                 </Flex>
             </SimpleGrid>
+
             <Flex
                 direction={{ base: "column", sm: "row" }}
                 mt={10}

@@ -102,7 +102,7 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
     if (!isLoggedIn) {
         return (
             <>
-                <Button marginTop="2" onClick={() => onOpen()}>
+                <Button marginTop="2" onClick={() => onOpen()} variant="ghost">
                     Add to list
                 </Button>
                 <AuthForm isOpen={isOpen} onClose={onClose} />
@@ -113,7 +113,7 @@ export default function ListMenu({ movie }: Movie): JSX.Element {
     return (
         <>
             <Menu placement="bottom-end" isLazy closeOnSelect={false}>
-                <MenuButton as={Button} marginTop="2">
+                <MenuButton as={Button} marginTop="2" variant="ghost">
                     Add to list
                 </MenuButton>
                 <MenuList
