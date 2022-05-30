@@ -27,7 +27,11 @@ const register = async (req: Request, res: Response) => {
 
     return res
         .status(200)
-        .cookie("token", generateToken(user._id), { httpOnly: true })
+        .cookie("token", generateToken(user._id), {
+            httpOnly: true,
+            secure: true,
+            sameSite: true,
+        })
         .send({
             success: true,
             message: "Welcome aboard!",
@@ -55,7 +59,11 @@ const login = async (req: Request, res: Response) => {
 
     return res
         .status(200)
-        .cookie("token", generateToken(user._id), { httpOnly: true })
+        .cookie("token", generateToken(user._id), {
+            httpOnly: true,
+            secure: true,
+            sameSite: true,
+        })
         .send({
             success: true,
             message: "Welcome back",
