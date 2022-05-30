@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import RequireAuth from "./components/RequireAuth";
-import { Home, Browse, MoviePage, Profile, ListPage } from "./pages";
+import { Home, Browse, MoviePage, Profile, ListPage, NotFound } from "./pages";
 
 function App(): JSX.Element {
     return (
@@ -31,7 +31,7 @@ function App(): JSX.Element {
                     />
                 </Route>
 
-                <Route path="*" element={"Not found"} />
+                <Route path="*" element={<NotFound />} />
             </Route>
         </Routes>
     );

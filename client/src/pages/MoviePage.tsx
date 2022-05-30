@@ -66,7 +66,7 @@ const MoviePage = (): JSX.Element => {
     return (
         <Flex direction="column" justifyContent="space-between" gap={20}>
             <SimpleGrid
-                columns={{ md: 1, lg: 2 }}
+                columns={{ base: 0, md: 1, lg: 2 }}
                 spacingX={{ md: "40px", xl: "0" }}
                 backgroundPosition="center"
                 backgroundSize={"cover"}
@@ -91,17 +91,23 @@ const MoviePage = (): JSX.Element => {
                         />
                     </Skeleton>
                 </Center>
+
                 <Flex direction="column" height="full" mt={{ md: 10, lg: 0 }}>
                     <Flex
                         flexWrap="wrap"
                         mt={{ base: 10, md: 0 }}
                         justifyContent={"space-between"}
                     >
-                        <HStack>
+                        <Flex
+                            justifyContent={"center"}
+                            alignItems={"center"}
+                            flexWrap={"wrap"}
+                            gap={2}
+                        >
                             {movie.genres.map((genre: any) => (
                                 <GenreTag key={genre.id} name={genre.name} />
                             ))}
-                        </HStack>
+                        </Flex>
                         <ListMenu movie={movie} />
                     </Flex>
                     <Flex direction="column" gap={1}>
@@ -225,7 +231,7 @@ const MoviePage = (): JSX.Element => {
             <Flex
                 flexDirection="column"
                 gap={20}
-                mt={{ base: 14, md: 16, lg: 20 }}
+                mt={{ base: "8", md: "12", lg: 16 }}
             >
                 {recommendations?.length > 0 ? (
                     <Carousel data={recommendations} heading="Recommended" />
