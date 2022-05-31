@@ -9,8 +9,7 @@ const getMovies = async (pageNumber = 1) => {
 
 const getTrending = async () => {
     const response = await fetch(`/api/movies/trending`);
-    const data = response.json();
-
+    const data = await response.json();
     return data;
 };
 
