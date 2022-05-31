@@ -9,7 +9,9 @@ import movieRoute from "./routes/movie";
 
 const app = express();
 
-dotenv.config();
+if (process.env.NODE_ENV !== "production") {
+    dotenv.config();
+}
 dbConnection();
 
 app.use(cookieParser());
