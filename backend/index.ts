@@ -22,6 +22,8 @@ app.use("/auth", authRoutes);
 app.use("/api", listRoutes);
 app.use("/api", movieRoute);
 
-app.listen(5000, () => {
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => {
     console.log("listening on PORT 5000");
 });
