@@ -18,7 +18,7 @@ router.get("/lists", isAuthorized, getUserLists);
 router.get("/list/:listId", isAuthorized, getList);
 router.post("/create", isAuthorized, validateList, createList);
 router.post("/add/:listId", isAuthorized, isListOwner, addMovieToList);
-router.put("/edit/:listId", validateList, editList);
+router.put("/edit/:listId", isAuthorized, validateList, editList);
 router.delete("/delete/:listId", isAuthorized, isListOwner, deleteList);
 router.delete(
     "/delete/:listId/movie/:movieId",
