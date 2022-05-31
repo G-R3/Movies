@@ -115,7 +115,11 @@ const Card = ({ movie }: MovieProps): JSX.Element => {
                         mt={2}
                         isLoaded={imageLoaded}
                     >
-                        <Tooltip label={movie.title}>
+                        <Tooltip
+                            label={movie.title}
+                            placement="bottom-start"
+                            openDelay={500}
+                        >
                             <Heading
                                 mt={"1"}
                                 as="h2"
